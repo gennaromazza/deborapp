@@ -26,26 +26,72 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    const { data: user, error } = await supabase
+    // Verifica utente con PIN e ottieni tutti i prodotti acquistati
+    const { data: user, error: userError } = await supabase
       .from('users')
-      .select('*, products(id, title, download_link, type)')
+      .select('*')
       .eq('pin', pin)
       .eq('is_active', true)
       .single()
 
-    if (error || !user) {
+    if (userError || !user) {
       return new Response(
         JSON.stringify({ error: 'PIN non trovato o non attivo' }),
         { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
 
+    // Ottieni tutti i prodotti acquistati da questo cliente
+    const { data: customerProducts, error: productsError } = await supabase
+      .from('customer_products')
+      .select(`
+        products (
+          id,
+          title,
+          description,
+          download_link,
+          type,
+          cover_image,
+          slug
+        )
+      `)
+      .eq('customer_id', user.id)
+
+    const products = customerProducts?.map(cp => cp.products).filter(Boolean) || []
+
+    // Se non ci sono prodotti nella tabella customer_products, usa il vecchio metodo (product_id direttamente su users)
+    let finalProducts = products
+    if (finalProducts.length === 0 && user.product_id) {
+      const { data: legacyProduct } = await supabase
+        .from('products')
+        .select('id, title, description, download_link, type, cover_image, slug')
+        .eq('id', user.product_id)
+        .single()
+      
+      if (legacyProduct) {
+        finalProducts = [legacyProduct]
+      }
+    }
+
+    // Determina tipo di risposta
+    if (finalProducts.length === 1 && finalProducts[0].type === 'app') {
+      // È un'app: naviga direttamente al prodotto
+      return new Response(
+        JSON.stringify({
+          type: 'app',
+          customer_name: user.first_name,
+          products: finalProducts,
+        }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // È un documento: mostra la lista dei prodotti
     return new Response(
       JSON.stringify({
-        product_id: user.products?.id,
-        product_title: user.products?.title,
-        download_link: user.products?.download_link,
-        type: user.products?.type || 'link',
+        type: 'products',
+        customer_name: user.first_name,
+        products: finalProducts,
       }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )

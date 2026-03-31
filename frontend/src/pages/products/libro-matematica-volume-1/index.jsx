@@ -1,19 +1,21 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Home, Download, Star, Award, BookOpen, ArrowLeft } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Home, Download, Star, Award, BookOpen, ArrowLeft, Zap, Trophy } from 'lucide-react'
 import { supabase } from '../../../utils/supabase'
 import { generatePDF } from '../../../utils/pdfGenerator'
 import { chapters } from './data/chapters'
 import BookCover from './components/BookCover'
 import Chapter from './components/Chapter'
 import BadgeScreen from './components/BadgeScreen'
+import LevelUpPopup from './components/LevelUpPopup'
 import { chapter1Pages } from './data/content.jsx'
 import { chapter2Pages } from './data/content.jsx'
 import { chapter3Pages } from './data/content.jsx'
 import { chapter4Pages } from './data/content.jsx'
 import { chapter5Pages } from './data/content.jsx'
 import { chapter6Pages } from './data/content.jsx'
+import { GameProvider, useGame, XP_VALUES } from '../../../context/GameContext'
 
 const chapterPagesMap = {
   1: chapter1Pages,
@@ -24,15 +26,100 @@ const chapterPagesMap = {
   6: chapter6Pages,
 }
 
-export default function LibroMatematicaVolume1() {
+function GameHeader({ product }) {
+  const { xp, level, coins, getCurrentLevel, getProgressToNextLevel, getNextLevel, streak } = useGame()
+  const currentLevel = getCurrentLevel()
+  const nextLevel = getNextLevel()
+  const progress = getProgressToNextLevel()
+  const [showXP, setShowXP] = useState(false)
+  
+  return (
+    <div className="flex items-center gap-3">
+      <button
+        onClick={() => setShowXP(!showXP)}
+        className="flex items-center gap-2 px-3 py-1.5 bg-white/80 rounded-full shadow-sm hover:shadow-md transition-all"
+      >
+        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-pastel-yellow to-pastel-peach flex items-center justify-center">
+          <span className="text-lg">{currentLevel.emoji}</span>
+        </div>
+        <div className="hidden sm:block text-left">
+          <div className="text-xs font-display font-bold text-gray-800 leading-tight">
+            {currentLevel.title}
+          </div>
+          <div className="text-[10px] text-gray-500">Lv.{level + 1}</div>
+        </div>
+        {xp > 0 && (
+          <div className="hidden sm:flex items-center gap-1 px-2 py-0.5 bg-pastel-yellow/50 rounded-lg">
+            <Zap className="w-3 h-3 text-pastel-yellow-dark" />
+            <span className="text-xs font-bold text-pastel-yellow-dark">{xp}</span>
+          </div>
+        )}
+      </button>
+      
+      {showXP && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, x: -10 }}
+          animate={{ opacity: 1, scale: 1, x: 0 }}
+          className="absolute top-full mt-2 left-0 z-50 bg-white rounded-2xl shadow-xl p-4 w-64 border border-pastel-lavender/30"
+        >
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-500">Livello</span>
+              <span className="font-display font-bold text-gray-800">{level + 1}</span>
+            </div>
+            <div>
+              <div className="flex justify-between text-xs mb-1">
+                <span className="text-gray-500">Progresso</span>
+                <span className="text-pastel-yellow-dark font-medium">{xp} XP</span>
+              </div>
+              <div className="h-2 bg-pastel-lavender rounded-full overflow-hidden">
+                <motion.div 
+                  className="h-full bg-gradient-to-r from-pastel-yellow to-pastel-peach"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                />
+              </div>
+              {nextLevel && (
+                <div className="text-[10px] text-gray-400 mt-1 text-right">
+                  {nextLevel.minXP - xp} XP al prossimo livello
+                </div>
+              )}
+            </div>
+            <div className="flex items-center justify-between pt-2 border-t border-pastel-lavender/20">
+              <div className="flex items-center gap-1">
+                <span className="text-lg">🪙</span>
+                <span className="font-display font-bold text-gray-800">{coins}</span>
+              </div>
+              {streak > 0 && (
+                <div className="flex items-center gap-1">
+                  <span className="text-lg">🔥</span>
+                  <span className="font-display font-bold text-gray-800">{streak}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </div>
+  )
+}
+
+function GameContent() {
   const { productId, chapterId } = useParams()
   const navigate = useNavigate()
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)
   const [currentChapter, setCurrentChapter] = useState(parseInt(chapterId) || 0)
   const [progress, setProgress] = useState({})
-  const [badges, setBadges] = useState([])
+  const [chapterBadges, setChapterBadges] = useState([])
   const [showBadges, setShowBadges] = useState(false)
+  const [showLevelUp, setShowLevelUp] = useState(null)
+  
+  const { addXP, earnBadge, checkStreak, BADGES, XP_VALUES } = useGame()
+
+  useEffect(() => {
+    checkStreak()
+  }, [])
 
   useEffect(() => {
     async function fetchProduct() {
@@ -50,9 +137,9 @@ export default function LibroMatematicaVolume1() {
 
   useEffect(() => {
     const savedProgress = localStorage.getItem(`progress_${productId}`)
-    const savedBadges = localStorage.getItem(`badges_${productId}`)
+    const savedBadges = localStorage.getItem(`chapter_badges_${productId}`)
     if (savedProgress) setProgress(JSON.parse(savedProgress))
-    if (savedBadges) setBadges(JSON.parse(savedBadges))
+    if (savedBadges) setChapterBadges(JSON.parse(savedBadges))
   }, [productId])
 
   useEffect(() => {
@@ -60,12 +147,20 @@ export default function LibroMatematicaVolume1() {
   }, [progress, productId])
 
   useEffect(() => {
-    localStorage.setItem(`badges_${productId}`, JSON.stringify(badges))
-  }, [badges, productId])
+    localStorage.setItem(`chapter_badges_${productId}`, JSON.stringify(chapterBadges))
+  }, [chapterBadges, productId])
 
   useEffect(() => {
     setCurrentChapter(parseInt(chapterId) || 0)
   }, [chapterId])
+
+  useEffect(() => {
+    const handleLevelUp = (e) => {
+      setShowLevelUp(e.detail)
+    }
+    window.addEventListener('levelUp', handleLevelUp)
+    return () => window.removeEventListener('levelUp', handleLevelUp)
+  }, [])
 
   const completePage = (chapterId, pageId) => {
     setProgress(prev => {
@@ -73,17 +168,35 @@ export default function LibroMatematicaVolume1() {
       if (!newProgress[chapterId]) newProgress[chapterId] = []
       if (!newProgress[chapterId].includes(pageId)) {
         newProgress[chapterId] = [...newProgress[chapterId], pageId]
+        addXP(XP_VALUES.pageComplete, 'pageComplete')
+        
+        const chapterPages = newProgress[chapterId].length
+        if (chapterPages === 10) {
+          addXP(XP_VALUES.perfectBonus, 'perfectChapter')
+          earnBadge('perfectChapter')
+        }
       }
       return newProgress
     })
   }
 
-  const earnBadge = (chapterId) => {
-    if (!badges.includes(chapterId)) {
-      setBadges(prev => [...prev, chapterId])
-      setShowBadges(true)
-      setTimeout(() => setShowBadges(false), 5000)
+  const earnChapterBadge = (chapterId) => {
+    if (!chapterBadges.includes(chapterId)) {
+      setChapterBadges(prev => [...prev, chapterId])
+      addXP(XP_VALUES.chapterComplete, 'chapterComplete')
+      
+      const completedChapters = chapterBadges.length + 1
+      if (completedChapters === 1) {
+        earnBadge('firstChapter')
+      } else if (completedChapters === 3) {
+        earnBadge('halfBook')
+      } else if (completedChapters === 6) {
+        earnBadge('fullBook')
+      }
+      
+      return true
     }
+    return false
   }
 
   const chapterProgress = currentChapter > 0 ? (progress[currentChapter] || []).length : 0
@@ -141,14 +254,16 @@ export default function LibroMatematicaVolume1() {
           </div>
 
           <div className="flex items-center gap-2">
+            <GameHeader product={product} />
+            
             <button
               onClick={() => setShowBadges(!showBadges)}
               className="relative p-2 hover:bg-pastel-yellow/50 rounded-xl transition-colors"
             >
               <Award className="w-5 h-5 text-pastel-yellow-dark" />
-              {badges.length > 0 && (
+              {(chapterBadges.length + Object.keys(BADGES).filter(k => k.includes('Chapter') || k.includes('Book')).length) > 0 && (
                 <span className="absolute -top-1 -right-1 w-5 h-5 bg-pastel-pink-dark text-white text-xs rounded-full flex items-center justify-center">
-                  {badges.length}
+                  {chapterBadges.length}
                 </span>
               )}
             </button>
@@ -180,6 +295,7 @@ export default function LibroMatematicaVolume1() {
             product={product}
             chapters={chapters}
             progress={progress}
+            chapterBadges={chapterBadges}
             onSelectChapter={handleSelectChapter}
           />
         </div>
@@ -192,7 +308,7 @@ export default function LibroMatematicaVolume1() {
           title={currentChapterData?.title}
           emoji={currentChapterData?.emoji}
           onCompletePage={completePage}
-          onEarnBadge={earnBadge}
+          onEarnBadge={earnChapterBadge}
           onNextChapter={() => {
             if (currentChapter < 6) {
               handleSelectChapter(currentChapter + 1)
@@ -213,12 +329,16 @@ export default function LibroMatematicaVolume1() {
 
       <AnimatePresence>
         {showBadges && (
-          <BadgeScreen badges={badges} onClose={() => setShowBadges(false)} />
+          <BadgeScreen 
+            badges={chapterBadges} 
+            gameBadges={BADGES}
+            onClose={() => setShowBadges(false)} 
+          />
         )}
       </AnimatePresence>
 
       <AnimatePresence>
-        {badges.length > 0 && badges.includes(currentChapter) && (
+        {chapterBadges.length > 0 && chapterBadges.includes(currentChapter) && (
           <motion.div
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -226,15 +346,35 @@ export default function LibroMatematicaVolume1() {
             className="fixed top-20 left-1/2 -translate-x-1/2 z-50"
           >
             <div className="bg-white rounded-2xl shadow-xl p-6 flex items-center gap-3 border-2 border-pastel-yellow">
-              <Star className="w-8 h-8 text-pastel-yellow-dark" />
+              <Trophy className="w-8 h-8 text-pastel-yellow-dark" />
               <div>
-                <p className="font-display font-bold text-gray-800">Nuovo Badge!</p>
-                <p className="font-body text-gray-500 text-sm">Hai completato un capitolo!</p>
+                <p className="font-display font-bold text-gray-800">Capitolo Completato!</p>
+                <p className="font-body text-gray-500 text-sm">Hai guadagnato XP e un badge!</p>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      <AnimatePresence>
+        {showLevelUp && (
+          <LevelUpPopup 
+            level={showLevelUp.level + 1} 
+            data={showLevelUp.data}
+            onClose={() => setShowLevelUp(null)} 
+          />
+        )}
+      </AnimatePresence>
     </div>
+  )
+}
+
+export default function LibroMatematicaVolume1() {
+  const { productId } = useParams()
+  
+  return (
+    <GameProvider productId={productId}>
+      <GameContent />
+    </GameProvider>
   )
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Key, ArrowRight, Loader2, CheckCircle, Sparkles, Gamepad2 } from 'lucide-react'
+import { Key, ArrowRight, Loader2, CheckCircle, Sparkles, Gamepad2, FileText, Package } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { supabase } from '../utils/supabase'
 import Breadcrumb from '../components/Breadcrumb'
@@ -11,6 +11,7 @@ export default function AccessPin() {
   const [pin, setPin] = useState('')
   const [loading, setLoading] = useState(false)
   const [productData, setProductData] = useState(null)
+  const [customerName, setCustomerName] = useState('')
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
@@ -29,12 +30,15 @@ export default function AccessPin() {
       if (error || data?.error) {
         toast.error(data?.error || 'PIN non valido. Controlla e riprova.')
         setProductData(null)
+        setCustomerName('')
       } else {
-        toast.success('PIN verificato con successo!')
-        if (data.type === 'app' && data.product_id) {
-          navigate(`/prodotto/${data.product_id}`)
+        toast.success('Benvenuto!')
+        setCustomerName(data.customer_name || '')
+        
+        if (data.type === 'app' && data.products?.length === 1) {
+          navigate(`/prodotto/${data.products[0].id}`)
         } else {
-          setProductData(data)
+          setProductData(data.products)
         }
       }
     } catch (err) {
@@ -44,56 +48,95 @@ export default function AccessPin() {
     }
   }
 
-  if (productData) {
+  if (productData && productData.length > 0) {
     return (
       <PageTransition>
         <section className="py-20">
-          <div className="max-w-xl mx-auto px-4 sm:px-6">
+          <div className="max-w-2xl mx-auto px-4 sm:px-6">
             <Breadcrumb />
             <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="card-glass p-10 text-center"
-          >
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: 'spring', stiffness: 200, delay: 0.2 }}
-              className="w-20 h-20 mx-auto mb-6 rounded-full bg-pastel-mint flex items-center justify-center"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="card-glass p-8"
             >
-              <CheckCircle className="w-10 h-10 text-pastel-mint-dark" />
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: 'spring', stiffness: 200, delay: 0.2 }}
+                className="w-20 h-20 mx-auto mb-6 rounded-full bg-pastel-mint flex items-center justify-center"
+              >
+                <CheckCircle className="w-10 h-10 text-pastel-mint-dark" />
+              </motion.div>
+              
+              <h2 className="font-display text-2xl font-bold text-gray-800 mb-2 text-center">
+                Ciao{customerName ? `, ${customerName}` : ''}! 👋
+              </h2>
+              <p className="font-body text-gray-500 mb-8 text-center">
+                Ecco i tuoi prodotti acquistati:
+              </p>
+
+              <div className="space-y-4">
+                {productData.map((product, index) => (
+                  <motion.div
+                    key={product.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 + index * 0.1 }}
+                    className="flex items-center gap-4 p-4 bg-white/60 rounded-2xl border border-pastel-lavender/30 hover:border-pastel-pink/50 transition-all"
+                  >
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                      product.type === 'app' 
+                        ? 'bg-gradient-to-br from-pastel-pink to-pastel-lavender' 
+                        : 'bg-gradient-to-br from-pastel-mint to-pastel-sky'
+                    }`}>
+                      {product.type === 'app' ? (
+                        <Gamepad2 className="w-6 h-6 text-white" />
+                      ) : (
+                        <FileText className="w-6 h-6 text-white" />
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-display font-bold text-gray-800">{product.title}</h3>
+                      {product.description && (
+                        <p className="font-body text-sm text-gray-500 line-clamp-1">{product.description}</p>
+                      )}
+                    </div>
+                    {product.type === 'app' ? (
+                      <Link
+                        to={`/prodotto/${product.id}`}
+                        className="btn-primary py-2 px-4 text-sm"
+                      >
+                        Apri
+                      </Link>
+                    ) : (
+                      <a
+                        href={product.download_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-secondary py-2 px-4 text-sm"
+                      >
+                        Scarica
+                      </a>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+
+              <button
+                onClick={() => { setProductData(null); setPin(''); setCustomerName('') }}
+                className="block mx-auto mt-8 text-pastel-lavender-dark font-body font-medium hover:underline"
+              >
+                Verifica un altro PIN
+              </button>
             </motion.div>
-            <h2 className="font-display text-2xl font-bold text-gray-800 mb-3">
-              Accesso sbloccato!
-            </h2>
-            <p className="font-body text-gray-500 mb-6">
-              Ecco il tuo prodotto: <strong className="text-pastel-pink-dark">{productData.product_title}</strong>
-            </p>
-            <a
-              href={productData.download_link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary inline-flex items-center gap-2"
-            >
-              Scarica il prodotto
-              <ArrowRight className="w-5 h-5" />
-            </a>
-            <button
-              onClick={() => { setProductData(null); setPin('') }}
-              className="block mx-auto mt-6 text-pastel-lavender-dark font-body font-medium hover:underline"
-            >
-              Verifica un altro PIN
-            </button>
-          </motion.div>
-        </div>
-      </section>
-    </PageTransition>
+          </div>
+        </section>
+      </PageTransition>
     )
   }
-
-  return (
-    <PageTransition>
-      <section className="py-20 bg-mesh">
+    return (
+      <PageTransition>
+        <section className="py-20 bg-mesh">
         <div className="max-w-xl mx-auto px-4 sm:px-6">
           <Breadcrumb />
           <motion.div

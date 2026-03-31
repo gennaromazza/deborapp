@@ -1,12 +1,19 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Star, Check, Sparkles, Trophy } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ChevronLeft, ChevronRight, Star, Check, Sparkles, Trophy, Zap } from 'lucide-react'
+import MemoryGame from './MemoryGame'
+import DragDropGame from './DragDropGame'
+import { useGame } from '../../../../context/GameContext'
 
 export default function Chapter({ chapterId, pages, title, emoji, onCompletePage, onEarnBadge, onNextChapter, onPrevChapter, progress }) {
   const [currentPage, setCurrentPage] = useState(0)
   const [answers, setAnswers] = useState({})
   const [checkedItems, setCheckedItems] = useState({})
   const [badgeEarned, setBadgeEarned] = useState(false)
+  const [showMiniGame, setShowMiniGame] = useState(false)
+  const [miniGameType, setMiniGameType] = useState(null)
+  
+  const { addXP } = useGame()
 
   const page = pages[currentPage]
   if (!page) return null
@@ -31,12 +38,29 @@ export default function Chapter({ chapterId, pages, title, emoji, onCompletePage
     return true
   }
 
+  const handleMiniGameComplete = () => {
+    addXP(XP_VALUES.miniGameWin, 'miniGameWin')
+    setShowMiniGame(false)
+  }
+
+  const handleMiniGameCorrect = () => {
+    addXP(XP_VALUES.exerciseCorrect, 'exerciseCorrect')
+  }
+
   const handleNext = () => {
     if (isPageComplete()) {
       onCompletePage(chapterId, page.id)
     }
+    
     if (currentPage < pages.length - 1) {
-      setCurrentPage(currentPage + 1)
+      const nextPage = currentPage + 1
+      if (nextPage % 3 === 0) {
+        const games = ['memory', 'dragdrop']
+        setMiniGameType(games[Math.floor(Math.random() * games.length)])
+        setShowMiniGame(true)
+      } else {
+        setCurrentPage(nextPage)
+      }
     } else if (currentPage === pages.length - 1 && !badgeEarned) {
       setBadgeEarned(true)
       onEarnBadge(chapterId)
@@ -93,13 +117,18 @@ export default function Chapter({ chapterId, pages, title, emoji, onCompletePage
                   <input
                     type="text"
                     value={userAnswer || ''}
-                    onChange={(e) => handleAnswer(i, e.target.value)}
+                    onChange={(e) => {
+                      handleAnswer(i, e.target.value)
+                      if (e.target.value.toLowerCase().replace(/\s/g, '') === ex.answer.toLowerCase().replace(/\s/g, '')) {
+                        addXP(XP_VALUES.exerciseCorrect, 'exerciseCorrect')
+                      }
+                    }}
                     className={`input-field text-sm ${isCorrect ? 'border-pastel-mint-dark bg-pastel-mint/30' : ''}`}
                     placeholder="La tua risposta..."
                   />
                   {isCorrect && (
                     <p className="text-pastel-mint-dark text-sm font-body mt-1 flex items-center gap-1">
-                      <Check className="w-4 h-4" /> Corretto!
+                      <Check className="w-4 h-4" /> Corretto! +{XP_VALUES.exerciseCorrect} XP
                     </p>
                   )}
                 </div>
@@ -142,13 +171,18 @@ export default function Chapter({ chapterId, pages, title, emoji, onCompletePage
                   <input
                     type="text"
                     value={userAnswer || ''}
-                    onChange={(e) => handleAnswer(i, e.target.value)}
+                    onChange={(e) => {
+                      handleAnswer(i, e.target.value)
+                      if (e.target.value.toLowerCase().replace(/\s/g, '') === ex.answer.toLowerCase().replace(/\s/g, '')) {
+                        addXP(XP_VALUES.exerciseCorrect, 'exerciseCorrect')
+                      }
+                    }}
                     className={`input-field text-sm ${isCorrect ? 'border-pastel-mint-dark bg-pastel-mint/30' : ''}`}
                     placeholder="?"
                   />
                   {isCorrect && (
                     <p className="text-pastel-mint-dark text-sm font-body mt-1 flex items-center gap-1">
-                      <Check className="w-4 h-4" /> Corretto!
+                      <Check className="w-4 h-4" /> +{XP_VALUES.exerciseCorrect} XP
                     </p>
                   )}
                 </div>
@@ -181,7 +215,12 @@ export default function Chapter({ chapterId, pages, title, emoji, onCompletePage
                     <input
                       type="number"
                       value={userAnswer || ''}
-                      onChange={(e) => handleAnswer(i, e.target.value)}
+                      onChange={(e) => {
+                        handleAnswer(i, e.target.value)
+                        if (e.target.value === String(item.count)) {
+                          addXP(XP_VALUES.exerciseCorrect, 'exerciseCorrect')
+                        }
+                      }}
                       className={`input-field text-sm w-16 text-center ${isCorrect ? 'border-pastel-mint-dark bg-pastel-mint/30' : ''}`}
                       placeholder="?"
                       min="0"
@@ -267,6 +306,45 @@ export default function Chapter({ chapterId, pages, title, emoji, onCompletePage
           ))}
         </div>
       </motion.div>
+
+      <AnimatePresence>
+        {showMiniGame && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="mt-6"
+          >
+            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-4 border border-pastel-yellow/50 shadow-lg">
+              <div className="flex items-center gap-2 mb-4">
+                <Zap className="w-5 h-5 text-pastel-yellow-dark" />
+                <span className="font-display font-bold text-gray-800">Mini Gioco!</span>
+                <span className="text-sm text-gray-500">(+{XP_VALUES.miniGameWin} XP)</span>
+              </div>
+              
+              {miniGameType === 'memory' && (
+                <MemoryGame 
+                  onComplete={handleMiniGameComplete} 
+                  onCorrect={handleMiniGameCorrect}
+                />
+              )}
+              {miniGameType === 'dragdrop' && (
+                <DragDropGame 
+                  onComplete={handleMiniGameComplete}
+                  onCorrect={handleMiniGameCorrect}
+                />
+              )}
+              
+              <button
+                onClick={() => setShowMiniGame(false)}
+                className="w-full mt-4 text-sm text-gray-500 hover:text-gray-700"
+              >
+                Salta questo gioco
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="flex items-center justify-between mt-6">
         <button
