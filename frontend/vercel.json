@@ -1,9 +1,9 @@
 {
-  "rewrites": [
-    { "source": "/googlebf58e6c1bbae420e.html", "destination": "/googlebf58e6c1bbae420e.html" },
-    { "source": "/sitemap.xml", "destination": "/api/sitemap" },
-    { "source": "/robots.txt", "destination": "/robots.txt" },
-    { "source": "/(.*)", "destination": "/index.html" }
+  "routes": [
+    { "src": "/googlebf58e6c1bbae420e\\.html", "dest": "/googlebf58e6c1bbae420e.html" },
+    { "src": "/sitemap\\.xml", "dest": "/api/sitemap.js" },
+    { "src": "/robots\\.txt", "dest": "/robots.txt" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ],
   "build": {
     "command": "npm run build",
