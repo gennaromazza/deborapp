@@ -1,42 +1,47 @@
 import { createClient } from '@supabase/supabase-js'
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-export const config = {
-  runtime: 'edge',
-}
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
-export default async function handler(req) {
-  try {
-    const supabaseUrl = 'https://gwndwpewlraagzrospub.supabase.co'
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd3bmR3cGV3bHJhYWd6cm9zcHViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4OTUwODQsImV4cCI6MjA5MDQ3MTA4NH0.iBeoXAXf9x8OjgCTBW5Uq4vqrLU1jPM3-9na-t6Ihjg'
-    const supabase = createClient(supabaseUrl, supabaseKey)
+const supabaseUrl = 'https://gwndwpewlraagzrospub.supabase.co'
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd3bmR3cGV3bHJhYWd6cm9zcHViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4OTUwODQsImV4cCI6MjA5MDQ3MTA4NH0.iBeoXAXf9x8OjgCTBW5Uq4vqrLU1jPM3-9na-t6Ihjg'
 
-    const { data: posts, error } = await supabase
-      .from('blog_posts')
-      .select('slug, updated_at')
-      .eq('is_published', true)
-      .order('published_at', { ascending: false })
+async function generateSitemap() {
+  const supabase = createClient(supabaseUrl, supabaseKey)
 
-    if (error) throw error
+  const { data: posts, error } = await supabase
+    .from('blog_posts')
+    .select('slug, updated_at')
+    .eq('is_published', true)
+    .order('published_at', { ascending: false })
 
-    const baseUrl = 'https://deborapp.vercel.app'
-    const now = new Date().toISOString().split('T')[0]
+  if (error) {
+    console.error('Error fetching posts:', error)
+    process.exit(1)
+  }
 
-    const staticPages = [
-      { url: '/', priority: '1.0', changefreq: 'weekly' },
-      { url: '/chi-sono', priority: '0.8', changefreq: 'monthly' },
-      { url: '/portfolio', priority: '0.8', changefreq: 'weekly' },
-      { url: '/contatti', priority: '0.7', changefreq: 'monthly' },
-      { url: '/blog', priority: '0.9', changefreq: 'daily' },
-    ]
+  const baseUrl = 'https://deborapp.vercel.app'
+  const now = new Date().toISOString().split('T')[0]
 
-    const blogPosts = (posts || []).map(post => ({
-      url: `/blog/${post.slug}`,
-      priority: '0.7',
-      changefreq: 'weekly',
-      lastmod: post.updated_at ? new Date(post.updated_at).toISOString().split('T')[0] : now,
-    }))
+  const staticPages = [
+    { url: '/', priority: '1.0', changefreq: 'weekly' },
+    { url: '/chi-sono', priority: '0.8', changefreq: 'monthly' },
+    { url: '/portfolio', priority: '0.8', changefreq: 'weekly' },
+    { url: '/contatti', priority: '0.7', changefreq: 'monthly' },
+    { url: '/blog', priority: '0.9', changefreq: 'daily' },
+  ]
 
-    const xmlUrls = [...staticPages, ...blogPosts].map(page => `
+  const blogPosts = (posts || []).map(post => ({
+    url: `/blog/${post.slug}`,
+    priority: '0.7',
+    changefreq: 'weekly',
+    lastmod: post.updated_at ? new Date(post.updated_at).toISOString().split('T')[0] : now,
+  }))
+
+  const xmlUrls = [...staticPages, ...blogPosts].map(page => `
   <url>
     <loc>${baseUrl}${page.url}</loc>
     <lastmod>${page.lastmod || now}</lastmod>
@@ -44,8 +49,10 @@ export default async function handler(req) {
     <priority>${page.priority}</priority>
   </url>`).join('')
 
-    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="#stylesheet"?>
+  const xslStylesheet = `<?xml-stylesheet type="text/xsl" href="#stylesheet"?>`
+
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+${xslStylesheet}
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${xmlUrls}
   <xsl:stylesheet id="stylesheet" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="html" indent="yes" encoding="UTF-8"/>
@@ -105,7 +112,7 @@ export default async function handler(req) {
                 </xsl:for-each>
               </tbody>
             </table>
-            <div class="footer"><p>Generata dinamicamente • https://deborapp.vercel.app/sitemap.xml</p></div>
+            <div class="footer"><p>Generata dinamicamente al build • https://deborapp.vercel.app/sitemap.xml</p></div>
           </div>
         </body>
       </html>
@@ -113,15 +120,13 @@ export default async function handler(req) {
   </xsl:stylesheet>
 </urlset>`
 
-    return new Response(sitemap, {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/xml',
-        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
-      },
-    })
-  } catch (error) {
-    console.error('Sitemap generation error:', error)
-    return new Response('Error generating sitemap', { status: 500 })
+  const distDir = path.resolve(__dirname, 'dist')
+  if (!fs.existsSync(distDir)) {
+    fs.mkdirSync(distDir, { recursive: true })
   }
+
+  fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemap, 'utf8')
+  console.log('✅ Sitemap generated successfully with', staticPages.length + blogPosts.length, 'URLs')
 }
+
+generateSitemap()
