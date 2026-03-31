@@ -124,7 +124,11 @@ export default function BlogEditor() {
     }
     
     setAiGenerating(true)
+    setMessage(null)
+    
     try {
+      console.log('Chiamata IA con:', { title: formData.title || aiPrompt, category: formData.category, length: aiLength, customPrompt: aiPrompt })
+      
       const { data, error } = await supabase.functions.invoke('generate-blog-post', {
         body: {
           title: formData.title || aiPrompt,
@@ -134,9 +138,15 @@ export default function BlogEditor() {
         },
       })
       
-      if (error || data?.error) {
-        setMessage({ type: 'error', text: data?.error || 'Errore generazione IA' })
-      } else {
+      console.log('Risposta IA:', { data, error })
+      
+      if (error) {
+        console.error('Errore Supabase:', error)
+        setMessage({ type: 'error', text: `Errore: ${error.message || 'Errore sconosciuto'}` })
+      } else if (data?.error) {
+        console.error('Errore Groq:', data.error)
+        setMessage({ type: 'error', text: data.error })
+      } else if (data?.content) {
         setFormData(prev => ({
           ...prev,
           content: data.content,
@@ -144,12 +154,17 @@ export default function BlogEditor() {
         }))
         setMessage({ type: 'success', text: 'Articolo generato con successo!' })
         setShowAiModal(false)
+      } else {
+        console.error('Risposta inaspettata:', data)
+        setMessage({ type: 'error', text: 'Risposta inaspettata dall\'IA' })
       }
     } catch (err) {
-      setMessage({ type: 'error', text: 'Errore di connessione' })
+      console.error('Errore di connessione:', err)
+      setMessage({ type: 'error', text: `Errore di connessione: ${err.message || 'Riprova'}` })
     }
+    
     setAiGenerating(false)
-    setTimeout(() => setMessage(null), 5000)
+    setTimeout(() => setMessage(null), 8000)
   }
 
   async function handleSave(publish = false) {
@@ -543,6 +558,7 @@ export default function BlogEditor() {
               </div>
 
               <button
+                type="button"
                 onClick={handleAiGenerate}
                 disabled={aiGenerating || !aiPrompt.trim()}
                 className="w-full py-3 rounded-xl font-medium flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
