@@ -46,7 +46,7 @@ serve(async (req) => {
 
     const targetLength = lengthMap[length] || lengthMap.medium
 
-    const systemPrompt = `Sei un esperto scrittore di blog per un sito italiano dedicato a contenuti educativi per bambini. Il tuo compito è scrivere articoli SEO-friendly, coinvolgenti e ben strutturati.
+    const systemPrompt = `Sei un esperto scrittore di blog e SEO per un sito italiano dedicato a contenuti educativi per bambini. Il tuo compito è scrivere articoli SEO-friendly, coinvolgenti e ben strutturati.
 
 Regole IMPORTANTI:
 1. Scrivi SEMPRE in italiano
@@ -62,11 +62,24 @@ Regole IMPORTANTI:
 11. NON includere il titolo dell'articolo nel contenuto (verrà aggiunto separatamente)
 12. Il tono deve essere amichevole, informativo e accessibile a genitori e insegnanti
 13. Includi consigli pratici e concreti
-14. Usa un linguaggio semplice ma non infantile`
+14. Usa un linguaggio semplice ma non infantile
 
-    const userPrompt = `Scrivi un articolo per il blog su: "${title}"
+Devi restituire un oggetto JSON con questa struttura ESATTA:
+{
+  "content": "il contenuto HTML dell'articolo",
+  "excerpt": "un riassunto di 150-200 caratteri dell'articolo",
+  "slug": "url-slug-del-titolo-in-italiano",
+  "tags": ["tag1", "tag2", "tag3"],
+  "meta_title": "titolo SEO ottimizzato (max 60 caratteri)",
+  "meta_description": "meta description SEO (max 160 caratteri)",
+  "category": "categoria più appropriata tra: Educazione, Giochi, Attività, Crescita, Scuola, Famiglia, Creatività, Generale"
+}
 
-Categoria: ${category || 'Generale'}
+IMPORTANTE: Restituisci SOLO il JSON valido, senza testo aggiuntivo, senza markdown code blocks.`
+
+    const userPrompt = `Scrivi un articolo completo per il blog su: "${title}"
+
+Categoria suggerita: ${category || 'Generale'}
 Lunghezza target: ${targetLength}
 
 ${customPrompt ? `Istruzioni aggiuntive: ${customPrompt}` : ''}
@@ -77,7 +90,16 @@ Struttura consigliata:
 - Ogni sezione con 2-3 paragrafi
 - Conclusione con consiglio pratico
 
-Importante: restituisci SOLO il contenuto HTML, senza tag html/head/body.`
+Genera TUTTI i campi richiesti nel JSON:
+- content: contenuto HTML completo
+- excerpt: riassunto breve (150-200 caratteri)
+- slug: URL slug dal titolo (es: "giochi-educativi-bambini")
+- tags: array di 5-8 tag pertinenti
+- meta_title: titolo SEO ottimizzato (max 60 caratteri)
+- meta_description: meta description SEO (max 160 caratteri)
+- category: la categoria più appropriata
+
+Importante: restituisci SOLO il JSON valido, senza testo aggiuntivo.`
 
     console.log('Calling Groq API...')
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -114,10 +136,33 @@ Importante: restituisci SOLO il contenuto HTML, senza tag html/head/body.`
     const content = data.choices?.[0]?.message?.content || ''
     console.log('Content generated, length:', content.length)
 
-    return new Response(
-      JSON.stringify({ content }),
-      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    )
+    // Parse JSON response
+    try {
+      let cleanedContent = content.trim()
+      // Remove markdown code blocks if present
+      cleanedContent = cleanedContent.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '')
+      
+      const parsed = JSON.parse(cleanedContent)
+      
+      return new Response(
+        JSON.stringify({
+          content: parsed.content || '',
+          excerpt: parsed.excerpt || '',
+          slug: parsed.slug || '',
+          tags: parsed.tags || [],
+          meta_title: parsed.meta_title || '',
+          meta_description: parsed.meta_description || '',
+          category: parsed.category || category || 'Generale',
+        }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    } catch (parseError) {
+      console.log('Failed to parse JSON response, returning raw content')
+      return new Response(
+        JSON.stringify({ content }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
   } catch (err: unknown) {
     const errorMessage = err instanceof Error ? err.message : 'Errore sconosciuto'
     console.log('Error:', errorMessage)

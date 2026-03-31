@@ -144,7 +144,12 @@ export default function BlogEditor() {
         setFormData(prev => ({
           ...prev,
           content: data.content,
-          excerpt: data.content.replace(/<[^>]*>/g, '').slice(0, 200),
+          excerpt: data.excerpt || data.content.replace(/<[^>]*>/g, '').slice(0, 200),
+          slug: data.slug || prev.slug,
+          tags: data.tags ? data.tags.join(', ') : prev.tags,
+          meta_title: data.meta_title || prev.meta_title,
+          meta_description: data.meta_description || prev.meta_description,
+          category: data.category || prev.category,
         }))
         setMessage({ type: 'success', text: 'Articolo generato con successo!' })
         setShowAiModal(false)
