@@ -118,6 +118,8 @@ export default function BlogEditor() {
   }
 
   async function handleAiGenerate() {
+    alert('Funzione chiamata con: ' + aiPrompt)
+    
     if (!aiPrompt.trim()) {
       setMessage({ type: 'error', text: 'Inserisci un argomento per l\'IA' })
       return
@@ -127,8 +129,6 @@ export default function BlogEditor() {
     setMessage(null)
     
     try {
-      console.log('Chiamata IA con:', { title: formData.title || aiPrompt, category: formData.category, length: aiLength, customPrompt: aiPrompt })
-      
       const { data, error } = await supabase.functions.invoke('generate-blog-post', {
         body: {
           title: formData.title || aiPrompt,
@@ -138,13 +138,11 @@ export default function BlogEditor() {
         },
       })
       
-      console.log('Risposta IA:', { data, error })
+      alert('Risposta: ' + JSON.stringify({ data, error }))
       
       if (error) {
-        console.error('Errore Supabase:', error)
         setMessage({ type: 'error', text: `Errore: ${error.message || 'Errore sconosciuto'}` })
       } else if (data?.error) {
-        console.error('Errore Groq:', data.error)
         setMessage({ type: 'error', text: data.error })
       } else if (data?.content) {
         setFormData(prev => ({
@@ -155,11 +153,10 @@ export default function BlogEditor() {
         setMessage({ type: 'success', text: 'Articolo generato con successo!' })
         setShowAiModal(false)
       } else {
-        console.error('Risposta inaspettata:', data)
         setMessage({ type: 'error', text: 'Risposta inaspettata dall\'IA' })
       }
     } catch (err) {
-      console.error('Errore di connessione:', err)
+      alert('Errore: ' + err.message)
       setMessage({ type: 'error', text: `Errore di connessione: ${err.message || 'Riprova'}` })
     }
     
