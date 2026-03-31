@@ -120,7 +120,7 @@ ${xslStylesheet}
   </xsl:stylesheet>
 </urlset>`
 
-  const distDir = path.resolve(__dirname, 'dist')
+  const distDir = path.resolve(__dirname, '..', 'dist')
   if (!fs.existsSync(distDir)) {
     fs.mkdirSync(distDir, { recursive: true })
   }
