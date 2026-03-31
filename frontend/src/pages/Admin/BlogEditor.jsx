@@ -118,8 +118,6 @@ export default function BlogEditor() {
   }
 
   async function handleAiGenerate() {
-    alert('Funzione chiamata con: ' + aiPrompt)
-    
     if (!aiPrompt.trim()) {
       setMessage({ type: 'error', text: 'Inserisci un argomento per l\'IA' })
       return
@@ -138,8 +136,6 @@ export default function BlogEditor() {
         },
       })
       
-      alert('Risposta: ' + JSON.stringify({ data, error }))
-      
       if (error) {
         setMessage({ type: 'error', text: `Errore: ${error.message || 'Errore sconosciuto'}` })
       } else if (data?.error) {
@@ -156,7 +152,6 @@ export default function BlogEditor() {
         setMessage({ type: 'error', text: 'Risposta inaspettata dall\'IA' })
       }
     } catch (err) {
-      alert('Errore: ' + err.message)
       setMessage({ type: 'error', text: `Errore di connessione: ${err.message || 'Riprova'}` })
     }
     

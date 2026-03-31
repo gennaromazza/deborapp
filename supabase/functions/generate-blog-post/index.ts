@@ -6,21 +6,31 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
+  console.log('=== GENERATE BLOG POST STARTED ===')
+  
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    const { title, category, length, customPrompt } = await req.json()
+    console.log('Parsing request body...')
+    const body = await req.json()
+    const { title, category, length, customPrompt } = body
+    console.log('Body parsed:', { title, category, length, customPrompt })
 
     if (!title) {
+      console.log('Missing title')
       return new Response(
         JSON.stringify({ error: 'Titolo obbligatorio' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
 
+    console.log('Getting GROQ_API_KEY...')
     const groqKey = Deno.env.get('GROQ_API_KEY')
+    console.log('GROQ_API_KEY exists:', !!groqKey)
+    console.log('GROQ_API_KEY starts with:', groqKey?.substring(0, 10) + '...')
+    
     if (!groqKey) {
       return new Response(
         JSON.stringify({ error: 'Groq API key non configurata' }),
@@ -28,7 +38,7 @@ serve(async (req) => {
       )
     }
 
-    const lengthMap = {
+    const lengthMap: Record<string, string> = {
       short: '400-600 parole',
       medium: '600-900 parole',
       long: '900-1200 parole',
@@ -69,6 +79,7 @@ Struttura consigliata:
 
 Importante: restituisci SOLO il contenuto HTML, senza tag html/head/body.`
 
+    console.log('Calling Groq API...')
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -86,24 +97,32 @@ Importante: restituisci SOLO il contenuto HTML, senza tag html/head/body.`
       }),
     })
 
+    console.log('Groq response status:', response.status)
+
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}))
+      const errorText = await response.text()
+      console.log('Groq error:', errorText)
       return new Response(
-        JSON.stringify({ error: errorData.error?.message || 'Errore Groq API' }),
+        JSON.stringify({ 
+          error: `Groq API error (${response.status}): ${errorText}` 
+        }),
         { status: response.status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
 
     const data = await response.json()
     const content = data.choices?.[0]?.message?.content || ''
+    console.log('Content generated, length:', content.length)
 
     return new Response(
       JSON.stringify({ content }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
-  } catch (err) {
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'Errore sconosciuto'
+    console.log('Error:', errorMessage)
     return new Response(
-      JSON.stringify({ error: 'Errore interno del server' }),
+      JSON.stringify({ error: `Errore interno: ${errorMessage}` }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   }
