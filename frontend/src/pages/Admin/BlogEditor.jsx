@@ -141,53 +141,55 @@ export default function BlogEditor() {
       } else if (data?.error) {
         setMessage({ type: 'error', text: data.error })
       } else if (data?.content) {
-        let parsedContent = data.content
+        let rawContent = data.content
+        let parsedFields = null
         
-        // Se il content è un JSON string (l'IA a volte lo restituisce così)
-        if (typeof data.content === 'string' && data.content.trim().startsWith('{')) {
-          try {
-            let cleaned = data.content.trim()
-            cleaned = cleaned.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '')
-            const jsonParsed = JSON.parse(cleaned)
-            parsedContent = jsonParsed.content || data.content
-            setFormData(prev => ({
-              ...prev,
-              content: jsonParsed.content || prev.content,
-              excerpt: jsonParsed.excerpt || prev.excerpt,
-              slug: jsonParsed.slug || prev.slug,
-              tags: jsonParsed.tags ? jsonParsed.tags.join(', ') : prev.tags,
-              meta_title: jsonParsed.meta_title || prev.meta_title,
-              meta_description: jsonParsed.meta_description || prev.meta_description,
-              category: jsonParsed.category || prev.category,
-            }))
-            setMessage({ type: 'success', text: 'Articolo generato con successo!' })
-            setShowAiModal(false)
-            setAiGenerating(false)
-            setTimeout(() => setMessage(null), 8000)
-            return
-          } catch (e) {
-            // Non è JSON, procedi normalmente
+        // Try to parse content as JSON (edge function might return raw JSON string)
+        if (typeof rawContent === 'string') {
+          let cleaned = rawContent.trim()
+          // Remove markdown code blocks
+          cleaned = cleaned.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '')
+          // Find JSON object
+          const jsonMatch = cleaned.match(/\{[\s\S]*\}/)
+          if (jsonMatch) {
+            try {
+              parsedFields = JSON.parse(jsonMatch[0])
+            } catch (e) {
+              // Not valid JSON, use as-is
+            }
           }
         }
         
-        // Se l'edge function ha già parsato il JSON
-        if (data.excerpt || data.slug || data.tags || data.meta_title || data.meta_description) {
+        if (parsedFields && parsedFields.content) {
+          // Content was a JSON string, extract all fields
           setFormData(prev => ({
             ...prev,
-            content: parsedContent,
-            excerpt: data.excerpt || parsedContent.replace(/<[^>]*>/g, '').slice(0, 200),
-            slug: data.slug || prev.slug,
-            tags: data.tags ? data.tags.join(', ') : prev.tags,
-            meta_title: data.meta_title || prev.meta_title,
-            meta_description: data.meta_description || prev.meta_description,
+            content: parsedFields.content,
+            excerpt: parsedFields.excerpt || '',
+            slug: parsedFields.slug || generateSlug(formData.title || aiPrompt),
+            tags: parsedFields.tags ? parsedFields.tags.join(', ') : '',
+            meta_title: parsedFields.meta_title || '',
+            meta_description: parsedFields.meta_description || '',
+            category: parsedFields.category || prev.category,
+          }))
+        } else if (data.excerpt || data.slug || data.tags || data.meta_title) {
+          // Edge function already parsed the JSON
+          setFormData(prev => ({
+            ...prev,
+            content: rawContent,
+            excerpt: data.excerpt || rawContent.replace(/<[^>]*>/g, '').slice(0, 200),
+            slug: data.slug || generateSlug(formData.title || aiPrompt),
+            tags: data.tags ? data.tags.join(', ') : '',
+            meta_title: data.meta_title || '',
+            meta_description: data.meta_description || '',
             category: data.category || prev.category,
           }))
         } else {
-          // Fallback: solo content
+          // Fallback: only content
           setFormData(prev => ({
             ...prev,
-            content: parsedContent,
-            excerpt: parsedContent.replace(/<[^>]*>/g, '').slice(0, 200),
+            content: rawContent,
+            excerpt: rawContent.replace(/<[^>]*>/g, '').slice(0, 200),
           }))
         }
         
