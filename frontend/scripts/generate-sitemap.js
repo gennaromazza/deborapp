@@ -54,7 +54,7 @@ async function generateSitemap() {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${xmlUrls}
 </urlset>`
 
-  const distDir = path.resolve(__dirname, '..', 'dist')
+  const distDir = path.resolve(__dirname, '..', 'public')
   if (!fs.existsSync(distDir)) {
     fs.mkdirSync(distDir, { recursive: true })
   }
