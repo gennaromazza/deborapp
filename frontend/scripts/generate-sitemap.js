@@ -49,9 +49,9 @@ async function generateSitemap() {
     <priority>${page.priority}</priority>
   </url>`).join('')
 
-  // Generate clean XML sitemap (XSL stylesheet is served separately via sitemap.xsl)
-  // Note: Browser XSL transformation is blocked by some CDNs for security - sitemap works fine for Google
+  // Note: XSL stylesheet reference - browser visual styling works in local/dev but CDN strips it for security
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${xmlUrls}
 </urlset>`
 
