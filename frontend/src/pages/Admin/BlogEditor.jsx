@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Save, Eye, Image, X, AlertCircle, CheckCircle } from 'lucide-react'
+import { Save, Eye, Image, X, AlertCircle, CheckCircle, Sparkles, Loader2 } from 'lucide-react'
 import { supabase } from '../../utils/supabase'
+import RichTextEditor from '../../components/RichTextEditor'
 
 export default function BlogEditor() {
   const { id } = useParams()
@@ -15,6 +16,12 @@ export default function BlogEditor() {
   const [showSeo, setShowSeo] = useState(false)
   const [message, setMessage] = useState(null)
   const [uploading, setUploading] = useState(false)
+  
+  // AI modal
+  const [showAiModal, setShowAiModal] = useState(false)
+  const [aiGenerating, setAiGenerating] = useState(false)
+  const [aiPrompt, setAiPrompt] = useState('')
+  const [aiLength, setAiLength] = useState('medium')
   
   const [formData, setFormData] = useState({
     title: '',
@@ -108,6 +115,41 @@ export default function BlogEditor() {
     }
     setUploading(false)
     setTimeout(() => setMessage(null), 3000)
+  }
+
+  async function handleAiGenerate() {
+    if (!aiPrompt.trim()) {
+      setMessage({ type: 'error', text: 'Inserisci un argomento per l\'IA' })
+      return
+    }
+    
+    setAiGenerating(true)
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-blog-post', {
+        body: {
+          title: formData.title || aiPrompt,
+          category: formData.category,
+          length: aiLength,
+          customPrompt: aiPrompt,
+        },
+      })
+      
+      if (error || data?.error) {
+        setMessage({ type: 'error', text: data?.error || 'Errore generazione IA' })
+      } else {
+        setFormData(prev => ({
+          ...prev,
+          content: data.content,
+          excerpt: data.content.replace(/<[^>]*>/g, '').slice(0, 200),
+        }))
+        setMessage({ type: 'success', text: 'Articolo generato con successo!' })
+        setShowAiModal(false)
+      }
+    } catch (err) {
+      setMessage({ type: 'error', text: 'Errore di connessione' })
+    }
+    setAiGenerating(false)
+    setTimeout(() => setMessage(null), 5000)
   }
 
   async function handleSave(publish = false) {
@@ -266,17 +308,24 @@ export default function BlogEditor() {
                 </div>
               </div>
 
-              {/* Content */}
+              {/* Content - WYSIWYG Editor */}
               <div className="card p-6">
-                <label className="block font-display font-semibold text-gray-800 mb-2">
-                  Contenuto *
-                </label>
-                <textarea
-                  name="content"
+                <div className="flex items-center justify-between mb-4">
+                  <label className="font-display font-semibold text-gray-800">
+                    Contenuto *
+                  </label>
+                  <button
+                    onClick={() => setShowAiModal(true)}
+                    className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    Scrivi con IA
+                  </button>
+                </div>
+                <RichTextEditor
                   value={formData.content}
-                  onChange={handleChange}
-                  placeholder="Scrivi il tuo articolo qui... (supporta HTML)"
-                  className="input-field min-h-[400px] font-mono text-sm"
+                  onChange={(content) => setFormData(prev => ({ ...prev, content }))}
+                  placeholder="Scrivi il tuo articolo qui..."
                 />
               </div>
             </div>
@@ -428,6 +477,96 @@ export default function BlogEditor() {
           </div>
         )}
       </main>
+
+      {/* AI Modal */}
+      {showAiModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-2xl max-w-lg w-full p-6"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-white" />
+                </div>
+                <h2 className="font-display text-xl font-bold text-gray-800">Scrivi con IA</h2>
+              </div>
+              <button
+                onClick={() => setShowAiModal(false)}
+                className="p-2 hover:bg-gray-100 rounded-full"
+              >
+                <X className="w-5 h-5 text-gray-400" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Di cosa vuoi parlare?
+                </label>
+                <textarea
+                  value={aiPrompt}
+                  onChange={(e) => setAiPrompt(e.target.value)}
+                  placeholder="Es: 5 attività creative per insegnare la matematica ai bambini..."
+                  className="input-field min-h-[100px]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Lunghezza articolo
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { value: 'short', label: 'Breve', desc: '400-600 parole' },
+                    { value: 'medium', label: 'Medio', desc: '600-900 parole' },
+                    { value: 'long', label: 'Lungo', desc: '900-1200 parole' },
+                  ].map(opt => (
+                    <button
+                      key={opt.value}
+                      onClick={() => setAiLength(opt.value)}
+                      className={`p-3 rounded-xl text-center transition-all ${
+                        aiLength === opt.value
+                          ? 'bg-gradient-to-br from-purple-500 to-pink-500 text-white'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                    >
+                      <div className="font-medium text-sm">{opt.label}</div>
+                      <div className={`text-xs ${aiLength === opt.value ? 'text-white/80' : 'text-gray-400'}`}>
+                        {opt.desc}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <button
+                onClick={handleAiGenerate}
+                disabled={aiGenerating || !aiPrompt.trim()}
+                className="w-full py-3 rounded-xl font-medium flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {aiGenerating ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Generazione in corso...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-5 h-5" />
+                    Genera Articolo
+                  </>
+                )}
+              </button>
+
+              <p className="text-xs text-gray-400 text-center">
+                L'IA genera un articolo SEO-friendly. Puoi modificarlo dopo.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   )
 }
@@ -444,7 +583,7 @@ function PreviewMode({ formData, onClose }) {
         <p className="text-gray-500 mb-6">{formData.excerpt || 'Riassunto...'}</p>
         <div 
           className="prose max-w-none"
-          dangerouslySetInnerHTML={{ __html: formData.content || 'Contenuto...' }}
+          dangerouslySetInnerHTML={{ __html: formData.content || '<p class="text-gray-400">Contenuto...</p>' }}
         />
       </div>
     </div>

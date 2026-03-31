@@ -15,8 +15,7 @@ vercel --prod --yes
 
 ## Note
 
-- Vercel rileva automaticamente che è un progetto Vite
-- Non serve vercel.json - la configurazione automatica funziona
+- Il file `frontend/vercel.json` è necessario per il routing corretto delle route (SPA)
 - Il build viene eseguito automaticamente da Vercel
 - Alias: https://deborapp.vercel.app
 
