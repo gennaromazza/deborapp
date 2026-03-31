@@ -84,3 +84,21 @@ BEGIN
       USING (bucket_id = 'blog-images');
   END IF;
 END $$;
+
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Authenticated users can upload blog images' AND tablename = 'objects') THEN
+    CREATE POLICY "Authenticated users can upload blog images"
+      ON storage.objects FOR INSERT
+      WITH CHECK (bucket_id = 'blog-images' AND auth.role() = 'authenticated');
+  END IF;
+END $$;
+
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Authenticated users can delete blog images' AND tablename = 'objects') THEN
+    CREATE POLICY "Authenticated users can delete blog images"
+      ON storage.objects FOR DELETE
+      USING (bucket_id = 'blog-images' AND auth.role() = 'authenticated');
+  END IF;
+END $$;
