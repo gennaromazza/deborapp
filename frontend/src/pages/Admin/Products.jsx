@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { ArrowLeft, Plus, Loader2, Trash2, Edit2, Sparkles, BookOpen, Globe, Gamepad2 } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ArrowLeft, Plus, Loader2, Trash2, Edit2, Sparkles, BookOpen, Globe, Gamepad2, Upload, X, CheckCircle, AlertCircle, Image as ImageIcon } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { supabase } from '../../utils/supabase'
+import { supabase, supabaseUrl } from '../../utils/supabase'
+import { processImage, formatFileSize } from '../../utils/imageProcessor'
+
+const MAX_IMAGES = 10;
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([])
@@ -14,10 +17,13 @@ export default function AdminProducts() {
     title: '',
     description: '',
     cover_image: '',
+    cover_images: [],
     download_link: '',
     type: 'link',
   })
   const [submitting, setSubmitting] = useState(false)
+  const [imageQueue, setImageQueue] = useState([])
+  const fileInputRef = useRef(null)
 
   useEffect(() => {
     fetchProducts()
@@ -33,41 +39,202 @@ export default function AdminProducts() {
   }
 
   const resetForm = () => {
-    setFormData({ title: '', description: '', cover_image: '', download_link: '', type: 'link' })
+    setFormData({ title: '', description: '', cover_image: '', cover_images: [], download_link: '', type: 'link' })
+    setImageQueue([])
     setEditingId(null)
     setShowForm(false)
+  }
+
+  const handleFileSelect = async (e) => {
+    const files = Array.from(e.target.files)
+    const remaining = MAX_IMAGES - formData.cover_images.length - imageQueue.length
+
+    if (remaining <= 0) {
+      toast.error(`Massimo ${MAX_IMAGES} immagini per prodotto`)
+      return
+    }
+
+    const filesToProcess = files.slice(0, remaining)
+
+    if (files.length > remaining) {
+      toast.error(`Aggiunte solo ${remaining} immagini (limite: ${MAX_IMAGES})`)
+    }
+
+    for (const file of filesToProcess) {
+      if (!file.type.startsWith('image/')) {
+        toast.error(`${file.name} non è un'immagine valida`)
+        continue
+      }
+
+      const queueItem = {
+        id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        file,
+        fileName: file.name,
+        originalSize: file.size,
+        status: 'processing',
+        progress: 0,
+        message: 'Elaborazione...',
+        previewUrl: URL.createObjectURL(file),
+        result: null,
+      }
+
+      setImageQueue(prev => [...prev, queueItem])
+
+      try {
+        const result = await processImage(file, (progress, message) => {
+          setImageQueue(prev =>
+            prev.map(item =>
+              item.id === queueItem.id
+                ? { ...item, progress, message }
+                : item
+            )
+          )
+        })
+
+        setImageQueue(prev =>
+          prev.map(item =>
+            item.id === queueItem.id
+              ? { ...item, status: 'done', progress: 100, message: 'Pronta per l\'upload', result }
+              : item
+          )
+        )
+      } catch (err) {
+        setImageQueue(prev =>
+          prev.map(item =>
+            item.id === queueItem.id
+              ? { ...item, status: 'error', message: err.message }
+              : item
+          )
+        )
+        toast.error(`Errore elaborazione ${file.name}`)
+      }
+    }
+
+    e.target.value = ''
+  }
+
+  const removeImageFromQueue = (id) => {
+    setImageQueue(prev => {
+      const item = prev.find(i => i.id === id)
+      if (item?.previewUrl) URL.revokeObjectURL(item.previewUrl)
+      return prev.filter(i => i.id !== id)
+    })
+  }
+
+  const removeExistingImage = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      cover_images: prev.cover_images.filter((_, i) => i !== index)
+    }))
+  }
+
+  const uploadImages = async () => {
+    const readyItems = imageQueue.filter(item => item.status === 'done' && item.result)
+    const uploadedUrls = []
+
+    for (const item of readyItems) {
+      setImageQueue(prev =>
+        prev.map(i =>
+          i.id === item.id
+            ? { ...i, status: 'uploading', progress: 0, message: 'Upload in corso...' }
+            : i
+        )
+      )
+
+      try {
+        const fileExt = 'jpg'
+        const fileName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${fileExt}`
+        const filePath = `products/${fileName}`
+
+        const { error: uploadError } = await supabase.storage
+          .from('DigitalProduct')
+          .upload(filePath, item.result.blob, {
+            contentType: 'image/jpeg',
+            cacheControl: '3600',
+          })
+
+        if (uploadError) throw uploadError
+
+        const { data: urlData } = supabase.storage
+          .from('DigitalProduct')
+          .getPublicUrl(filePath)
+
+        const publicUrl = urlData.publicUrl
+        uploadedUrls.push(publicUrl)
+
+        setImageQueue(prev =>
+          prev.map(i =>
+            i.id === item.id
+              ? { ...i, status: 'uploaded', progress: 100, message: 'Upload completato' }
+              : i
+          )
+        )
+      } catch (err) {
+        setImageQueue(prev =>
+          prev.map(i =>
+            i.id === item.id
+              ? { ...i, status: 'error', message: 'Errore upload: ' + err.message }
+              : i
+          )
+        )
+        toast.error(`Errore upload ${item.fileName}`)
+      }
+    }
+
+    return uploadedUrls
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSubmitting(true)
 
-    const dataToSave = { ...formData }
-    if (dataToSave.type === 'app') {
-      dataToSave.download_link = 'https://app.internal/' + dataToSave.title.toLowerCase().replace(/\s+/g, '-')
-    }
+      try {
+        const uploadedUrls = await uploadImages()
 
-    let error
-    if (editingId) {
-      ({ error } = await supabase
-        .from('products')
-        .update(dataToSave)
-        .eq('id', editingId))
-    } else {
-      ({ error } = await supabase
-        .from('products')
-        .insert([dataToSave]))
-    }
+        console.log('URLs caricate:', uploadedUrls)
 
-    if (error) {
-      toast.error('Errore durante il salvataggio')
-    } else {
+        const newCoverImages = [
+          ...formData.cover_images,
+          ...uploadedUrls
+        ]
+
+        const dataToSave = {
+          title: formData.title,
+          description: formData.description,
+          cover_image: newCoverImages[0] || formData.cover_image || '',
+          cover_images: newCoverImages,
+          download_link: formData.download_link,
+          type: formData.type,
+        }
+
+        console.log('Dati da salvare:', dataToSave)
+
+      if (dataToSave.type === 'app') {
+        dataToSave.download_link = 'https://app.internal/' + dataToSave.title.toLowerCase().replace(/\s+/g, '-')
+      }
+
+      let error
+      if (editingId) {
+        ({ error } = await supabase
+          .from('products')
+          .update(dataToSave)
+          .eq('id', editingId))
+      } else {
+        ({ error } = await supabase
+          .from('products')
+          .insert([dataToSave]))
+      }
+
+      if (error) throw error
+
       toast.success(editingId ? 'Prodotto aggiornato!' : 'Prodotto aggiunto!')
       resetForm()
       fetchProducts()
+    } catch (err) {
+      toast.error('Errore durante il salvataggio: ' + err.message)
+    } finally {
+      setSubmitting(false)
     }
-
-    setSubmitting(false)
   }
 
   const handleEdit = (product) => {
@@ -75,6 +242,7 @@ export default function AdminProducts() {
       title: product.title,
       description: product.description,
       cover_image: product.cover_image || '',
+      cover_images: product.cover_images || [],
       download_link: product.download_link,
       type: product.type || 'link',
     })
@@ -93,6 +261,9 @@ export default function AdminProducts() {
       fetchProducts()
     }
   }
+
+  const allDone = imageQueue.every(item => item.status === 'done' || item.status === 'uploaded' || item.status === 'error')
+  const hasReadyImages = imageQueue.some(item => item.status === 'done')
 
   return (
     <div className="min-h-screen bg-pastel-cream">
@@ -130,7 +301,6 @@ export default function AdminProducts() {
               </h2>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Type selector */}
               <div>
                 <label className="block font-body font-medium text-gray-600 mb-2">
                   Tipo prodotto
@@ -170,14 +340,160 @@ export default function AdminProducts() {
                   className="input-field"
                   required
                 />
-                <input
-                  type="url"
-                  placeholder="URL immagine copertina (opzionale)"
-                  value={formData.cover_image}
-                  onChange={(e) => setFormData({ ...formData, cover_image: e.target.value })}
-                  className="input-field"
-                />
+                <div>
+                  <label className="block font-body font-medium text-gray-600 mb-2">
+                    Immagini copertina (max {MAX_IMAGES})
+                  </label>
+                  <div
+                    className="border-2 border-dashed border-pastel-lavender rounded-xl p-6 text-center cursor-pointer hover:border-pastel-pink-dark transition-colors"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleFileSelect}
+                      className="hidden"
+                    />
+                    <Upload className="w-8 h-8 mx-auto mb-2 text-pastel-lavender-dark" />
+                    <p className="font-body text-sm text-gray-600">
+                      Clicca per selezionare le immagini
+                    </p>
+                    <p className="font-body text-xs text-gray-400 mt-1">
+                      JPG, PNG, WebP - Max {MAX_IMAGES} immagini
+                    </p>
+                    <p className="font-body text-xs text-gray-400">
+                      Ridimensionamento automatico a 1080px, max 1MB
+                    </p>
+                  </div>
+                </div>
               </div>
+
+              <AnimatePresence>
+                {(formData.cover_images.length > 0 || imageQueue.length > 0) && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="space-y-3"
+                  >
+                    <h3 className="font-display font-semibold text-gray-700 flex items-center gap-2">
+                      <ImageIcon className="w-4 h-4" />
+                      Immagini ({formData.cover_images.length + imageQueue.length}/{MAX_IMAGES})
+                    </h3>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                      {formData.cover_images.map((url, index) => (
+                        <div key={index} className="relative group rounded-lg overflow-hidden border border-gray-200">
+                          <img
+                            src={url}
+                            alt={`Copertina ${index + 1}`}
+                            className="w-full aspect-square object-cover"
+                          />
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button
+                              type="button"
+                              onClick={() => removeExistingImage(index)}
+                              className="p-1.5 bg-red-500 rounded-full text-white hover:bg-red-600"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                          <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-xs py-1 px-2 text-center">
+                            Esistente
+                          </div>
+                        </div>
+                      ))}
+
+                      {imageQueue.map((item) => (
+                        <div key={item.id} className="relative rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
+                          <div className="aspect-square relative">
+                            <img
+                              src={item.previewUrl}
+                              alt={item.fileName}
+                              className="w-full h-full object-cover"
+                            />
+
+                            {item.status === 'processing' && (
+                              <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-white">
+                                <Loader2 className="w-6 h-6 animate-spin mb-2" />
+                                <span className="text-xs">{item.message}</span>
+                              </div>
+                            )}
+
+                            {item.status === 'uploading' && (
+                              <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-white">
+                                <Loader2 className="w-6 h-6 animate-spin mb-2" />
+                                <span className="text-xs">{item.message}</span>
+                              </div>
+                            )}
+
+                            {item.status === 'done' && (
+                              <div className="absolute top-2 right-2">
+                                <CheckCircle className="w-5 h-5 text-green-500" />
+                              </div>
+                            )}
+
+                            {item.status === 'uploaded' && (
+                              <div className="absolute top-2 right-2">
+                                <CheckCircle className="w-5 h-5 text-green-500" />
+                              </div>
+                            )}
+
+                            {item.status === 'error' && (
+                              <div className="absolute inset-0 bg-red-500/50 flex flex-col items-center justify-center text-white">
+                                <AlertCircle className="w-6 h-6 mb-2" />
+                                <span className="text-xs text-center px-2">{item.message}</span>
+                              </div>
+                            )}
+                          </div>
+
+                          {item.result && (
+                            <div className="p-2 text-xs text-gray-600 space-y-1">
+                              <div className="flex justify-between">
+                                <span>Originale:</span>
+                                <span className="font-medium">{formatFileSize(item.originalSize)}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>Ottimizzata:</span>
+                                <span className="font-medium">{formatFileSize(item.result.size)}</span>
+                              </div>
+                              <div className="flex justify-between text-green-600">
+                                <span>Riduzione:</span>
+                                <span className="font-medium">-{item.result.compressionRatio}%</span>
+                              </div>
+                              <div className="text-gray-400">
+                                {item.result.width}x{item.result.height}px
+                              </div>
+                            </div>
+                          )}
+
+                          <div className="h-1 bg-gray-200">
+                            <div
+                              className={`h-full transition-all duration-300 ${
+                                item.status === 'error' ? 'bg-red-500' :
+                                item.status === 'uploaded' ? 'bg-green-500' :
+                                'bg-pastel-pink-dark'
+                              }`}
+                              style={{ width: `${item.progress}%` }}
+                            />
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => removeImageFromQueue(item.id)}
+                            className="absolute top-2 left-2 p-1 bg-white/90 rounded-full hover:bg-red-50 transition-colors"
+                          >
+                            <X className="w-3 h-3 text-gray-600" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               <textarea
                 placeholder="Descrizione del prodotto"
                 value={formData.description}
@@ -207,7 +523,10 @@ export default function AdminProducts() {
                       Salvataggio...
                     </>
                   ) : (
-                    editingId ? 'Aggiorna' : 'Salva'
+                    <>
+                      {hasReadyImages && <Upload className="w-4 h-4" />}
+                      {editingId ? 'Aggiorna' : 'Salva'}
+                    </>
                   )}
                 </button>
                 <button
@@ -269,6 +588,11 @@ export default function AdminProducts() {
                       {product.type === 'app' ? '🎮 App' : '🔗 Link'}
                     </span>
                   </div>
+                  {product.cover_images?.length > 1 && (
+                    <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2 py-1 rounded-full">
+                      {product.cover_images.length} foto
+                    </div>
+                  )}
                   <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={() => handleEdit(product)}
@@ -291,20 +615,36 @@ export default function AdminProducts() {
                   <p className="font-body text-gray-500 text-sm line-clamp-2 mb-3">
                     {product.description}
                   </p>
-                  {product.type === 'link' ? (
-                    <a
-                      href={product.download_link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-pastel-pink-dark font-body text-sm font-medium hover:underline"
-                    >
-                      Apri link &rarr;
-                    </a>
-                  ) : (
-                    <span className="text-pastel-lavender-dark font-body text-sm font-medium">
-                      App interattiva - ID: {product.id.substring(0, 8)}...
-                    </span>
-                  )}
+                   {product.type === 'link' ? (
+                     <>
+                       <a
+                         href={product.download_link}
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         className="text-pastel-pink-dark font-body text-sm font-medium hover:underline"
+                       >
+                         Apri link &rarr;
+                       </a>
+                       <Link
+                         to={`/prodotto/${product.id}`}
+                         className="text-pastel-lavender-dark font-body text-sm font-medium hover:underline mt-1 block"
+                       >
+                         Visualizza prodotto
+                       </Link>
+                     </>
+                   ) : (
+                     <>
+                       <span className="text-pastel-lavender-dark font-body text-sm font-medium">
+                         App interattiva - ID: {product.id}
+                       </span>
+                       <Link
+                         to={`/prodotto/${product.id}`}
+                         className="text-pastel-lavender-dark font-body text-sm font-medium hover:underline mt-1 block"
+                       >
+                         Visualizza prodotto
+                       </Link>
+                     </>
+                   )}
                 </div>
               </motion.div>
             ))}

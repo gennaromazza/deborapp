@@ -1,5 +1,8 @@
 import { motion } from 'framer-motion'
-import { Heart, Sparkles, BookOpen, Star, Palette, Lightbulb, GraduationCap, Coffee } from 'lucide-react'
+import { Heart, Sparkles, BookOpen, Star, Palette, Lightbulb, GraduationCap, Coffee, Baby, Home, Clock, Smartphone } from 'lucide-react'
+import Breadcrumb from '../components/Breadcrumb'
+import PageNavigation from '../components/PageNavigation'
+import PageTransition from '../components/PageTransition'
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -16,42 +19,103 @@ const itemVariants = {
 
 export default function About() {
   return (
-    <div className="overflow-hidden">
-      <section className="relative py-20 bg-mesh">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center"
-          >
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: 'spring', stiffness: 200, delay: 0.3 }}
-              className="w-32 h-32 mx-auto mb-8 rounded-full bg-gradient-to-br from-pastel-pink via-pastel-lavender to-pastel-sky p-1 shadow-lg"
-            >
-              <div className="w-full h-full rounded-full bg-pastel-cream flex items-center justify-center">
-                <span className="text-5xl">👩‍🎨</span>
-              </div>
-            </motion.div>
+    <PageTransition>
+      <div className="overflow-hidden">
+        <section className="relative py-24 bg-mesh overflow-hidden">
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-20 left-10 w-64 h-64 bg-pastel-pink/30 rounded-full blur-3xl" />
+            <div className="absolute bottom-10 right-10 w-72 h-72 bg-pastel-lavender/30 rounded-full blur-3xl" />
+            <div className="absolute top-40 right-20 w-40 h-40 bg-pastel-sky/20 rounded-full blur-2xl" />
+          </div>
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 relative">
+            <Breadcrumb />
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <motion.div
+                initial={{ opacity: 0, x: -40 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+                className="flex justify-center md:justify-start"
+              >
+                <div className="relative">
+                  <motion.div
+                    className="absolute -inset-4 bg-gradient-to-br from-pastel-pink via-pastel-lavender to-pastel-sky rounded-full opacity-40 blur-xl"
+                    animate={{ scale: [1, 1.05, 1], rotate: [0, 5, -5, 0] }}
+                    transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+                  />
+                  <motion.div
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ type: 'spring', stiffness: 150, delay: 0.2, duration: 0.8 }}
+                    className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-full overflow-hidden shadow-2xl ring-4 ring-white"
+                  >
+                    <img
+                      src="/author_family.png"
+                      alt="Debora con i suoi bambini Antonio e Gabriel"
+                      className="w-full h-full object-cover"
+                    />
+                  </motion.div>
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', stiffness: 200, delay: 0.8 }}
+                    className="absolute -bottom-2 -right-2 w-16 h-16 bg-gradient-to-br from-pastel-pink to-pastel-lavender rounded-2xl flex items-center justify-center shadow-lg"
+                  >
+                    <Heart className="w-7 h-7 text-white" />
+                  </motion.div>
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', stiffness: 200, delay: 1 }}
+                    className="absolute -top-2 -left-2 w-12 h-12 bg-gradient-to-br from-pastel-yellow to-pastel-peach rounded-xl flex items-center justify-center shadow-lg"
+                  >
+                    <Sparkles className="w-5 h-5 text-white" />
+                  </motion.div>
+                </div>
+              </motion.div>
 
-            <span className="badge badge-pink mb-4 inline-flex">
-              <Heart className="w-3.5 h-3.5" />
-              La mia storia
-            </span>
+              <motion.div
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="text-center md:text-left"
+              >
+                <span className="badge badge-pink mb-4 inline-flex">
+                  <Heart className="w-3.5 h-3.5" />
+                  La mia storia
+                </span>
 
-            <h1 className="font-display text-4xl md:text-5xl font-extrabold text-gray-800 mb-6">
-              Ciao, sono <span className="text-gradient">Debora</span>
-            </h1>
+                <h1 className="font-display text-4xl md:text-5xl font-extrabold text-gray-800 mb-3">
+                  Ciao, sono <span className="text-gradient">Debora</span>
+                </h1>
 
-            <p className="font-body text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
-              Creatrice di contenuti digitali per bambini, con la passione per le storie che fanno sognare e le attività che fanno crescere
-            </p>
-          </motion.div>
-        </div>
-      </section>
+                <p className="font-body text-lg text-gray-400 mb-4">
+                  38 anni, Aversa — mamma di Antonio e Gabriel
+                </p>
 
+                <p className="font-body text-xl text-gray-500 leading-relaxed mb-6">
+                  Creo contenuti digitali per bambini, con la passione per le storie che fanno sognare e le attività che fanno crescere
+                </p>
+
+                <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+                  <div className="flex items-center gap-2 px-4 py-2 bg-pastel-pink/50 rounded-xl">
+                    <BookOpen className="w-4 h-4 text-pastel-pink-dark" />
+                    <span className="font-body text-sm text-gray-600">Autrice</span>
+                  </div>
+                  <div className="flex items-center gap-2 px-4 py-2 bg-pastel-lavender/50 rounded-xl">
+                    <Palette className="w-4 h-4 text-pastel-lavender-dark" />
+                    <span className="font-body text-sm text-gray-600">Creatrice</span>
+                  </div>
+                  <div className="flex items-center gap-2 px-4 py-2 bg-pastel-mint/50 rounded-xl">
+                    <Baby className="w-4 h-4 text-pastel-mint-dark" />
+                    <span className="font-body text-sm text-gray-600">Mamma</span>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+      {/* Bio section */}
       <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <motion.div
@@ -64,16 +128,14 @@ export default function About() {
             <motion.div variants={itemVariants} className="card-glass p-8 md:p-10 mb-8">
               <div className="flex items-start gap-4 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pastel-pink to-pastel-peach flex items-center justify-center flex-shrink-0 shadow-md">
-                  <BookOpen className="w-6 h-6 text-pastel-pink-dark" />
+                  <Home className="w-6 h-6 text-pastel-pink-dark" />
                 </div>
                 <div>
                   <h2 className="font-display text-2xl font-bold text-gray-800 mb-3">
-                    La mia passione
+                    Chi sono
                   </h2>
                   <p className="font-body text-gray-500 leading-relaxed">
-                    Fin da piccola ho sempre amato le storie. Quelle che ti fanno ridere, piangere, sognare. 
-                    Quando sono diventata mamma, ho scoperto un nuovo modo di vivere questa passione: 
-                    creare contenuti che potessero ispirare altri bambini come avevano ispirato me.
+                    Mi chiamo Debora, ho 38 anni e vivo ad Aversa. Sono una mamma come tante, senza una storia straordinaria alle spalle o competenze accademiche in ambito pedagogico, ma ho un tesoro inestimabile: i miei due splendidi bambini, Antonio e Gabriel.
                   </p>
                 </div>
               </div>
@@ -82,16 +144,30 @@ export default function About() {
             <motion.div variants={itemVariants} className="card-glass p-8 md:p-10 mb-8">
               <div className="flex items-start gap-4 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pastel-lavender to-pastel-sky flex items-center justify-center flex-shrink-0 shadow-md">
-                  <Palette className="w-6 h-6 text-pastel-lavender-dark" />
+                  <Clock className="w-6 h-6 text-pastel-lavender-dark" />
                 </div>
                 <div>
                   <h2 className="font-display text-2xl font-bold text-gray-800 mb-3">
-                    Cosa creo
+                    La mia giornata
                   </h2>
                   <p className="font-body text-gray-500 leading-relaxed">
-                    Creo storie illustrate, attività creative, schede didattiche e contenuti digitali 
-                    pensati per stimolare la fantasia e la curiosità dei bambini. Ogni prodotto è 
-                    realizzato con cura, attenzione ai dettagli e tanto amore per il mondo dell'infanzia.
+                    La mia giornata è fatta di corse contro il tempo, di lavoro, di casa e, soprattutto, della ricerca costante del meglio per loro. Negli ultimi anni ho notato, come molti genitori, la facilità con cui gli schermi—telefoni, tablet e TV—catturano e ipnotizzano i nostri figli.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div variants={itemVariants} className="card-glass p-8 md:p-10 mb-8">
+              <div className="flex items-start gap-4 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pastel-mint to-pastel-sky flex items-center justify-center flex-shrink-0 shadow-md">
+                  <Smartphone className="w-6 h-6 text-pastel-mint-dark" />
+                </div>
+                <div>
+                  <h2 className="font-display text-2xl font-bold text-gray-800 mb-3">
+                    Perché ho scritto questo libro
+                  </h2>
+                  <p className="font-body text-gray-500 leading-relaxed">
+                    Lo scopo di questo piccolo manuale nasce proprio da lì: dal desiderio profondo di allontanarli, almeno per un po', dalla tecnologia passiva. Mi sono appassionata alla ricerca e alla sperimentazione di attività casalinghe, materiali poveri e giochi fai-da-te che potessero non solo distrarli, ma stimolarli attivamente, aiutandoli nella crescita, nella coordinazione e nell'uso delle loro manine.
                   </p>
                 </div>
               </div>
@@ -99,18 +175,15 @@ export default function About() {
 
             <motion.div variants={itemVariants} className="card-glass p-8 md:p-10">
               <div className="flex items-start gap-4 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pastel-mint to-pastel-sky flex items-center justify-center flex-shrink-0 shadow-md">
-                  <GraduationCap className="w-6 h-6 text-pastel-mint-dark" />
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pastel-yellow to-pastel-peach flex items-center justify-center flex-shrink-0 shadow-md">
+                  <BookOpen className="w-6 h-6 text-pastel-yellow-dark" />
                 </div>
                 <div>
                   <h2 className="font-display text-2xl font-bold text-gray-800 mb-3">
-                    La mia missione
+                    Cosa troverai in queste pagine
                   </h2>
                   <p className="font-body text-gray-500 leading-relaxed">
-                    Il mio obiettivo è creare un ponte tra educazione e divertimento. 
-                    Credo che i bambini imparino meglio quando si divertono, e che ogni storia 
-                    possa essere un'opportunità per crescere. Per questo ogni mio prodotto 
-                    è pensato per essere sia educativo che magico.
+                    Quello che troverai in queste pagine è il frutto delle mie giornate sul tappeto con Antonio e Gabriel: idee semplici, veloci e alla portata di tutti, per trasformare il tempo insieme in occasioni di sviluppo e, soprattutto, in bellissimi ricordi.
                   </p>
                 </div>
               </div>
@@ -119,7 +192,32 @@ export default function About() {
         </div>
       </section>
 
+      {/* What I create */}
       <section className="py-20 bg-mesh">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={containerVariants}
+            className="text-center mb-12"
+          >
+            <motion.span variants={itemVariants} className="badge badge-lavender mb-4 inline-flex">
+              <Sparkles className="w-3.5 h-3.5" />
+              Cosa creo
+            </motion.span>
+            <motion.h2 variants={itemVariants} className="section-title">
+              I miei contenuti
+            </motion.h2>
+            <motion.p variants={itemVariants} className="font-body text-gray-500 max-w-2xl mx-auto">
+              Creo storie illustrate, attività creative, schede didattiche e contenuti digitali pensati per stimolare la fantasia e la curiosità dei bambini. Ogni prodotto è realizzato con cura, attenzione ai dettagli e tanto amore per il mondo dell'infanzia.
+            </motion.p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Values */}
+      <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <motion.div
             initial="hidden"
@@ -148,7 +246,7 @@ export default function About() {
               {
                 icon: Heart,
                 title: 'Amore per i bambini',
-                desc: 'Ogni prodotto è pensato con il cuore, come se lo stessi creando per mio figlio',
+                desc: 'Ogni prodotto è pensato con il cuore, come se lo stessi creando per Antonio e Gabriel',
                 color: 'from-pastel-pink to-pastel-peach',
               },
               {
@@ -191,7 +289,8 @@ export default function About() {
         </div>
       </section>
 
-      <section className="py-20 bg-white">
+      {/* CTA */}
+      <section className="py-20 bg-mesh">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -211,7 +310,9 @@ export default function About() {
             </a>
           </motion.div>
         </div>
-      </section>
-    </div>
+        </section>
+        <PageNavigation />
+      </div>
+    </PageTransition>
   )
 }

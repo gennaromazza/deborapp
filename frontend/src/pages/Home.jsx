@@ -1,6 +1,9 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowRight, Sparkles, Heart, Star, BookOpen, Palette, Lightbulb, Users, Award, ChevronRight } from 'lucide-react'
+import { ArrowRight, Sparkles, Heart, Star, BookOpen, Palette, Lightbulb, Users, Award, ChevronRight, Quote } from 'lucide-react'
+import { supabase } from '../utils/supabase'
+import ProductCard from '../components/ProductCard'
 
 const floatingShapes = [
   { emoji: '🌸', top: '10%', left: '5%', delay: 0, size: 'text-4xl md:text-5xl' },
@@ -26,6 +29,20 @@ const itemVariants = {
 }
 
 export default function Home() {
+  const [featuredProducts, setFeaturedProducts] = useState([])
+
+  useEffect(() => {
+    async function fetchFeatured() {
+      const { data } = await supabase
+        .from('products')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(3)
+      if (data) setFeaturedProducts(data)
+    }
+    fetchFeatured()
+  }, [])
+
   return (
     <div className="overflow-hidden">
       <section className="relative min-h-[95vh] flex items-center justify-center bg-mesh">
@@ -94,6 +111,75 @@ export default function Home() {
               <div className="w-1.5 h-3 bg-pastel-lavender-dark/50 rounded-full" />
             </motion.div>
           </motion.div>
+        </div>
+      </section>
+
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="flex justify-center"
+            >
+              <div className="relative">
+                <motion.div
+                  className="absolute -inset-3 bg-gradient-to-br from-pastel-pink via-pastel-lavender to-pastel-sky rounded-full opacity-30 blur-xl"
+                  animate={{ scale: [1, 1.08, 1] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+                />
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: 'spring', stiffness: 150, delay: 0.2 }}
+                  className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-full overflow-hidden shadow-xl ring-4 ring-white"
+                >
+                  <img
+                    src="/author_family.png"
+                    alt="Debora con i suoi bambini Antonio e Gabriel"
+                    className="w-full h-full object-cover"
+                  />
+                </motion.div>
+                <motion.div
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: 'spring', stiffness: 200, delay: 0.6 }}
+                  className="absolute -bottom-1 -right-1 w-14 h-14 bg-gradient-to-br from-pastel-pink to-pastel-lavender rounded-xl flex items-center justify-center shadow-lg"
+                >
+                  <Heart className="w-6 h-6 text-white" />
+                </motion.div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+            >
+              <span className="badge badge-pink mb-4 inline-flex">
+                <Heart className="w-3.5 h-3.5" />
+                Chi sono
+              </span>
+              <h2 className="font-display text-3xl md:text-4xl font-extrabold text-gray-800 mb-4">
+                Ciao, sono <span className="text-gradient">Debora</span>
+              </h2>
+              <p className="font-body text-lg text-gray-500 leading-relaxed mb-4">
+                Mamma di Antonio e Gabriel, 38 anni, vivo ad Aversa. Creo contenuti digitali per bambini con una missione: allontanarli dagli schermi e accendere la loro fantasia.
+              </p>
+              <p className="font-body text-gray-500 leading-relaxed mb-6">
+                Ogni storia, ogni attività nasce dalle mie giornate sul tappeto con i miei figli. Idee semplici, alla portata di tutti, per trasformare il tempo insieme in bellissimi ricordi.
+              </p>
+              <Link to="/chi-sono" className="btn-primary inline-flex items-center gap-2">
+                Scopri la mia storia
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            </motion.div>
+          </div>
         </div>
       </section>
 

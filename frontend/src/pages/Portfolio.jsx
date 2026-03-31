@@ -3,6 +3,9 @@ import { supabase } from '../utils/supabase'
 import ProductCard from '../components/ProductCard'
 import { BookOpen, Sparkles } from 'lucide-react'
 import { motion } from 'framer-motion'
+import Breadcrumb from '../components/Breadcrumb'
+import PageNavigation from '../components/PageNavigation'
+import PageTransition from '../components/PageTransition'
 
 export default function Portfolio() {
   const [products, setProducts] = useState([])
@@ -22,9 +25,11 @@ export default function Portfolio() {
   }, [])
 
   return (
-    <section className="py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <motion.div
+    <PageTransition>
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <Breadcrumb />
+          <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
@@ -75,7 +80,9 @@ export default function Portfolio() {
             ))}
           </div>
         )}
+        <PageNavigation />
       </div>
     </section>
+    </PageTransition>
   )
 }

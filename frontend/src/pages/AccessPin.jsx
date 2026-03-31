@@ -4,6 +4,8 @@ import { motion } from 'framer-motion'
 import { Key, ArrowRight, Loader2, CheckCircle, Sparkles, Gamepad2 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { supabase } from '../utils/supabase'
+import Breadcrumb from '../components/Breadcrumb'
+import PageTransition from '../components/PageTransition'
 
 export default function AccessPin() {
   const [pin, setPin] = useState('')
@@ -44,9 +46,11 @@ export default function AccessPin() {
 
   if (productData) {
     return (
-      <section className="py-20">
-        <div className="max-w-xl mx-auto px-4 sm:px-6">
-          <motion.div
+      <PageTransition>
+        <section className="py-20">
+          <div className="max-w-xl mx-auto px-4 sm:px-6">
+            <Breadcrumb />
+            <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             className="card-glass p-10 text-center"
@@ -83,13 +87,16 @@ export default function AccessPin() {
           </motion.div>
         </div>
       </section>
+    </PageTransition>
     )
   }
 
   return (
-    <section className="py-20 bg-mesh">
-      <div className="max-w-xl mx-auto px-4 sm:px-6">
-        <motion.div
+    <PageTransition>
+      <section className="py-20 bg-mesh">
+        <div className="max-w-xl mx-auto px-4 sm:px-6">
+          <Breadcrumb />
+          <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="card-glass p-10"
@@ -156,5 +163,6 @@ export default function AccessPin() {
         </motion.div>
       </div>
     </section>
+  </PageTransition>
   )
 }
