@@ -102,3 +102,20 @@ Il `vercel.json` deve avere un rewrite esplicito per il file di verifica.
 ### Root Directory sbagliato
 Il Root Directory nel dashboard Vercel deve essere **`frontend`**, non `.`.
 → Impostazioni: https://vercel.com/gennaromazzacane-gmailcoms-projects/debdigital/settings
+
+## Verifica sitemap e stato di indicizzazione
+
+- Google legge la sitemap XML in modo nativo. L'XSL inclusa nel file sitemap.xml è solo una questione di visualizzazione nel browser e non influisce sull'indicizzazione da parte dei motori di ricerca.
+- Verifica manuale della sitemap:
+  - URL pubblica: https://deborapp.vercel.app/sitemap.xml
+  - Controlla che risponda con status 200 e Content-Type: application/xml
+  - Controlla che contenga le voci principali: root, chi sono, portfolio, contatti, blog e i post principali
+- Verifica sul dominio di staging/produzione:
+  - Puoi utilizzare curl per controllare la presenza di header e il contenuto:
+    - curl -I https://deborapp.vercel.app/sitemap.xml
+    - curl -s https://deborapp.vercel.app/sitemap.xml | grep "<loc>"`
+- Se Google riporta ancora “Impossibile leggere la Sitemap”:
+  - Attendi alcune ore per la propagazione o esegui nuovamente la submission in Google Search Console
+- Aggiornamenti futuri:
+  - Manteniamo la sitemap come XML puro per l'indicizzazione
+  - Se vuoi, posso esportare un JSON-LD o utilizzare una route dinamica per rigenerare automaticamente la sitemap al deploy (già impostato nel build script)
