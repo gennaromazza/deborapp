@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion'
 import { BookOpen, Check, Play, Star } from 'lucide-react'
+import { characters } from '../data/chapters'
 
 export default function BookCover({ product, chapters, progress, onSelectChapter }) {
   const totalBadges = chapters.filter((_, i) => (progress[i + 1] || []).length >= 10).length
 
   return (
     <div>
-      {/* Cover hero */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -29,7 +29,6 @@ export default function BookCover({ product, chapters, progress, onSelectChapter
         )}
       </motion.div>
 
-      {/* Characters */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -38,7 +37,7 @@ export default function BookCover({ product, chapters, progress, onSelectChapter
       >
         <p className="font-body text-gray-500 text-sm mb-3">I tuoi compagni di avventura:</p>
         <div className="flex justify-center gap-3 flex-wrap">
-          {['🧒 Nino', '👧 Lila', '⏰ Teo', '🎲 Dado', '💡 Ada'].map((char, i) => (
+          {characters.map((char, i) => (
             <motion.span
               key={i}
               initial={{ scale: 0 }}
@@ -52,7 +51,6 @@ export default function BookCover({ product, chapters, progress, onSelectChapter
         </div>
       </motion.div>
 
-      {/* Chapters grid */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {chapters.map((chapter, i) => {
           const chapterPages = progress[chapter.id] || []
@@ -70,7 +68,6 @@ export default function BookCover({ product, chapters, progress, onSelectChapter
               onClick={() => onSelectChapter(chapter.id)}
               className={`card p-5 text-left relative overflow-hidden ${isComplete ? 'ring-2 ring-pastel-mint-dark' : ''}`}
             >
-              {/* Progress background */}
               <div
                 className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-pastel-pink-dark to-pastel-lavender-dark transition-all duration-500"
                 style={{ width: `${progressPercent}%` }}

@@ -1,14 +1,6 @@
 import { motion } from 'framer-motion'
 import { Star, Award, Trophy, Sparkles } from 'lucide-react'
-
-const badgeData = {
-  1: { title: 'Esploratore del Bosco dei Numeri', emoji: '🌲', color: 'from-pastel-mint to-pastel-sky', description: 'Hai conquistato la chiave d\'oro del Bosco dei Numeri!' },
-  2: { title: 'Mercante delle Addizioni', emoji: '🧺', color: 'from-pastel-pink to-pastel-peach', description: 'Hai conquistato il cestino dorato!' },
-  3: { title: 'Guardiano delle Differenze', emoji: '🛡️', color: 'from-pastel-lavender to-pastel-sky', description: 'Hai conquistato il sigillo del Castello!' },
-  4: { title: 'Custode delle Tabelline', emoji: '🏅', color: 'from-pastel-yellow to-pastel-peach', description: 'Hai conquistato la stella marina dorata!' },
-  5: { title: 'Custode delle Divisioni', emoji: '🤖', color: 'from-pastel-sky to-pastel-mint', description: 'Hai conquistato la ruota dentata dorata!' },
-  6: { title: 'Guida delle Forme e dei Percorsi', emoji: '🧭', color: 'from-pastel-peach to-pastel-pink', description: 'Hai conquistato la freccia dorata!' },
-}
+import { badgeData } from '../data/chapters'
 
 export default function BadgeScreen({ badges = [], onClose }) {
   const allComplete = badges.length === 6

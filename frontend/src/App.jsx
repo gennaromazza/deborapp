@@ -5,7 +5,7 @@ import About from './pages/About'
 import Portfolio from './pages/Portfolio'
 import Contact from './pages/Contact'
 import AccessPin from './pages/AccessPin'
-import ProductApp from './pages/ProductApp'
+import ProductRouter from './pages/products/ProductRouter'
 import AdminLogin from './pages/Admin/Login'
 import AdminDashboard from './pages/Admin/Dashboard'
 import AdminUsers from './pages/Admin/Users'
@@ -38,7 +38,7 @@ function App() {
           </ProtectedRoute>
         } />
       </Route>
-      <Route path="/prodotto/:productId/:chapterId?" element={<ProductApp />} />
+      <Route path="/prodotto/:productId/:chapterId?" element={<ProductRouter />} />
     </Routes>
   )
 }
