@@ -28,7 +28,7 @@ serve(async (req) => {
 
     const { data: user, error } = await supabase
       .from('users')
-      .select('*, products(title, download_link)')
+      .select('*, products(id, title, download_link, type)')
       .eq('pin', pin)
       .eq('is_active', true)
       .single()
@@ -42,8 +42,10 @@ serve(async (req) => {
 
     return new Response(
       JSON.stringify({
+        product_id: user.products?.id,
         product_title: user.products?.title,
         download_link: user.products?.download_link,
+        type: user.products?.type || 'link',
       }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )

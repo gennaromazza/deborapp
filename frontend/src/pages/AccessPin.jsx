@@ -1,13 +1,15 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Key, ArrowRight, Loader2, CheckCircle, Sparkles } from 'lucide-react'
+import { Key, ArrowRight, Loader2, CheckCircle, Sparkles, Gamepad2 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { supabase } from '../utils/supabase'
 
 export default function AccessPin() {
   const [pin, setPin] = useState('')
   const [loading, setLoading] = useState(false)
-  const [productLink, setProductLink] = useState(null)
+  const [productData, setProductData] = useState(null)
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -24,10 +26,14 @@ export default function AccessPin() {
 
       if (error || data?.error) {
         toast.error(data?.error || 'PIN non valido. Controlla e riprova.')
-        setProductLink(null)
+        setProductData(null)
       } else {
         toast.success('PIN verificato con successo!')
-        setProductLink(data)
+        if (data.type === 'app' && data.product_id) {
+          navigate(`/prodotto/${data.product_id}`)
+        } else {
+          setProductData(data)
+        }
       }
     } catch (err) {
       toast.error('Errore di connessione. Riprova.')
@@ -36,7 +42,7 @@ export default function AccessPin() {
     }
   }
 
-  if (productLink) {
+  if (productData) {
     return (
       <section className="py-20">
         <div className="max-w-xl mx-auto px-4 sm:px-6">
@@ -57,10 +63,10 @@ export default function AccessPin() {
               Accesso sbloccato!
             </h2>
             <p className="font-body text-gray-500 mb-6">
-              Ecco il tuo prodotto: <strong className="text-pastel-pink-dark">{productLink.product_title}</strong>
+              Ecco il tuo prodotto: <strong className="text-pastel-pink-dark">{productData.product_title}</strong>
             </p>
             <a
-              href={productLink.download_link}
+              href={productData.download_link}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary inline-flex items-center gap-2"
@@ -69,7 +75,7 @@ export default function AccessPin() {
               <ArrowRight className="w-5 h-5" />
             </a>
             <button
-              onClick={() => { setProductLink(null); setPin('') }}
+              onClick={() => { setProductData(null); setPin('') }}
               className="block mx-auto mt-6 text-pastel-lavender-dark font-body font-medium hover:underline"
             >
               Verifica un altro PIN

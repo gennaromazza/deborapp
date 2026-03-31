@@ -1,0 +1,2683 @@
+# Libro di matematica per bambini 6-10 anni — Volume 1 ✨📘🧠
+
+## Dati progetto
+
+* Formato: A5
+* Lunghezza obiettivo: 60 pagine
+* Capitoli: 6
+* Pagine per capitolo: 10
+* Stile: narrativo, ludico, illustrato, adatto a bambini 6-10 anni
+* Metodo: spiegazione breve + missione/gioco + mini sfida + pagina visiva
+
+## Regole editoriali
+
+* Ogni capitolo contiene:
+
+  * 1 apertura narrativa
+  * 2-3 pagine di scoperta guidata
+  * 3-4 pagine di giochi matematici
+  * 1 laboratorio/manipolazione o missione
+  * 1 riepilogo giocoso
+  * 1 pagina finale con sfida o diploma
+* Evitare tono scolastico rigido.
+* Usare personaggi ricorrenti.
+* Ogni concetto nasce da una situazione concreta.
+* Le immagini devono sostenere la comprensione, non solo decorare.
+
+## Personaggi guida
+
+* Nino Numero: curioso, ama contare tutto.
+* Lila Linea: vede percorsi, forme e mappe.
+* Teo Tempo: misura, confronta, organizza.
+* Dado Giallo: lancia sfide, giochi e probabilità semplici.
+* Ada Idee: aiuta a trovare strategie diverse.
+
+---
+
+# Indice generale del Volume 1 (6 capitoli) 🗺️🔢🌟
+
+## Capitolo 1 — Il Bosco dei Numeri
+
+**Macroargomento:** numeri entro 20, conteggio, confronto, ordine.
+**Obiettivo:** costruire sicurezza con quantità e numeri piccoli.
+**Progressione:** quantità reali → simboli numerici → ordine crescente/decrescente → confronto con maggiore/minore/uguale.
+**Giochi:** caccia ai numeri, piste di impronte, memory delle quantità, ponte dei numeri mancanti.
+**Immagini:** apertura del bosco, numeri-personaggio, sentiero numerato.
+
+## Capitolo 2 — Il Mercato delle Addizioni
+
+**Macroargomento:** addizione e prime strategie di calcolo mentale.
+**Obiettivo:** capire l’addizione come unire, aggiungere, completare.
+**Progressione:** unire insiemi → contare avanti → coppie del 10 → addizioni entro 20/50.
+**Giochi:** bancarella dei frutti, monete-missione, tombola delle somme, ricette da completare.
+**Immagini:** mercato colorato, cestini, monete, tabelloni.
+
+## Capitolo 3 — Il Castello delle Sottrazioni
+
+**Macroargomento:** sottrazione come togliere, confrontare, trovare la differenza.
+**Obiettivo:** vedere la sottrazione in modi diversi.
+**Progressione:** togliere oggetti → contare indietro → differenza tra quantità → sottrazioni entro 20/50.
+**Giochi:** cavalieri dispersi, chi manca all’appello, torre delle differenze, scale che scendono.
+**Immagini:** castello, ponte levatoio numerato, scale e torri.
+
+## Capitolo 4 — L’Isola delle Tabelline
+
+**Macroargomento:** moltiplicazione come gruppi uguali e prime tabelline.
+**Obiettivo:** passare dal conteggio ripetuto alla moltiplicazione.
+**Progressione:** gruppi da 2/3/4 → salti sulla linea dei numeri → schieramenti → tabelline principali.
+**Giochi:** tesoro dei pirati a gruppi, griglia del capitano, pesca a coppie, danza dei salti.
+**Immagini:** isola, pirati gentili, mappe, forzieri a gruppi.
+
+##
+
+## Obiettivo del capitolo
+
+Far capire ai bambini che la moltiplicazione nasce da gruppi uguali, salti regolari e schieramenti ordinati. Il capitolo accompagna i bambini dal contare a gruppi al riconoscere le prime tabelline come uno strumento utile e divertente. ✨🔢🏝️
+
+## Percorso formativo in ordine di difficoltà
+
+1. Riconoscere gruppi con la stessa quantità.
+2. Contare per 2, per 3 e per 4.
+3. Capire la moltiplicazione come addizione ripetuta.
+4. Usare salti sulla linea dei numeri.
+5. Osservare schieramenti e righe ordinate.
+6. Scoprire le prime tabelline in modo intuitivo e giocoso.
+
+---
+
+## Pagina 1 — Apertura narrativa
+
+**Posizione immagine:** immagine grande in alto (circa 65% pagina), testo in basso.
+
+**Prompt immagine:**
+"Illustrazione per libro per bambini 6-10 anni, isola tropicale fantastica e accogliente con palme, forzieri, pontili, mappe del tesoro e pirati gentili, gruppi ordinati di conchiglie e monete, atmosfera luminosa e avventurosa, formato verticale A5, educational picture book"
+
+**Testo:**
+Dopo il Castello delle Sottrazioni, Nino Numero, Lila Linea, Teo Tempo, Dado Giallo e Ada Idee salirono su una piccola barca a vela.
+
+Il mare era calmo, il cielo azzurro e in lontananza comparve un’isola piena di palme, corde, pontili e bandiere colorate.
+
+Sulla spiaggia, una grande tavola di legno diceva:
+
+**“Benvenuti all’Isola delle Tabelline.”**
+
+Nino si grattò la testa.
+“Tabelline? Quelle che sembrano una filastrocca?”
+
+Ada sorrise.
+“Anche. Ma prima di diventare filastrocche, le tabelline sono un modo furbo per contare gruppi uguali.”
+
+Vicino a un forziere c’erano 3 sacchetti. In ogni sacchetto brillavano 2 monete dorate.
+
+Lila osservò bene.
+“Quindi non devo contare una moneta alla volta… posso contare per gruppi?”
+
+“Esatto!” disse Ada. “Quando ci sono gruppi uguali, la matematica inventa una scorciatoia bellissima: la **moltiplicazione**.”
+
+Un pirata gentile con un pappagallo blu salutò da un pontile.
+“Io sono Capitan Multiplo! Qui troverete tesori, salti giganti e file ordinate. Ma solo chi capisce i gruppi uguali può aprire i forzieri.”
+
+Dado Giallo batté le mani.
+“Si parte!” 🏴‍☠️✨🔢
+
+---
+
+## Pagina 2 — Scoperta 1: gruppi uguali
+
+**Posizione immagine:** in alto 3 sacchetti con 2 monete ciascuno; oggetti separati e ben visibili.
+
+**Prompt immagine:**
+"Children's math book illustration, 3 small treasure bags each containing 2 gold coins, clear equal groups, playful pirate island setting, vertical A5"
+
+**Testo:**
+La moltiplicazione comincia quando troviamo **gruppi tutti uguali**.
+
+Esempio:
+
+* ci sono **3 sacchetti**
+* in ogni sacchetto ci sono **2 monete**
+
+Possiamo contare così:
+2, 4, 6
+
+In tutto ci sono **6 monete**.
+
+Possiamo anche scriverlo così:
+**3 × 2 = 6**
+
+Questo significa:
+3 gruppi da 2 fanno 6.
+
+### Gioco — Sacchetti del tesoro
+
+Completa:
+
+* 2 sacchetti da 3 monete = ___ monete
+* 4 sacchetti da 2 monete = ___ monete
+* 3 casse da 4 perle = ___ perle
+* 5 ciotole da 2 conchiglie = ___ conchiglie
+
+### Mini missione
+
+Disegna 4 gruppi con 2 stelline in ogni gruppo.
+Quante stelline hai disegnato in tutto?
+
+___ × ___ = ___
+
+---
+
+## Pagina 3 — Scoperta 2: addizione ripetuta
+
+**Posizione immagine:** cartelli o tavole di legno con gruppi di frutti tropicali e la somma ripetuta scritta sotto.
+
+**Prompt immagine:**
+"Educational illustration for kids, tropical fruit groups on wooden signs, repeated addition shown visually, cheerful island classroom style, vertical A5"
+
+**Testo:**
+La moltiplicazione è come un’addizione ripetuta.
+
+Esempio:
+Se hai **4 gruppi da 3**, puoi pensare così:
+**3 + 3 + 3 + 3 = 12**
+
+Ma puoi anche scrivere:
+**4 × 3 = 12**
+
+La moltiplicazione aiuta quando non vuoi scrivere sempre la stessa addizione tante volte.
+
+### Gioco — Trasforma la somma
+
+Completa:
+
+* 2 + 2 + 2 = ___ × ___ = ___
+* 3 + 3 + 3 = ___ × ___ = ___
+* 4 + 4 = ___ × ___ = ___
+* 5 + 5 + 5 = ___ × ___ = ___
+
+### Missione bonus
+
+Scegli una di queste moltiplicazioni e disegna i gruppi:
+
+* 3 × 2
+* 2 × 4
+* 4 × 3
+
+---
+
+## Pagina 4 — Gioco guidato 1: i salti del capitano
+
+**Posizione immagine:** linea dei numeri sulla sabbia con grandi salti colorati di 2, 3 e 4.
+
+**Prompt immagine:**
+"Children's educational illustration, number line drawn in the sand on a pirate island, colorful jumps of 2, 3 and 4, playful and clear, vertical A5"
+
+**Testo:**
+Capitan Multiplo tracciò una lunga linea sulla sabbia.
+
+“Le tabelline,” disse, “si possono anche camminare!”
+
+Se fai salti uguali, stai contando per gruppi.
+
+Esempio:
+Per fare **4 × 2** puoi saltare di 2 quattro volte:
+2, 4, 6, 8
+
+Risultato:
+**4 × 2 = 8**
+
+### Gioco — Salta sulla sabbia
+
+Completa:
+
+* 3 salti da 2 = ___
+* 4 salti da 3 = ___
+* 5 salti da 2 = ___
+* 3 salti da 4 = ___
+
+### Missione movimento
+
+Batti le mani seguendo i salti:
+
+* per 2: 2, 4, 6, 8
+* per 3: 3, 6, 9, 12
+
+Quale sequenza ti sembra più facile ricordare?
+
+---
+
+## Pagina 5 — Gioco guidato 2: le griglie del tesoro
+
+**Posizione immagine:** griglie o schieramenti di oggetti: 2 righe da 3, 3 righe da 4, 4 righe da 2.
+
+**Prompt immagine:**
+"Children's educational illustration, treasure map grids with shells, coins and stars arranged in neat rows and columns, easy to count arrays, vertical A5"
+
+**Testo:**
+Sull’isola c’erano anche delle mappe speciali.
+Su ogni mappa il tesoro era nascosto in file ordinate.
+
+Quando gli oggetti sono disposti in righe e colonne, possiamo contarli più facilmente.
+
+Esempio:
+2 righe da 3 conchiglie fanno **6 conchiglie**.
+
+Si scrive:
+**2 × 3 = 6**
+
+### Gioco — Conta per righe
+
+Completa:
+
+* 2 righe da 4 = ___
+* 3 righe da 3 = ___
+* 4 righe da 2 = ___
+* 5 righe da 2 = ___
+
+### Missione del mappatore
+
+Disegna tu una griglia da:
+
+* 3 righe da 2 punti
+* 2 righe da 5 punti
+
+Poi scrivi la moltiplicazione.
+
+---
+
+## Pagina 6 — Mini laboratorio: le prime tabelline amiche
+
+**Posizione immagine:** tabelloni di legno con la tabellina del 2, del 3 e del 4 illustrate con oggetti dell’isola.
+
+**Prompt immagine:**
+"Math activity illustration for children, wooden boards showing the 2, 3 and 4 times tables with shells, coconuts and coins, playful pirate island style, vertical A5"
+
+**Testo:**
+Ada portò tutti sotto una tenda fatta di vele colorate.
+Lì c’erano tre tavole appese: la tabellina del 2, del 3 e del 4.
+
+### Tabellina del 2
+
+2, 4, 6, 8, 10
+
+### Tabellina del 3
+
+3, 6, 9, 12, 15
+
+### Tabellina del 4
+
+4, 8, 12, 16, 20
+
+“Non impararle tutte insieme,” disse Ada.
+“Prima guardale, poi ascoltale, poi usale nei giochi.” 🪵🔁🌟
+
+### Laboratorio — Completa la sequenza
+
+* 2, 4, 6, __, __
+* 3, 6, 9, __, __
+* 4, 8, 12, __, __
+
+### Missione con il dito
+
+Segui la sequenza con il dito e pronunciala a voce alta.
+
+---
+
+## Pagina 7 — Sfida a livelli: moltiplicazioni furbe
+
+**Posizione immagine:** tre zone dell’isola con insegne livello 1, livello 2, livello 3; una per gruppi, una per salti, una per griglie.
+
+**Prompt immagine:**
+"Children's math challenge page, three playful island zones labeled level 1 level 2 level 3, treasure, jumps and grid visuals, colorful educational design, vertical A5"
+
+**Testo:**
+È il momento della sfida.
+Ogni zona dell’isola ti chiede una strategia diversa.
+
+### Livello 1 — Gruppi uguali
+
+* 3 gruppi da 2 = ___
+* 2 gruppi da 5 = ___
+* 4 gruppi da 3 = ___
+* 5 gruppi da 2 = ___
+
+### Livello 2 — Addizione ripetuta
+
+* 2 + 2 + 2 + 2 = ___ × ___ = ___
+* 3 + 3 + 3 = ___ × ___ = ___
+* 4 + 4 + 4 = ___ × ___ = ___
+
+### Livello 3 — Salti e griglie
+
+* 3 salti da 4 = ___
+* 2 righe da 6 = ___
+* 4 salti da 3 = ___
+
+### Missione speciale
+
+Spiega con parole tue cosa vuol dire:
+**3 × 4**
+
+---
+
+## Pagina 8 — Pagina visuale: la grande cerca sull’isola
+
+**Posizione immagine:** scena quasi a piena pagina con isola piena di dettagli: palme con cocchi a gruppi, barche con remi uguali, casse, conchiglie, bandiere.
+
+**Prompt immagine:**
+"Busy search-and-find pirate island illustration for children, palm trees with coconuts in equal groups, boats, treasure chests, shells and flags arranged for multiplication activities, educational layout, vertical A5"
+
+**Testo:**
+Osserva con calma l’Isola delle Tabelline.
+Qui i gruppi uguali sono nascosti ovunque.
+
+### Missione cerca e moltiplica
+
+Trova nell’immagine:
+
+* 3 palme con 2 cocchi ciascuna = ___
+* 4 casse con 3 monete ciascuna = ___
+* 2 barche con 4 remi ciascuna = ___
+* 5 stelle marine con 2 puntini decorativi ciascuna = ___
+
+### Missione detective
+
+Cerca:
+
+* una moltiplicazione che fa 6
+* una moltiplicazione che fa 8
+* una moltiplicazione che fa 12
+
+### Missione inventa-tu
+
+Scegli un gruppo nell’immagine e scrivi la tua moltiplicazione.
+
+___ × ___ = ___
+
+---
+
+## Pagina 9 — Riepilogo attivo: quello che ora so fare
+
+**Posizione immagine:** bordo decorato con conchiglie, monete, piccole mappe, frecce e bandierine; checklist al centro.
+
+**Prompt immagine:**
+"Cute children's checklist page with pirate island multiplication-themed border, shells, coins, maps, arrows and flags, clean educational design, vertical A5"
+
+**Testo:**
+Ben fatto. Hai quasi conquistato il distintivo dell’Isola delle Tabelline.
+
+Metti una stellina accanto a quello che sai fare:
+
+⭐ So riconoscere gruppi uguali.
+
+⭐ So contare per 2, per 3 e per 4.
+
+⭐ So trasformare un’addizione ripetuta in moltiplicazione.
+
+⭐ So usare i salti sulla linea dei numeri.
+
+⭐ So leggere una griglia ordinata.
+
+⭐ So capire le prime tabelline in modo semplice.
+
+### Il mio angolo da cercatore di tesori
+
+La moltiplicazione che mi piace di più è:
+___ × ___ = ___
+
+La strategia che mi aiuta di più è:
+
+* contare per gruppi
+* fare salti
+* guardare le righe
+
+---
+
+## Pagina 10 — Super missione finale + badge
+
+**Posizione immagine:** badge grande in alto, in basso tre mini scene dell’isola con attività finali.
+
+**Prompt immagine:**
+"Children's math badge illustration, cheerful island medal with multiplication sign, treasure, shells and flags, final mission layout, colorful and celebratory, vertical A5"
+
+**Testo:**
+Capitan Multiplo aprì un piccolo forziere dorato.
+“Ultima prova! Chi supera la Super Missione diventa Custode delle Tabelline.”
+
+### Super Missione
+
+1. Completa le moltiplicazioni:
+
+* 2 × 3 = ___
+* 4 × 2 = ___
+* 3 × 4 = ___
+* 5 × 2 = ___
+
+2. Trasforma la somma ripetuta:
+
+* 3 + 3 + 3 = ___ × ___ = ___
+* 4 + 4 = ___ × ___ = ___
+
+3. Completa la sequenza:
+
+* 2, 4, 6, __, __
+* 3, 6, 9, __, __
+
+4. Inventa una piccola storia dell’isola con una moltiplicazione.
+   Esempio: “Ci sono 3 sacchetti e in ogni sacchetto ci sono 2 monete. In tutto sono 6.”
+
+Scrivi la tua:
+
+---
+
+---
+
+### Badge del capitolo
+
+**Io sono un Custode delle Tabelline!**
+
+Ada consegnò a Nino e Lila un distintivo a forma di stella marina dorata.
+
+“Le tabelline,” disse, “non sono solo cose da ripetere.
+Sono un modo intelligente per vedere i gruppi, gli ordini e i salti nascosti nel mondo.” 🏅🌊🔢
+
+---
+
+# Capitolo 5 — La Città delle Divisioni Giuste
+
+**Macroargomento:** divisione come distribuire e raggruppare.
+**Obiettivo:** comprendere la divisione in modo concreto.
+**Progressione:** dividere in parti uguali → raggruppare → resto semplice → relazione con moltiplicazione.
+**Giochi:** pizzeria delle fette, reparto dolcetti, scatole misteriose, squadra dei robot distributori.
+**Immagini:** città ordinata, pizzette, robot, scatole.
+
+## Capitolo 6 — Il Villaggio delle Forme e dei Percorsi
+
+**Macroargomento:** geometria di base, orientamento spaziale.
+**Obiettivo:** riconoscere forme, percorsi, simmetrie e posizioni.
+**Progressione:** sopra/sotto/destra/sinistra → figure piane → solidi semplici → simmetria e mappe.
+**Giochi:** caccia alle forme, labirinto delle frecce, specchio magico, costruisci il villaggio.
+**Immagini:** mappe, case-forma, specchi, percorsi.
+
+---
+
+# Schema fisso di 10 pagine per capitolo 📐📚🎯
+
+1. Copertina del capitolo + immagine grande + introduzione narrativa.
+2. Scoperta 1 del concetto.
+3. Scoperta 2 con esempio giocoso.
+4. Gioco guidato 1.
+5. Gioco guidato 2.
+6. Mini laboratorio o attività da ritagliare/osservare.
+7. Sfida a livelli.
+8. Pagina visuale con immagine e missione breve.
+9. Riepilogo attivo “Quello che ora so fare”.
+10. Super missione finale + badge/diploma del capitolo.
+
+---
+
+# Traccia immagine per ogni capitolo
+
+Ogni capitolo avrà almeno 3 immagini principali:
+
+1. **Immagine apertura**: occupa circa 60-70% pagina.
+2. **Immagine attività**: mezza pagina o vignetta guidata.
+3. **Immagine finale missione**: scena ampia con elementi da contare/osservare.
+
+---
+
+# Memoria di lavoro da mantenere 🧠🗂️✨
+
+* 6 capitoli totali in questo volume
+* 10 pagine per capitolo
+* progressione crescente ma morbida
+* tono narrativo + ludico
+* niente pagine con soli esercizi tradizionali
+* ogni capitolo con posizioni immagini e prompt dedicati
+* personaggi ricorrenti usati in tutto il libro
+
+---
+
+# Capitolo 1 — Il Bosco dei Numeri
+
+## Obiettivo del capitolo
+
+Far conoscere ai bambini i numeri entro 20 in modo concreto, narrativo e giocoso: contare, confrontare, ordinare, riconoscere il numero scritto e collegarlo a quantità reali. 🌲🔢✨
+
+## Percorso formativo in ordine di difficoltà
+
+1. Osservare e contare oggetti reali.
+2. Collegare quantità e simbolo numerico.
+3. Mettere i numeri in ordine crescente e decrescente.
+4. Trovare il numero mancante.
+5. Confrontare quantità usando più, meno, uguale.
+6. Fare piccole scelte strategiche con i numeri.
+
+---
+
+## Pagina 1 — Apertura narrativa
+
+**Posizione immagine:** immagine grande in alto (circa 65% pagina), testo in basso.
+
+**Prompt immagine:**
+"Illustrazione per libro per bambini 6-10 anni, stile dolce e colorato, un bosco magico pieno di numeri appesi agli alberi, funghi con cifre, sassolini da contare, atmosfera luminosa e accogliente, personaggi simpatici: un bambino curioso e una bambina con una mappa, formato verticale A5, educational picture book"
+
+**Testo:**
+Benvenuto nel Bosco dei Numeri!
+
+Questa mattina Nino Numero e Lila Linea hanno trovato una porticina nascosta tra due alberi altissimi. Sulla porticina c’era scritto:
+
+**“Entrate solo se sapete osservare, contare e scoprire.”**
+
+Nino strizzò gli occhi.
+“Osservare? Contare? Mi piace già!”
+
+Lila spinse piano la porticina e… wow!
+Davanti a loro si aprì un bosco davvero speciale. Sui rami crescevano mele numerate, i sassi lungo il sentiero avevano piccole stelle, e persino i funghi sembravano messi lì in fila per dire qualcosa.
+
+“Qui i numeri non stanno fermi nei quaderni,” disse una vocina allegra.
+Da dietro un cespuglio comparve Ada Idee con un cappello pieno di foglietti colorati.
+
+“Nel Bosco dei Numeri,” spiegò Ada, “i numeri si cercano, si toccano, si contano e si mettono in ordine. Ogni volta che risolvi una missione, il bosco ti regala una chiave d’oro.”
+
+Nino si guardò intorno emozionato.
+“Da dove cominciamo?”
+
+Ada sorrise.
+“Dal primo superpotere dei matemaghi: **contare con attenzione**.” 🌟🔍🍃
+
+---
+
+## Pagina 2 — Scoperta 1: contare davvero
+
+**Posizione immagine:** vignetta laterale destra con cesta di oggetti; testo e mini missione a sinistra.
+
+**Prompt immagine:**
+"Children's math book illustration, basket with 1 acorn, 2 leaves, 3 berries, 4 mushrooms, 5 pebbles, clear separated objects, bright soft colors, simple educational layout, vertical A5"
+
+**Testo:**
+Contare non significa dire i numeri in fretta.
+Contare bene significa **toccare con gli occhi** ogni cosa una sola volta.
+
+Ada mostrò una cesta trovata vicino al sentiero.
+Dentro c’erano ghiande, foglie, bacche, funghetti e sassolini.
+
+“Per contare bene,” disse, “puoi usare tre mosse:”
+
+1. Guarda tutti gli oggetti.
+2. Scegline uno alla volta.
+3. Dì un numero per ogni oggetto.
+
+Esempio:
+
+* 1 ghianda
+* 2 foglie
+* 3 bacche
+* 4 funghetti
+* 5 sassolini
+
+Quando arrivi all’ultimo numero, hai scoperto **quanti sono in tutto**.
+
+### Missione gioco — Occhi da gufo
+
+Guarda l’immagine e completa a voce o sul libro:
+
+* Ci sono ___ ghiande.
+* Ci sono ___ foglie.
+* Ci sono ___ bacche.
+* Ci sono ___ funghetti.
+* Ci sono ___ sassolini.
+
+### Mini sfida
+
+Chi è di più: le bacche o i funghetti?
+
+---
+
+## Pagina 3 — Scoperta 2: numero e quantità
+
+**Posizione immagine:** in alto 5 cartelli con numeri, sotto gruppi di oggetti da collegare.
+
+**Prompt immagine:**
+"Educational illustration for kids, number cards 1 to 10 hanging on a string, below small groups of forest objects to match: acorns, flowers, mushrooms, pebbles, stars, clean and playful layout, vertical A5"
+
+**Testo:**
+Ogni numero è un simbolo.
+Quel simbolo ci aiuta a dire **quanti oggetti** ci sono.
+
+Il numero **3** non è solo una cifra scritta.
+È anche:
+
+* 3 foglie
+* 3 salti
+* 3 sassolini
+* 3 battiti di mani
+
+Nino trovò dei cartelli appesi a uno spago.
+Su ogni cartello c’era un numero.
+Poco più sotto, c’erano gruppi di oggetti del bosco.
+
+“Bisogna fare gli abbinamenti giusti!” esclamò.
+
+### Gioco — Ponte dei collegamenti
+
+Collega ogni numero al gruppo giusto.
+
+Numeri: 1, 2, 4, 6, 8, 10
+
+Gruppi:
+
+* 1 fungo
+* 2 farfalle
+* 4 foglie
+* 6 sassolini
+* 8 bacche
+* 10 stelle
+
+### Missione extra
+
+Disegna tu:
+
+* 7 puntini
+* 9 petali
+* 5 impronte
+
+---
+
+## Pagina 4 — Gioco guidato 1: il sentiero dei numeri mancanti
+
+**Posizione immagine:** sentiero centrale con pietre numerate e alcune caselle vuote.
+
+**Prompt immagine:**
+"Magic forest path with stepping stones numbered from 1 to 20, some numbers missing, child-friendly fantasy illustration, soft colors, clear spaces for activity, vertical A5"
+
+**Testo:**
+Lila e Nino arrivarono davanti a un sentiero di pietre tonde.
+Su ogni pietra c’era un numero… ma alcune pietre erano vuote!
+
+“Attenti,” disse Ada, “solo chi sa trovare i numeri mancanti può passare.”
+
+### Gioco — Completa il sentiero
+
+1, 2, __, 4, 5, __, 7, __, 9, 10
+
+11, __, 13, 14, __, 16, 17, __, 19, 20
+
+### Trucco da esploratore
+
+Quando i numeri vanno avanti di uno in uno, puoi dire nella mente:
+**uno in più, uno in più, uno in più…**
+
+### Mini sfida sprint
+
+Scrivi i numeri da 1 a 10 al contrario.
+
+---
+
+---
+
+## Pagina 5 — Gioco guidato 2: chi viene prima? chi viene dopo?
+
+**Posizione immagine:** tre tronchi con frecce “prima”, “dopo”, “in mezzo”.
+
+**Prompt immagine:**
+"Cute forest stumps labeled before, after, middle, with number leaves floating around, child-friendly educational illustration, vertical A5"
+
+**Testo:**
+Nel bosco, i numeri adorano stare in fila.
+Ogni numero ha un vicino prima e un vicino dopo.
+
+Esempio:
+Se il numero è **8**:
+
+* prima c’è **7**
+* dopo c’è **9**
+
+### Gioco — I vicini del numero
+
+Completa:
+
+* Prima di 6 c’è ___
+* Dopo 6 c’è ___
+* Prima di 12 c’è ___
+* Dopo 12 c’è ___
+* In mezzo tra 4 e 6 c’è ___
+* In mezzo tra 9 e 11 c’è ___
+* In mezzo tra 14 e 16 c’è ___
+
+### Gioco bonus — Il numero nascosto
+
+Sono dopo il 10 ma prima del 12. Chi sono?
+Sono prima del 5 ma dopo il 3. Chi sono?
+
+---
+
+## Pagina 6 — Mini laboratorio: costruisci la linea del bosco
+
+**Posizione immagine:** metà pagina superiore con corda tra due alberi e mollette con numeri.
+
+**Prompt immagine:**
+"Math activity illustration, a rope tied between two trees with number cards clipped from 0 to 20, children arranging cards, warm and magical forest atmosphere, vertical A5"
+
+**Testo:**
+Ada tirò una corda tra due alberi.
+Poi appese tante piccole carte numerate.
+
+“Questa,” disse, “è la **linea dei numeri**. Serve per vedere dove sta ogni numero.”
+
+### Attività da fare
+
+Puoi costruire anche tu una linea dei numeri con:
+
+* un filo o una striscia di carta
+* pezzetti di carta con i numeri
+* mollette o colla
+
+Poi prova queste missioni:
+
+1. Metti in ordine i numeri da 0 a 20.
+2. Indica il numero più piccolo.
+3. Indica il numero più grande.
+4. Salta dal 3 al 6 contando: 3, 4, 5, 6.
+5. Vai indietro dal 10 al 7.
+
+### Missione movimento
+
+Fai 5 passi avanti.
+Poi 2 passi indietro.
+Quale numero raggiungi se parti da 4?
+
+---
+
+## Pagina 7 — Sfida a livelli: più, meno, uguale
+
+**Posizione immagine:** due alberi con quantità diverse di frutti; simboli > < = in basso grandi e simpatici.
+
+**Prompt immagine:**
+"Educational kids illustration, two fruit trees with different numbers of apples, large friendly symbols greater than less than equal, playful forest style, vertical A5"
+
+**Testo:**
+Nino osservò due alberi di mele.
+Uno era pienissimo, l’altro un po’ meno.
+
+“Quando confrontiamo due quantità,” spiegò Ada, “possiamo dire:
+
+* **di più**
+* **di meno**
+* **uguale**”
+
+I simboli speciali sono:
+
+* **>** maggiore di
+* **<** minore di
+* **=** uguale a
+
+### Livello 1 — Parole
+
+* 8 mele e 5 mele → 8 è ______ di 5
+* 3 fiori e 7 fiori → 3 è ______ di 7
+* 6 sassi e 6 sassi → 6 è ______ a 6
+
+### Livello 2 — Simboli
+
+Scrivi il simbolo giusto:
+
+* 4 __ 9
+* 10 __ 2
+* 7 __ 7
+* 12 __ 15
+* 18 __ 11
+
+### Livello 3 — Sfida lampo
+
+Disegna tu due gruppi di oggetti e confrontali.
+
+---
+
+## Pagina 8 — Pagina visuale: la grande cerca nel bosco
+
+**Posizione immagine:** immagine quasi a piena pagina con tanti elementi da osservare; testo breve in basso.
+
+**Prompt immagine:**
+"Busy search-and-find illustration for children, magical forest scene with 12 mushrooms, 9 butterflies, 6 flowers, 15 pebbles, 4 rabbits, 3 wooden signs, clear countable objects, vertical A5, educational picture book"
+
+**Testo:**
+Questa è la pagina degli occhi super attenti.
+Osserva con calma e completa.
+
+### Missione cerca e conta
+
+Nel bosco trovi:
+
+* ___ funghi
+* ___ farfalle
+* ___ fiori
+* ___ sassolini
+* ___ coniglietti
+* ___ cartelli di legno
+
+### Missione confronta
+
+Ce ne sono di più:
+
+* i fiori o i coniglietti?
+* i funghi o le farfalle?
+* i cartelli o i coniglietti?
+
+### Missione segreta
+
+Trova un gruppo di 3, uno di 6 e uno di 9.
+
+---
+
+## Pagina 9 — Riepilogo attivo: quello che ora so fare
+
+**Posizione immagine:** piccole icone sparse ai margini, checklist al centro.
+
+**Prompt immagine:**
+"Cute educational checklist page for children, forest-themed icons around the border: acorn, leaf, mushroom, star, path, friendly and clean design, vertical A5"
+
+**Testo:**
+Bravo! Hai quasi conquistato la prima chiave d’oro del Bosco dei Numeri.
+
+Metti una stellina accanto a quello che sai fare:
+
+⭐ So contare oggetti senza saltarne nessuno.
+
+⭐ So collegare un numero alla quantità giusta.
+
+⭐ So mettere i numeri in ordine.
+
+⭐ So trovare il numero che manca.
+
+⭐ So dire quale numero viene prima e quale dopo.
+
+⭐ So confrontare due quantità.
+
+### Piccolo autoritratto matematico
+
+Io mi sento:
+
+* tranquillo con i numeri 😊
+* abbastanza sicuro 🙂
+* pronto a riprovare ancora 💪
+
+Scrivi il tuo numero preferito da 0 a 20: ___
+E disegna accanto qualcosa che abbia proprio quella quantità.
+
+---
+
+## Pagina 10 — Super missione finale + badge
+
+**Posizione immagine:** badge grande in alto, in basso una scena con 3 missioni finali.
+
+**Prompt immagine:**
+"Children's math badge illustration, golden key badge with number symbols, final mission panel in a magical forest, celebratory and playful, vertical A5"
+
+**Testo:**
+Ada tirò fuori una piccola chiave dorata.
+
+“Chi completa la Super Missione,” disse, “diventa Esploratore dei Numeri!”
+
+### Super Missione
+
+1. Scrivi in ordine i numeri da 5 a 12.
+
+---
+
+2. Completa:
+
+* Prima di 9 c’è ___
+* Dopo 14 c’è ___
+* In mezzo tra 18 e 20 c’è ___
+
+3. Confronta con il simbolo giusto:
+
+* 11 __ 13
+* 16 __ 16
+* 19 __ 12
+
+4. Disegna:
+
+* 4 foglie
+* 7 sassolini
+* 10 stelline
+
+### Badge del capitolo
+
+**Io sono un Esploratore del Bosco dei Numeri!**
+
+Nino e Lila guardarono la chiave brillare.
+
+“Un capitolo è finito,” sussurrò Ada.
+“Ma il viaggio della matematica è appena cominciato.” 🔑🌲💫
+
+---
+
+# Capitolo 2 — Il Mercato delle Addizioni
+
+## Obiettivo del capitolo
+
+Far capire ai bambini che l’addizione serve a unire, aggiungere, completare e contare avanti. Il capitolo introduce strategie semplici e intuitive: mettere insieme gruppi, aggiungere pezzi, usare la linea dei numeri e scoprire le coppie amiche del 10. 🍎➕🧺
+
+## Percorso formativo in ordine di difficoltà
+
+1. Unire due piccoli gruppi.
+2. Aggiungere elementi a un gruppo già formato.
+3. Leggere e scrivere addizioni in modo semplice.
+4. Contare avanti sulla linea dei numeri.
+5. Riconoscere le coppie amiche del 10.
+6. Usare strategie veloci per addizioni entro 20 e prime addizioni con la decina.
+
+---
+
+## Pagina 1 — Apertura narrativa
+
+**Posizione immagine:** immagine grande in alto (circa 65% pagina), testo in basso.
+
+**Prompt immagine:**
+"Illustrazione per libro per bambini 6-10 anni, mercato colorato e allegro in una piazza fantastica, bancarelle di frutta, pane, fiori e monete, personaggi simpatici con cestini in mano, atmosfera luminosa e giocosa, formato verticale A5, educational picture book"
+
+**Testo:**
+Dopo aver attraversato il Bosco dei Numeri, Nino Numero e Lila Linea arrivarono in una piazza piena di profumi, colori e vocine allegre.
+
+C’erano bancarelle di mele lucide, cestini di fragole, fiori colorati e perfino un banco che vendeva biscotti a forma di numero.
+
+“Benvenuti al **Mercato delle Addizioni!**” annunciò Ada Idee con un gran sorriso.
+
+Al centro della piazza c’era un’insegna appesa tra due lampioni:
+
+**“Qui si impara a mettere insieme.”**
+
+Nino guardò una bancarella di arance.
+“Mettere insieme… cioè fare mucchi più grandi?”
+
+“Esatto!” disse Ada. “L’addizione serve proprio a questo: **unire, aggiungere, completare**.”
+
+In quel momento arrivò anche Teo Tempo con un piccolo grembiule da mercante.
+Aveva in mano due cestini.
+
+“In uno ci sono 3 mele,” spiegò Teo.
+“Nell’altro ce ne sono 2. Se li unisco, quante mele avrò in tutto?”
+
+Nino fece un salto.
+“Questa la so! Basta contare tutto insieme!”
+
+Ada annuì.
+“Perfetto. Oggi diventerete Mercanti delle Somme.” 🛍️✨➕
+
+---
+
+## Pagina 2 — Scoperta 1: unire due gruppi
+
+**Posizione immagine:** due cestini in alto, sotto spazio attività con piccoli frutti ben separati.
+
+**Prompt immagine:**
+"Children's math book illustration, two fruit baskets, one with 3 apples and one with 2 apples, clear separated objects, playful market style, bright soft colors, vertical A5"
+
+**Testo:**
+L’addizione può cominciare così:
+**ho un gruppo** e **lo unisco a un altro gruppo**.
+
+Esempio:
+
+* nel primo cestino ci sono **3 mele**
+* nel secondo cestino ci sono **2 mele**
+
+Se li unisco, posso contare:
+**1, 2, 3, 4, 5**
+
+Quindi:
+**3 + 2 = 5**
+
+Il segno **+** vuol dire **aggiungi**, **metti insieme**.
+
+### Gioco — Cestini amici
+
+Osserva e completa:
+
+* 2 pere + 3 pere = ___
+* 4 limoni + 1 limone = ___
+* 5 fragole + 2 fragole = ___
+* 3 ciliegie + 3 ciliegie = ___
+
+### Mini missione
+
+Disegna due piccoli gruppi di frutti.
+Poi uniscili e scrivi la tua addizione.
+
+___ + ___ = ___
+
+---
+
+## Pagina 3 — Scoperta 2: aggiungere e contare avanti
+
+**Posizione immagine:** linea dei numeri a forma di strada del mercato con salti colorati.
+
+**Prompt immagine:**
+"Educational illustration for kids, market street transformed into a number line from 0 to 20, little character making jumps forward, playful stalls on the sides, vertical A5"
+
+**Testo:**
+A volte non serve ricontare tutto da capo.
+Possiamo partire da un numero e **andare avanti**.
+
+Esempio:
+**5 + 3**
+
+Parti da 5.
+Fai 3 passi avanti:
+
+* 6
+* 7
+* 8
+
+Hai trovato il risultato:
+**5 + 3 = 8**
+
+Questo trucco si chiama **contare avanti**.
+È molto utile quando conosci già il primo numero.
+
+### Gioco — Salti nel mercato
+
+Parti dal primo numero e fai i salti giusti:
+
+* 4 + 2 = ___
+* 6 + 1 = ___
+* 7 + 3 = ___
+* 9 + 2 = ___
+* 10 + 4 = ___
+
+### Missione movimento
+
+Parti da 8 e fai 5 salti avanti. Dove arrivi?
+
+---
+
+---
+
+## Pagina 4 — Gioco guidato 1: la bancarella dei frutti
+
+**Posizione immagine:** grande bancarella centrale con cassette di frutta e cartellini somma.
+
+**Prompt immagine:**
+"Colorful fruit stand for children, wooden crates with apples, pears, oranges, strawberries, visible quantities for math activities, warm market scene, vertical A5"
+
+**Testo:**
+Il fruttivendolo del mercato aveva un problema:
+I cartellini con le somme si erano staccati e andavano rimessi al posto giusto.
+
+### Gioco — Rimetti i cartellini
+
+Abbina ogni somma alla cassetta corretta.
+
+Cartellini:
+
+* 2 + 2
+* 5 + 1
+* 4 + 3
+* 6 + 2
+* 7 + 1
+
+Risultati da trovare:
+
+* 4
+* 6
+* 7
+* 8
+* 8
+
+### Missione extra
+
+Trova due addizioni diverse che facciano 8.
+
+___ + ___ = 8
+
+___ + ___ = 8
+
+### Piccolo pensiero furbo
+
+A volte addizioni diverse portano allo stesso risultato.
+Che scoperta interessante!
+
+---
+
+## Pagina 5 — Gioco guidato 2: monete e spese gentili
+
+**Posizione immagine:** banco con monete grandi e rotonde, cartellini prezzo semplici.
+
+**Prompt immagine:**
+"Children's educational market illustration, simple coin game with big round coins, price tags, bread, flowers, fruit, playful and easy to count, vertical A5"
+
+**Testo:**
+Nel Mercato delle Addizioni c’era anche una regola speciale:
+si comprava usando solo monete da **1** e da **2**.
+
+### Gioco — Paga il prezzo giusto
+
+Osserva il prezzo e trova una somma che lo forma.
+
+* Un panino costa **3** → ___ + ___ = 3
+* Un fiore costa **4** → ___ + ___ = 4
+* Una mela grande costa **5** → ___ + ___ = 5
+* Un sacchetto di biscotti costa **6** → ___ + ___ = 6
+
+### Missione delle monete furbe
+
+Prova a trovare **più di un modo** per pagare.
+
+Per fare 4 puoi usare:
+
+* 2 + 2
+* 1 + 1 + 2
+* 1 + 1 + 1 + 1
+
+Ora tocca a te trovare due modi per fare **5**.
+
+1. ---
+2. ---
+
+---
+
+## Pagina 6 — Mini laboratorio: le coppie amiche del 10
+
+**Posizione immagine:** in alto due mani aperte e gettoni colorati disposti in gruppi; spazio sotto per attività.
+
+**Prompt immagine:**
+"Math activity for kids, two open hands showing finger combinations to make 10, colorful tokens on a table, playful classroom-market hybrid, vertical A5"
+
+**Testo:**
+Ada portò Nino e Lila sotto una tenda piena di gettoni colorati.
+
+“Ora scopriamo un segreto importantissimo,” disse.
+“Ci sono numeri che stanno benissimo insieme perché formano **10**. Sono le **coppie amiche del 10**.”
+
+Ecco alcune coppie amiche:
+
+* 1 + 9 = 10
+* 2 + 8 = 10
+* 3 + 7 = 10
+* 4 + 6 = 10
+* 5 + 5 = 10
+
+### Gioco con le mani
+
+Alza 3 dita.
+Quante ne mancano per arrivare a 10?
+
+Alza 6 dita.
+Quante ne mancano per arrivare a 10?
+
+### Laboratorio — Completa il 10
+
+* 1 + ___ = 10
+* 2 + ___ = 10
+* 4 + ___ = 10
+* 7 + ___ = 10
+* 9 + ___ = 10
+
+### Trucco da mercante veloce
+
+Se sai fare 10, tante addizioni diventano più facili. ✋✨🔟
+
+---
+
+## Pagina 7 — Sfida a livelli: somme furbe
+
+**Posizione immagine:** tre livelli illustrati come tende del mercato con bandierine colorate.
+
+**Prompt immagine:**
+"Children's math challenge page, three market tents labeled level 1 level 2 level 3, colorful flags, playful educational design, vertical A5"
+
+**Testo:**
+È il momento della sfida!
+Ogni tenda del mercato ha un livello diverso.
+
+### Livello 1 — Somme piccole
+
+* 1 + 2 = ___
+* 3 + 2 = ___
+* 4 + 1 = ___
+* 2 + 5 = ___
+
+### Livello 2 — Conta avanti
+
+* 8 + 2 = ___
+* 9 + 3 = ___
+* 10 + 5 = ___
+* 11 + 4 = ___
+
+### Livello 3 — Usa una strategia furba
+
+* 8 + 2 = ___
+* 8 + 3 = ___
+* 9 + 1 = ___
+* 9 + 4 = ___
+
+Suggerimento:
+Per fare **8 + 3**, puoi pensare così:
+8 + 2 = 10, poi ancora 1 = 11.
+
+### Missione speciale
+
+Spiega con parole tue come hai trovato almeno un risultato.
+
+---
+
+## Pagina 8 — Pagina visuale: la grande cerca nel mercato
+
+**Posizione immagine:** scena quasi a piena pagina con bancarelle, clienti, frutti, sacchetti e cartelli da osservare.
+
+**Prompt immagine:**
+"Busy search-and-find market illustration for children, countable fruit crates, flowers, coins, loaves of bread, baskets, cheerful characters, clear educational layout, vertical A5"
+
+**Testo:**
+Osserva con calma la grande piazza del mercato.
+Qui ogni cosa può diventare una somma!
+
+### Missione cerca e aggiungi
+
+Trova e somma:
+
+* 4 mele rosse + 3 mele verdi = ___
+* 2 ceste grandi + 5 ceste piccole = ___
+* 6 fiori gialli + 2 fiori blu = ___
+* 3 monete sul banco + 4 monete nella mano = ___
+
+### Missione detective
+
+Cerca nell’immagine:
+
+* una somma che fa 6
+* una somma che fa 8
+* una somma che fa 10
+
+### Missione inventa-tu
+
+Scegli due gruppi nell’immagine e scrivi la tua addizione.
+
+___ + ___ = ___
+
+---
+
+## Pagina 9 — Riepilogo attivo: quello che ora so fare
+
+**Posizione immagine:** bordo decorato con frutti, monete, piccoli cartellini e bandierine; checklist al centro.
+
+**Prompt immagine:**
+"Cute children's checklist page with market-themed border, fruits, coins, labels, bunting flags, clean friendly educational design, vertical A5"
+
+**Testo:**
+Ben fatto! Hai quasi conquistato il distintivo del Mercato delle Addizioni.
+
+Metti una stellina accanto a quello che sai fare:
+
+⭐ So unire due gruppi.
+
+⭐ So leggere un’addizione.
+
+⭐ So usare il segno +.
+
+⭐ So contare avanti per trovare un risultato.
+
+⭐ So trovare alcune coppie amiche del 10.
+
+⭐ So spiegare una strategia semplice.
+
+### Il mio angolo da mercante matematico
+
+L’addizione che mi piace di più è:
+___ + ___ = ___
+
+La strategia che mi aiuta di più è:
+
+* contare tutto
+* contare avanti
+* cercare il 10
+
+---
+
+## Pagina 10 — Super missione finale + badge
+
+**Posizione immagine:** badge grande in alto, in basso tre mini scene del mercato con attività finali.
+
+**Prompt immagine:**
+"Children's math badge illustration, cheerful market medal with plus sign and fruit icons, final mission layout, colorful and celebratory, vertical A5"
+
+**Testo:**
+Teo Tempo batté le mani.
+“Ultima prova! Chi supera la Super Missione diventa un vero Mercante delle Somme.”
+
+### Super Missione
+
+1. Completa le addizioni:
+
+* 3 + 4 = ___
+* 5 + 2 = ___
+* 8 + 1 = ___
+* 10 + 3 = ___
+
+2. Completa le coppie amiche del 10:
+
+* 6 + ___ = 10
+* 2 + ___ = 10
+* 9 + ___ = 10
+
+3. Scrivi due addizioni diverse che facciano 7:
+
+* ___ + ___ = 7
+* ___ + ___ = 7
+
+4. Inventa una piccola storia del mercato con una somma.
+   Esempio: “Avevo 4 pere, me ne hanno date 2, ora ne ho 6.”
+
+Scrivi la tua:
+
+---
+
+---
+
+### Badge del capitolo
+
+**Io sono un Mercante delle Addizioni!**
+
+Ada consegnò a Nino e Lila un distintivo a forma di cestino dorato.
+
+“Ogni somma è un incontro,” disse sorridendo.
+“Due piccoli gruppi possono diventare qualcosa di più grande.” 🧺💛➕
+
+---
+
+# Capitolo 3 — Il Castello delle Sottrazioni
+
+## Obiettivo del capitolo
+
+Far capire ai bambini che la sottrazione non significa solo togliere, ma anche scoprire quanto resta, quanto manca e quanta differenza c’è tra due quantità. Il capitolo accompagna i bambini dalla manipolazione concreta alle prime strategie di calcolo mentale. 🏰➖🔍
+
+## Percorso formativo in ordine di difficoltà
+
+1. Togliere elementi da un gruppo.
+2. Osservare quanti ne restano.
+3. Contare indietro sulla linea dei numeri.
+4. Trovare quanto manca per arrivare a un numero.
+5. Confrontare due quantità e trovare la differenza.
+6. Risolvere piccole sottrazioni entro 20 e prime situazioni con la decina.
+
+---
+
+## Pagina 1 — Apertura narrativa
+
+**Posizione immagine:** immagine grande in alto (circa 65% pagina), testo in basso.
+
+**Prompt immagine:**
+"Illustrazione per libro per bambini 6-10 anni, castello fantastico ma accogliente con torri morbide e bandiere numerate, ponte levatoio, scalini con numeri, personaggi simpatici davanti all'ingresso, atmosfera avventurosa ma rassicurante, formato verticale A5, educational picture book"
+
+**Testo:**
+Dopo il Mercato delle Addizioni, Nino Numero, Lila Linea e Teo Tempo arrivarono davanti a un castello altissimo.
+
+Le torri sembravano fatte di mattoni numerati, il ponte levatoio aveva piccoli gradini con le cifre e sopra il portone c’era scritto:
+
+**“Qui si scopre ciò che resta.”**
+
+Nino si fermò un momento.
+“Ciò che resta?”
+
+Ada Idee annuì.
+“Sì. Quando qualcosa va via, quando togliamo, quando manca un pezzetto… entra in gioco la **sottrazione**.”
+
+Il portone si aprì piano piano.
+Dal cortile uscì Dado Giallo, rotolando allegro con un mantello da guardiano del castello.
+
+“Benvenuti al **Castello delle Sottrazioni!**” gridò.
+“Oggi dovrete aiutare cavalieri, cuochi, giardinieri e persino i corvi del castello a capire quanti oggetti restano, quanti mancano e chi ne ha di più.”
+
+Lila osservò una fila di 8 lanterne appese al muro. Due erano spente.
+“Quindi la sottrazione serve anche a capire quante sono rimaste accese?”
+
+“Esattamente,” disse Ada. “La sottrazione è una lente speciale: ti aiuta a vedere il **dopo**.” ✨🏰➖
+
+---
+
+## Pagina 2 — Scoperta 1: togliere e vedere cosa resta
+
+**Posizione immagine:** in alto un vassoio con biscotti del castello; alcuni vengono portati via da una mano gentile.
+
+**Prompt immagine:**
+"Children's math book illustration, tray with 7 castle-shaped cookies, 2 being taken away, clear separated objects, warm fairy-tale castle kitchen style, vertical A5"
+
+**Testo:**
+La sottrazione può cominciare così:
+**ho un gruppo** e **tolgo qualche elemento**.
+
+Esempio:
+
+* sul vassoio ci sono **7 biscotti**
+* il cuoco ne prende **2**
+
+Contiamo quanti restano:
+**5**
+
+Quindi:
+**7 - 2 = 5**
+
+Il segno **-** vuol dire **togli**, **porta via**, **fai diminuire**.
+
+### Gioco — Quanti restano?
+
+Completa:
+
+* 5 mele - 1 mela = ___
+* 8 fiori - 3 fiori = ___
+* 9 chiavi - 2 chiavi = ___
+* 6 bandierine - 4 bandierine = ___
+
+### Mini missione
+
+Disegna 6 piccoli oggetti.
+Poi cancellane 2 con una crocetta.
+Quanti restano?
+
+___ - ___ = ___
+
+---
+
+## Pagina 3 — Scoperta 2: contare indietro
+
+**Posizione immagine:** scala del castello con gradini numerati, un personaggio scende contando all’indietro.
+
+**Prompt immagine:**
+"Educational illustration for kids, castle staircase shaped like a number line from 0 to 20, child character stepping downward counting backwards, playful and clear, vertical A5"
+
+**Testo:**
+A volte, per sottrarre, possiamo **contare indietro**.
+
+Esempio:
+**9 - 3**
+
+Parti da 9.
+Scendi di 3 passi:
+
+* 8
+* 7
+* 6
+
+Hai trovato il risultato:
+**9 - 3 = 6**
+
+Questo trucco è molto utile quando immagini una scala o una linea dei numeri.
+
+### Gioco — Scendi i gradini
+
+Parti dal primo numero e vai indietro:
+
+* 7 - 2 = ___
+* 10 - 1 = ___
+* 12 - 3 = ___
+* 15 - 4 = ___
+* 18 - 2 = ___
+
+### Missione movimento
+
+Parti da 11 e fai 5 passi indietro. Dove arrivi?
+
+---
+
+---
+
+## Pagina 4 — Gioco guidato 1: il cortile dei cavalieri mancanti
+
+**Posizione immagine:** cortile del castello con 10 elmi o cavalieri stilizzati; alcuni sono andati via lasciando spazi vuoti.
+
+**Prompt immagine:**
+"Cute castle courtyard for children, 10 knight helmets or toy knights in a row, some missing with empty spaces, friendly fantasy style, vertical A5"
+
+**Testo:**
+Nel cortile del castello, i cavalieri si allenavano in fila.
+Ma a un certo punto alcuni andarono a prendere l’acqua alla fontana.
+
+### Gioco — Chi è andato via?
+
+Osserva e completa:
+
+* C’erano 10 elmi. Ora se ne vedono 7. Quanti sono andati via? ___
+* C’erano 8 scudi. Ora se ne vedono 5. Quanti mancano? ___
+* C’erano 6 cavalli. Ora se ne vedono 4. Quanti sono usciti? ___
+
+### Missione furba
+
+A volte la sottrazione risponde alla domanda:
+**“Quanti mancano?”**
+
+Prova:
+
+* 9 - 4 = ___
+* 7 - 3 = ___
+* 10 - 6 = ___
+
+### Pensiero del castello
+
+Sottrarre non vuol dire solo togliere.
+Vuol dire anche scoprire chi non c’è più.
+
+---
+
+## Pagina 5 — Gioco guidato 2: quanto manca per arrivare?
+
+**Posizione immagine:** ponte levatoio con caselle numerate e un personaggio che deve raggiungere una porta finale.
+
+**Prompt immagine:**
+"Children's educational illustration, castle drawbridge with numbered tiles, character moving toward a final door, visual concept of how many more steps are needed, vertical A5"
+
+**Testo:**
+Lila si fermò sul ponte levatoio.
+“Se sono sul 6 e devo arrivare al 10… quanti passi mi mancano?”
+
+Ada sorrise.
+“Questa è una sottrazione speciale. Non stai togliendo qualcosa che hai in mano. Stai cercando **quanto manca**.”
+
+Esempio:
+Per andare da 6 a 10 servono:
+
+* 7
+* 8
+* 9
+* 10
+
+Mancano **4 passi**.
+Quindi:
+**10 - 6 = 4**
+
+### Gioco — Completa il ponte
+
+* Da 5 a 8 mancano ___ passi
+* Da 7 a 10 mancano ___ passi
+* Da 9 a 12 mancano ___ passi
+* Da 11 a 15 mancano ___ passi
+
+### Missione bonus
+
+Completa:
+
+* ___ + 3 = 10
+* ___ + 2 = 8
+* ___ + 4 = 9
+
+Piccolo segreto:
+A volte addizione e sottrazione si aiutano a vicenda.
+
+---
+
+## Pagina 6 — Mini laboratorio: la differenza tra due torri
+
+**Posizione immagine:** due torri di blocchi numerati, una più alta e una più bassa, con mattoncini ben visibili.
+
+**Prompt immagine:**
+"Math activity illustration for children, two castle towers made of blocks, one taller with 9 blocks and one shorter with 6 blocks, easy visual comparison, vertical A5"
+
+**Testo:**
+Nel castello c’erano due torri costruite con mattoncini.
+Una torre aveva **9 blocchi**.
+L’altra ne aveva **6**.
+
+Nino chiese:
+“Quanti blocchi di differenza ci sono?”
+
+Per scoprirlo puoi:
+
+* togliere 6 da 9
+  oppure
+* vedere quanti blocchi mancano alla torre più bassa per arrivare alla più alta
+
+Risultato:
+**9 - 6 = 3**
+
+### Laboratorio — Confronta le torri
+
+Completa:
+
+* 8 e 5 → differenza ___
+* 10 e 7 → differenza ___
+* 12 e 9 → differenza ___
+* 6 e 2 → differenza ___
+
+### Attività pratica
+
+Costruisci due torri con matite, cubetti o carte.
+Poi chiediti:
+**di quanto una è più alta dell’altra?**
+
+---
+
+## Pagina 7 — Sfida a livelli: sottrazioni furbe
+
+**Posizione immagine:** tre stanze del castello con insegne livello 1, livello 2, livello 3.
+
+**Prompt immagine:**
+"Children's math challenge page, three castle rooms labeled level 1 level 2 level 3, shields and banners, playful educational design, vertical A5"
+
+**Testo:**
+Nel castello ci sono tre sale della sfida.
+Ogni sala ti chiede un modo diverso di pensare.
+
+### Livello 1 — Togli e resta
+
+* 5 - 2 = ___
+* 7 - 1 = ___
+* 9 - 4 = ___
+* 6 - 3 = ___
+
+### Livello 2 — Conta indietro
+
+* 10 - 2 = ___
+* 12 - 1 = ___
+* 14 - 3 = ___
+* 16 - 5 = ___
+
+### Livello 3 — Trova quanto manca
+
+* ___ + 2 = 7
+* ___ + 3 = 9
+* ___ + 4 = 10
+* ___ + 5 = 12
+
+### Missione speciale
+
+Scegli una sottrazione e spiega se hai:
+
+* tolto
+* contato indietro
+* cercato quanto mancava
+
+---
+
+## Pagina 8 — Pagina visuale: la grande cerca nel castello
+
+**Posizione immagine:** scena quasi a piena pagina con castello pieno di dettagli da osservare: torce, finestre, chiavi, bandiere, corvi, scalini.
+
+**Prompt immagine:**
+"Busy search-and-find castle illustration for children, countable torches, windows, keys, flags, ravens, stairs, friendly fantasy scene, clear educational layout, vertical A5"
+
+**Testo:**
+Osserva con calma il grande castello.
+Qui ogni dettaglio può diventare una sottrazione.
+
+### Missione cerca e sottrai
+
+* Ci sono 9 torce. 3 sono spente. Quante restano accese? ___
+* Ci sono 8 finestre. 2 sono chiuse. Quante restano aperte? ___
+* Ci sono 7 chiavi. 4 vengono usate. Quante restano? ___
+* Ci sono 10 bandiere. 1 cade. Quante rimangono in alto? ___
+
+### Missione detective
+
+Trova nell’immagine:
+
+* una sottrazione che fa 5
+* una sottrazione che fa 6
+* una sottrazione che fa 7
+
+### Missione inventa-tu
+
+Scegli due gruppi nel castello e inventa la tua sottrazione.
+
+___ - ___ = ___
+
+---
+
+## Pagina 9 — Riepilogo attivo: quello che ora so fare
+
+**Posizione immagine:** bordo decorato con scudi, chiavi, torri, lanterne e piccoli corvi simpatici; checklist al centro.
+
+**Prompt immagine:**
+"Cute children's checklist page with castle-themed border, shields, keys, towers, lanterns, friendly ravens, clean educational design, vertical A5"
+
+**Testo:**
+Ben fatto. Hai quasi conquistato il sigillo del Castello delle Sottrazioni.
+
+Metti una stellina accanto a quello che sai fare:
+
+⭐ So togliere elementi da un gruppo.
+
+⭐ So capire quanti restano.
+
+⭐ So contare indietro.
+
+⭐ So trovare quanto manca.
+
+⭐ So confrontare due quantità.
+
+⭐ So scegliere una strategia semplice.
+
+### Il mio angolo da esploratore del castello
+
+La sottrazione che mi riesce meglio è:
+___ - ___ = ___
+
+La strategia che mi aiuta di più è:
+
+* togliere davvero
+* contare indietro
+* cercare quanto manca
+
+---
+
+## Pagina 10 — Super missione finale + badge
+
+**Posizione immagine:** badge grande in alto, in basso tre piccole scene del castello con attività finali.
+
+**Prompt immagine:**
+"Children's math badge illustration, castle medal with minus sign, keys and shields, final mission layout, colorful and celebratory, vertical A5"
+
+**Testo:**
+Dado Giallo fece una giravolta sul ponte levatoio.
+“Ultima prova! Chi supera la Super Missione diventa Guardiano delle Differenze.”
+
+### Super Missione
+
+1. Completa le sottrazioni:
+
+* 8 - 3 = ___
+* 10 - 4 = ___
+* 12 - 2 = ___
+* 15 - 5 = ___
+
+2. Trova quanto manca:
+
+* ___ + 2 = 9
+* ___ + 1 = 7
+* ___ + 4 = 11
+
+3. Confronta e trova la differenza:
+
+* 9 e 6 → differenza ___
+* 8 e 3 → differenza ___
+
+4. Inventa una piccola storia del castello con una sottrazione.
+   Esempio: “C’erano 7 chiavi, 2 sono state usate, ne restano 5.”
+
+Scrivi la tua:
+
+---
+
+---
+
+### Badge del capitolo
+
+**Io sono un Guardiano delle Differenze!**
+
+Ada consegnò a Nino e Lila un sigillo argentato a forma di scudo.
+
+“Le sottrazioni,” disse piano, “non fanno sparire soltanto.
+Ci aiutano a capire meglio ciò che resta, ciò che manca e ciò che cambia.” 🛡️🌙➖
+
+---
+
+# Capitolo 5 — La Città delle Divisioni Giuste
+
+## Obiettivo del capitolo
+
+Far capire ai bambini che la divisione serve a distribuire in parti uguali, a formare gruppi della stessa grandezza e a scoprire se avanza qualcosa. Il capitolo parte da situazioni concrete e quotidiane per arrivare alle prime divisioni semplici. 🍕🤖➗
+
+## Percorso formativo in ordine di difficoltà
+
+1. Distribuire oggetti in parti uguali.
+2. Capire quando una divisione è giusta e quando non lo è.
+3. Formare gruppi tutti della stessa dimensione.
+4. Contare quanti gruppi si ottengono.
+5. Scoprire il resto in situazioni semplici.
+6. Collegare la divisione alla moltiplicazione in modo intuitivo.
+
+---
+
+## Pagina 1 — Apertura narrativa
+
+**Posizione immagine:** immagine grande in alto (circa 65% pagina), testo in basso.
+
+**Prompt immagine:**
+"Illustrazione per libro per bambini 6-10 anni, città ordinata e allegra con strade simmetriche, pizzeria, pasticceria, robot aiutanti e scatole colorate, personaggi simpatici in una piazza luminosa, atmosfera educativa e giocosa, formato verticale A5, educational picture book"
+
+**Testo:**
+Dopo aver lasciato il Castello delle Sottrazioni, Nino Numero, Lila Linea, Teo Tempo e Dado Giallo arrivarono in una città davvero curiosa.
+
+Le case erano tutte in fila, i vasi avevano la stessa distanza tra loro, le finestre sembravano messe con il righello e perfino i piccioni camminavano in piccoli gruppi ordinati.
+
+Sulla porta principale della città c’era scritto:
+
+**“Qui ogni cosa si divide con giustizia.”**
+
+Nino guardò Ada Idee con aria incuriosita.
+“Dividere… vuol dire spezzare?”
+
+“A volte,” rispose Ada, “ma qui vuol dire soprattutto **distribuire bene**, **fare gruppi uguali**, **non lasciare nessuno senza**.”
+
+In quel momento un piccolo robot azzurro arrivò sfrecciando su ruote tonde.
+Aveva un grembiule da pizzaiolo e un cappello da pasticcere tutto insieme.
+
+“Io sono Robo-Ordina!” disse con voce allegra.
+“Nella Città delle Divisioni Giuste aiutiamo tutti a condividere in modo corretto. Fette di pizza, biscotti, matite, scatole, fiori… tutto deve essere distribuito con attenzione.”
+
+Lila indicò una tavola con 8 dolcetti e 4 piattini.
+“Quindi dobbiamo capire quanti dolcetti vanno su ogni piattino?”
+
+“Esatto!” disse Ada sorridendo.
+“Oggi scoprirete il superpotere della **divisione**.” ⚙️✨➗
+
+---
+
+## Pagina 2 — Scoperta 1: dividere in parti uguali
+
+**Posizione immagine:** tavolo in alto con 8 dolcetti e 4 piattini vuoti, oggetti ben separati.
+
+**Prompt immagine:**
+"Children's math book illustration, 8 cupcakes or cookies on a table and 4 empty plates ready for equal sharing, clear separated objects, cute bakery style, vertical A5"
+
+**Testo:**
+La divisione può cominciare così:
+**ho tanti oggetti** e devo **distribuirli in parti uguali**.
+
+Esempio:
+
+* ci sono **8 dolcetti**
+* ci sono **4 piattini**
+
+Se metto un dolcetto alla volta su ogni piattino, alla fine ogni piattino ne avrà **2**.
+
+Quindi:
+**8 diviso 4 = 2**
+
+Questo significa:
+8 oggetti distribuiti in 4 gruppi uguali danno 2 oggetti per gruppo.
+
+### Gioco — Piattini giusti
+
+Completa:
+
+* 6 biscotti divisi in 3 piatti = ___ per piatto
+* 10 fragole divise in 2 cestini = ___ per cestino
+* 12 matite divise in 4 barattoli = ___ per barattolo
+* 9 fiori divisi in 3 vasi = ___ per vaso
+
+### Mini missione
+
+Disegna 8 palline.
+Poi dividile in 2 gruppi uguali.
+Quante palline in ogni gruppo?
+
+___ diviso ___ = ___
+
+---
+
+## Pagina 3 — Scoperta 2: fare gruppi uguali
+
+**Posizione immagine:** scatole o cestini allineati con palline colorate da raggruppare a 2 o a 3.
+
+**Prompt immagine:**
+"Educational illustration for kids, colorful boxes and marbles being grouped equally by 2 and 3, simple clean layout, playful city style, vertical A5"
+
+**Testo:**
+La divisione non serve solo a distribuire.
+Serve anche a **formare gruppi tutti uguali**.
+
+Esempio:
+Hai **12 palline**.
+Vuoi fare gruppi da **3**.
+
+Conta così:
+
+* 3 palline → primo gruppo
+* 3 palline → secondo gruppo
+* 3 palline → terzo gruppo
+* 3 palline → quarto gruppo
+
+Hai formato **4 gruppi**.
+
+Quindi:
+**12 diviso 3 = 4**
+
+### Gioco — Gruppi ordinati
+
+Completa:
+
+* 8 palline in gruppi da 2 = ___ gruppi
+* 15 biscotti in gruppi da 3 = ___ gruppi
+* 12 mattoni in gruppi da 4 = ___ gruppi
+* 10 caramelle in gruppi da 5 = ___ gruppi
+
+### Missione extra
+
+Disegna 9 stelline.
+Fai gruppi da 3.
+Quanti gruppi ottieni?
+
+---
+
+## Pagina 4 — Gioco guidato 1: la pizzeria delle fette giuste
+
+**Posizione immagine:** pizzeria allegra con pizze tonde divise in spicchi e tavoli con bambini o personaggi.
+
+**Prompt immagine:**
+"Cute children's pizzeria scene, round pizzas sliced equally, tables with friendly characters waiting for fair shares, bright educational illustration, vertical A5"
+
+**Testo:**
+Nella pizzeria della città c’era una regola importantissima:
+**tutti devono ricevere la stessa quantità.**
+
+### Gioco — Dividi le pizze
+
+Completa:
+
+* 8 fette divise tra 4 amici = ___ fette a testa
+* 6 fette divise tra 3 amici = ___ fette a testa
+* 10 fette divise tra 2 amici = ___ fette a testa
+* 12 fette divise tra 6 amici = ___ fetta/e a testa
+
+### Missione del pizzaiolo
+
+Osserva questa situazione:
+Ci sono 9 mini pizzette e 3 tavoli.
+Se le distribuisci in modo giusto, quante pizzette vanno a ogni tavolo?
+
+---
+
+### Pensiero gentile
+
+Dividere bene significa fare attenzione agli altri.
+La matematica può essere anche un modo per essere giusti.
+
+---
+
+## Pagina 5 — Gioco guidato 2: le scatole dei robot
+
+**Posizione immagine:** robot simpatici vicino a una catena di montaggio con scatole tutte uguali e oggetti da inserire.
+
+**Prompt immagine:**
+"Children's educational illustration, friendly little robots packing toys into equal boxes on a simple conveyor belt, colorful city workshop, vertical A5"
+
+**Testo:**
+Robo-Ordina lavorava in un laboratorio pieno di scatole colorate.
+Ogni scatola doveva contenere lo stesso numero di oggetti.
+
+### Gioco — Riempi le scatole
+
+Completa:
+
+* 12 cubi in 3 scatole = ___ cubi per scatola
+* 16 bottoni in 4 scatole = ___ bottoni per scatola
+* 18 perline in 6 scatole = ___ perline per scatola
+* 20 tappi in 5 scatole = ___ tappi per scatola
+
+### Missione veloce
+
+Quante scatole servono se hai 12 biscotti e vuoi metterne 2 in ogni scatola?
+___ scatole
+
+### Missione furba
+
+Osserva bene:
+
+* 12 diviso 3 = 4
+* 12 diviso 4 = 3
+
+Stessi numeri, ma storia diversa.
+In una situazione trovi quanti oggetti per scatola.
+Nell’altra trovi quante scatole servono.
+
+---
+
+## Pagina 6 — Mini laboratorio: quando avanza qualcosa
+
+**Posizione immagine:** tavolo con 7 caramelle e 2 sacchetti, oppure 10 palline e 3 cestini, con un oggetto che resta fuori.
+
+**Prompt immagine:**
+"Math activity illustration for children, candies or balls being shared into bags equally with one item left over, clear visual of remainder, playful and friendly, vertical A5"
+
+**Testo:**
+A volte si può dividere quasi tutto… ma **qualcosa avanza**.
+
+Esempio:
+Hai **7 caramelle** e **2 sacchetti**.
+Se le distribuisci in modo giusto:
+
+* in un sacchetto ne metti 3
+* nell’altro ne metti 3
+
+Ne resta **1 fuori**.
+
+Quel pezzetto che avanza si chiama **resto**.
+
+### Laboratorio — C’è resto o non c’è?
+
+Completa:
+
+* 7 diviso 2 = 3 con resto ___
+* 10 diviso 3 = 3 con resto ___
+* 9 diviso 2 = 4 con resto ___
+* 8 diviso 4 = 2 con resto ___
+
+### Missione osserva
+
+Cerchia le divisioni in cui **non avanza niente**.
+
+### Piccolo segreto
+
+Quando non avanza niente, la divisione è proprio perfetta. 🍬📦✨
+
+---
+
+## Pagina 7 — Sfida a livelli: divisioni furbe
+
+**Posizione immagine:** tre quartieri della città con insegne livello 1, livello 2, livello 3.
+
+**Prompt immagine:**
+"Children's math challenge page, three city districts labeled level 1 level 2 level 3, colorful signs, friendly geometric buildings, playful educational design, vertical A5"
+
+**Testo:**
+È arrivato il momento della sfida.
+Ogni quartiere della città ha una missione diversa.
+
+### Livello 1 — Distribuisci bene
+
+* 6 diviso 2 = ___
+* 8 diviso 4 = ___
+* 12 diviso 3 = ___
+* 15 diviso 5 = ___
+
+### Livello 2 — Fai i gruppi
+
+* 10 oggetti in gruppi da 2 = ___ gruppi
+* 12 oggetti in gruppi da 4 = ___ gruppi
+* 18 oggetti in gruppi da 3 = ___ gruppi
+* 16 oggetti in gruppi da 2 = ___ gruppi
+
+### Livello 3 — Attento al resto
+
+* 7 diviso 3 = ___ con resto ___
+* 11 diviso 5 = ___ con resto ___
+* 13 diviso 4 = ___ con resto ___
+
+### Missione speciale
+
+Spiega con parole tue una differenza tra:
+
+* dividere in parti uguali
+* fare gruppi uguali
+
+---
+
+## Pagina 8 — Pagina visuale: la grande cerca nella città
+
+**Posizione immagine:** scena quasi a piena pagina con pizzeria, bottega, laboratorio robot, vasi, scatole e tavolini da osservare.
+
+**Prompt immagine:**
+"Busy search-and-find city illustration for children, pizzeria, bakery, robot workshop, flower shop, equal groups and shareable objects clearly visible, educational layout, vertical A5"
+
+**Testo:**
+Osserva con calma la Città delle Divisioni Giuste.
+Ovunque ci sono gruppi da formare e cose da distribuire.
+
+### Missione cerca e dividi
+
+Trova e completa:
+
+* 8 biscotti in 4 piatti = ___
+* 12 fiori in 3 vasi = ___
+* 10 ruote in 5 scatole = ___
+* 9 palloncini in 2 mazzi = ___ con resto ___
+
+### Missione detective
+
+Cerca nell’immagine:
+
+* una divisione che fa 2
+* una divisione che fa 3
+* una divisione con resto 1
+
+### Missione inventa-tu
+
+Scegli un gruppo di oggetti nell’immagine e inventa una divisione.
+
+___ diviso ___ = ___
+
+---
+
+## Pagina 9 — Riepilogo attivo: quello che ora so fare
+
+**Posizione immagine:** bordo decorato con scatole, pizze, robot, dolcetti e piccoli ingranaggi simpatici; checklist al centro.
+
+**Prompt immagine:**
+"Cute children's checklist page with city and division-themed border, boxes, pizzas, robots, cupcakes, gears, clean educational design, vertical A5"
+
+**Testo:**
+Ben fatto. Hai quasi conquistato il distintivo della Città delle Divisioni Giuste.
+
+Metti una stellina accanto a quello che sai fare:
+
+⭐ So dividere in parti uguali.
+
+⭐ So formare gruppi uguali.
+
+⭐ So capire quanti oggetti vanno in ogni gruppo.
+
+⭐ So capire quanti gruppi si formano.
+
+⭐ So accorgermi se avanza qualcosa.
+
+⭐ So raccontare una divisione con parole semplici.
+
+### Il mio angolo da costruttore giusto
+
+La divisione che mi piace di più è:
+___ diviso ___ = ___
+
+La cosa che ho capito meglio è:
+
+* distribuire
+* fare gruppi
+* trovare il resto
+
+---
+
+## Pagina 10 — Super missione finale + badge
+
+**Posizione immagine:** badge grande in alto, in basso tre mini scene della città con attività finali.
+
+**Prompt immagine:**
+"Children's math badge illustration, cheerful city medal with division symbol, pizzas, boxes and robot icons, final mission layout, colorful and celebratory, vertical A5"
+
+**Testo:**
+Robo-Ordina si fermò al centro della piazza e alzò una piccola chiave blu.
+“Ultima prova! Chi supera la Super Missione diventa Custode delle Divisioni Giuste.”
+
+### Super Missione
+
+1. Completa le divisioni:
+
+* 8 diviso 2 = ___
+* 12 diviso 4 = ___
+* 15 diviso 3 = ___
+* 18 diviso 6 = ___
+
+2. Trova quanti gruppi si formano:
+
+* 10 oggetti in gruppi da 5 = ___ gruppi
+* 14 oggetti in gruppi da 2 = ___ gruppi
+
+3. Completa con il resto, se serve:
+
+* 7 diviso 2 = ___ con resto ___
+* 10 diviso 4 = ___ con resto ___
+
+4. Inventa una piccola storia della città con una divisione.
+   Esempio: “Avevamo 12 biscotti e 3 piatti. Ne abbiamo messi 4 in ogni piatto.”
+
+Scrivi la tua:
+
+---
+
+---
+
+### Badge del capitolo
+
+**Io sono un Custode delle Divisioni Giuste!**
+
+Ada consegnò a Nino e Lila un distintivo a forma di ruota dentata dorata.
+
+“Dividere bene,” disse con dolcezza, “non significa solo separare.
+Significa capire come organizzare, distribuire e condividere nel modo più giusto possibile.” 🤖💙➗
+
+---
+
+# Capitolo 6 — Il Villaggio delle Forme e dei Percorsi
+
+## Obiettivo del capitolo
+
+Far riconoscere ai bambini le forme geometriche di base, le posizioni nello spazio, i percorsi e le prime simmetrie. Il capitolo aiuta a osservare il mondo come una mappa piena di indizi, figure e direzioni. 🧭🔺🏡
+
+## Percorso formativo in ordine di difficoltà
+
+1. Riconoscere posizioni semplici: sopra, sotto, dentro, fuori, destra, sinistra.
+2. Seguire e descrivere piccoli percorsi.
+3. Riconoscere figure piane nella realtà.
+4. Distinguere alcune forme solide semplici.
+5. Osservare e completare semplici simmetrie.
+6. Usare mappe e indicazioni per muoversi in uno spazio illustrato.
+
+---
+
+## Pagina 1 — Apertura narrativa
+
+**Posizione immagine:** immagine grande in alto (circa 65% pagina), testo in basso.
+
+**Prompt immagine:**
+"Illustrazione per libro per bambini 6-10 anni, villaggio fantastico costruito con case geometriche, tetti triangolari, finestre quadrate, torri cilindriche, stradine curve e cartelli colorati, personaggi simpatici con una mappa in mano, atmosfera luminosa e giocosa, formato verticale A5, educational picture book"
+
+**Testo:**
+Dopo la Città delle Divisioni Giuste, Nino Numero, Lila Linea, Teo Tempo, Dado Giallo e Ada Idee arrivarono in un luogo davvero sorprendente.
+
+Le case sembravano disegnate con le forme del quaderno: alcune avevano il tetto a triangolo, altre finestre quadrate, altre ancora porte tonde come cerchi perfetti.
+Le strade si incrociavano come linee di una mappa segreta.
+
+Sull’arco d’ingresso c’era scritto:
+
+**“Benvenuti nel Villaggio delle Forme e dei Percorsi.”**
+
+Lila si fermò incantata.
+“Qui tutto sembra voler raccontare una direzione o una figura!”
+
+“Esatto,” disse Ada. “Oggi impareremo a osservare dove si trovano le cose, che forma hanno e come si può arrivare da un posto all’altro.”
+
+Dado Giallo saltò su un sasso a forma di cubo.
+“E troveremo anche strade misteriose, specchi magici e costruzioni sorprendenti!”
+
+Nino guardò la mappa che pendeva da un palo.
+“Sembra quasi che il villaggio sia un grande gioco da esplorare.”
+
+Ada sorrise.
+“Lo è. E chi saprà riconoscere forme e percorsi diventerà un vero Esploratore dello Spazio.” 🗺️✨🏘️
+
+---
+
+## Pagina 2 — Scoperta 1: dove si trova?
+
+**Posizione immagine:** scena in alto con oggetti in posizioni diverse: gatto sopra un muretto, palla sotto una panchina, fiore dentro un vaso, aquilone fuori dal recinto.
+
+**Prompt immagine:**
+"Children's math book illustration, simple village scene with clear spatial positions: cat on a wall, ball under a bench, flower inside a pot, kite outside a fence, bright and easy to read, vertical A5"
+
+**Testo:**
+Per muoverci bene nello spazio dobbiamo usare parole speciali.
+Sono parole che ci aiutano a dire **dove si trova** qualcosa.
+
+Ecco alcune parole importanti:
+
+* **sopra**
+* **sotto**
+* **dentro**
+* **fuori**
+* **vicino**
+* **lontano**
+* **destra**
+* **sinistra**
+
+### Gioco — Dove si trova?
+
+Osserva l’immagine e completa:
+
+* Il gatto è ______ il muretto.
+* La palla è ______ la panchina.
+* Il fiore è ______ il vaso.
+* L’aquilone è ______ il recinto.
+* La fontana è ______ alla casa rossa.
+
+### Mini missione
+
+Guarda la tua stanza o quello che hai vicino.
+Trova un oggetto:
+
+* sopra qualcosa
+* sotto qualcosa
+* dentro qualcosa
+
+---
+
+## Pagina 3 — Scoperta 2: seguire un percorso
+
+**Posizione immagine:** mappa semplice del villaggio con sentieri, casette, fontana, albero e piazza; frecce chiare.
+
+**Prompt immagine:**
+"Educational illustration for kids, simple map of a colorful village with paths, fountain, tree, square, houses and arrows showing directions, clear and playful, vertical A5"
+
+**Testo:**
+Un percorso è una strada da seguire.
+Per descriverlo possiamo usare parole come:
+
+* avanti
+* indietro
+* gira a destra
+* gira a sinistra
+* attraversa
+* fermati
+
+Esempio:
+Parti dalla fontana.
+Vai avanti.
+Gira a destra al grande albero.
+Cammina ancora un po’ e arrivi alla panetteria.
+
+### Gioco — Segui la mappa
+
+Completa il percorso:
+
+1. Parti dalla casa blu.
+2. Vai ______ fino alla piazza.
+3. Gira a ______ vicino al pozzo.
+4. Vai avanti e arrivi al ______.
+
+### Missione extra
+
+Disegna un piccolo percorso con 3 frecce:
+→ ↑ ←
+Poi racconta dove porta.
+
+---
+
+## Pagina 4 — Gioco guidato 1: la caccia alle forme
+
+**Posizione immagine:** grande scena del villaggio con oggetti che ricordano figure piane: porte rettangolari, ruote circolari, tetti triangolari, finestre quadrate.
+
+**Prompt immagine:**
+"Colorful village scene for children, many objects shaped like basic geometric figures: circular wheels, square windows, triangular roofs, rectangular doors, playful educational illustration, vertical A5"
+
+**Testo:**
+Nel villaggio, le forme sono dappertutto.
+Basta guardare bene per scoprire che il mondo è pieno di geometria.
+
+Le figure piane più importanti da conoscere qui sono:
+
+* **cerchio**
+* **quadrato**
+* **rettangolo**
+* **triangolo**
+
+### Gioco — Caccia alle forme
+
+Osserva e trova:
+
+* ___ cerchi
+* ___ quadrati
+* ___ rettangoli
+* ___ triangoli
+
+### Missione — Trova la forma giusta
+
+Abbina:
+
+* ruota → ______
+* finestra piccola → ______
+* porta → ______
+* tetto → ______
+
+### Missione inventa-tu
+
+Disegna una casa usando almeno:
+
+* 1 triangolo
+* 2 quadrati
+* 1 rettangolo
+* 1 cerchio
+
+---
+
+## Pagina 5 — Gioco guidato 2: i solidi del villaggio
+
+**Posizione immagine:** banco con oggetti tridimensionali: cubo, sfera, cilindro, cono, in forma amichevole e riconoscibile.
+
+**Prompt immagine:**
+"Children's educational illustration, table with simple 3D solids: cube, sphere, cylinder, cone, in a friendly playful style, bright village workshop setting, vertical A5"
+
+**Testo:**
+Alcune forme non sono piatte.
+Si possono toccare, girare, sollevare.
+Queste forme si chiamano **solidi**.
+
+Nel villaggio ne troviamo alcuni molto famosi:
+
+* **cubo** come un dado o una scatolina
+* **sfera** come una palla
+* **cilindro** come una lattina
+* **cono** come un cappellino da festa
+
+### Gioco — Riconosci il solido
+
+Completa:
+
+* Una palla ricorda una ______
+* Una scatola piccola ricorda un ______
+* Una lattina ricorda un ______
+* Un cono gelato ricorda un ______
+
+### Missione osserva
+
+Guarda intorno a te e trova:
+
+* 1 oggetto che sembra un cubo
+* 1 oggetto che sembra una sfera
+* 1 oggetto che sembra un cilindro
+
+---
+
+## Pagina 6 — Mini laboratorio: lo specchio magico della simmetria
+
+**Posizione immagine:** metà pagina superiore con uno specchio o linea centrale; farfalla, foglia, finestra decorata da completare a metà.
+
+**Prompt immagine:**
+"Math activity illustration for children, symmetry mirror line in the middle, half butterfly, half leaf, half decorative window to complete, clean and playful, vertical A5"
+
+**Testo:**
+Nel centro del villaggio c’era uno specchio magico.
+Ma non era uno specchio normale.
+Mostrava solo una metà e chiedeva ai bambini di immaginare l’altra.
+
+Quando due parti si corrispondono come in uno specchio, si parla di **simmetria**.
+
+### Laboratorio — Completa la metà mancante
+
+Osserva la linea al centro.
+Ora completa il disegno in modo che i due lati siano uguali.
+
+Puoi farlo con:
+
+* una farfalla
+* una foglia
+* una finestra decorata
+
+### Missione del detective
+
+Cerchia le cose che possono essere simmetriche:
+
+* una farfalla
+* una palla
+* una foglia
+* una lettera A
+* una nuvola tutta storta
+
+### Piccolo segreto
+
+La simmetria ci aiuta a vedere ordine, equilibrio e bellezza. 🪞🍃✨
+
+---
+
+## Pagina 7 — Sfida a livelli: percorsi e forme furbe
+
+**Posizione immagine:** tre aree del villaggio con insegne livello 1, livello 2, livello 3; una per posizioni, una per forme, una per percorsi.
+
+**Prompt immagine:**
+"Children's math challenge page, three playful village zones labeled level 1 level 2 level 3, arrows, shapes and paths, colorful educational design, vertical A5"
+
+**Testo:**
+È il momento della sfida.
+Ogni zona del villaggio ti mette alla prova in un modo diverso.
+
+### Livello 1 — Posizioni
+
+Completa:
+
+* Il fiore è ______ il vaso.
+* Il cane è ______ la staccionata.
+* Il pallone è ______ la sedia.
+* L’albero è ______ alla fontana.
+
+### Livello 2 — Forme
+
+Scrivi la forma giusta:
+
+* ruota → ______
+* tetto → ______
+* porta → ______
+* finestra quadrata → ______
+
+### Livello 3 — Percorsi
+
+Parti dalla scuola.
+
+* vai avanti
+* gira a destra
+* vai avanti
+* gira a sinistra
+
+Dove arrivi? ______
+
+### Missione speciale
+
+Spiega con parole tue la differenza tra una forma piana e un solido.
+
+---
+
+## Pagina 8 — Pagina visuale: la grande cerca nel villaggio
+
+**Posizione immagine:** scena quasi a piena pagina con villaggio ricco di dettagli: case, strade, ponticello, pozzo, ruote, cartelli, alberi, animali.
+
+**Prompt immagine:**
+"Busy search-and-find village illustration for children, many geometric details, roads, bridge, well, wheels, signs, trees, playful educational layout, vertical A5"
+
+**Testo:**
+Osserva con calma il Villaggio delle Forme e dei Percorsi.
+Ogni angolo nasconde una figura o una direzione.
+
+### Missione cerca e trova
+
+Trova nell’immagine:
+
+* 5 cerchi
+* 4 triangoli
+* 3 quadrati
+* 6 rettangoli
+
+### Missione del percorso
+
+Indica un possibile cammino:
+
+* dalla fontana al ponte
+* dal ponte alla casa gialla
+* dalla casa gialla alla piazza
+
+### Missione detective
+
+Cerca una cosa:
+
+* sopra qualcosa
+* sotto qualcosa
+* dentro qualcosa
+* fuori da qualcosa
+
+---
+
+## Pagina 9 — Riepilogo attivo: quello che ora so fare
+
+**Posizione immagine:** bordo decorato con frecce, casette geometriche, piccoli cartelli e specchi; checklist al centro.
+
+**Prompt immagine:**
+"Cute children's checklist page with village geometry-themed border, arrows, tiny geometric houses, signs and mirror icons, clean educational design, vertical A5"
+
+**Testo:**
+Ben fatto. Hai quasi conquistato il distintivo del Villaggio delle Forme e dei Percorsi.
+
+Metti una stellina accanto a quello che sai fare:
+
+⭐ So descrivere dove si trova un oggetto.
+
+⭐ So seguire un piccolo percorso.
+
+⭐ So riconoscere cerchio, quadrato, rettangolo e triangolo.
+
+⭐ So distinguere alcune forme solide.
+
+⭐ So osservare una simmetria semplice.
+
+⭐ So usare una mappa illustrata.
+
+### Il mio angolo da esploratore dello spazio
+
+La forma che riconosco meglio è: ______
+
+La parte che mi è piaciuta di più è:
+
+* trovare forme
+* seguire percorsi
+* completare simmetrie
+
+---
+
+## Pagina 10 — Super missione finale + badge
+
+**Posizione immagine:** badge grande in alto, in basso tre mini scene del villaggio con attività finali.
+
+**Prompt immagine:**
+"Children's math badge illustration, cheerful village medal with arrows and geometric shapes, final mission layout, colorful and celebratory, vertical A5"
+
+**Testo:**
+Lila Linea aprì la grande mappa del villaggio e la distese sulla piazza.
+“Ultima prova! Chi supera la Super Missione diventa Guida delle Forme e dei Percorsi.”
+
+### Super Missione
+
+1. Completa con la parola giusta:
+
+* Il gatto è ______ il tetto.
+* La palla è ______ la panchina.
+* Il fiore è ______ il vaso.
+
+2. Scrivi la forma giusta:
+
+* una ruota è un ______
+* una porta è un ______
+* un tetto è un ______
+* una finestra uguale sui quattro lati è un ______
+
+3. Trova il solido:
+
+* palla → ______
+* scatola → ______
+* lattina → ______
+
+4. Inventa un piccolo percorso.
+   Esempio: “Parto dalla fontana, vado avanti, giro a destra e arrivo al ponte.”
+
+Scrivi il tuo:
+
+---
+
+---
+
+### Badge del capitolo
+
+**Io sono una Guida delle Forme e dei Percorsi!**
+
+Ada consegnò a Nino e Lila un distintivo con una freccia dorata e quattro forme colorate.
+
+“Quando impari a osservare lo spazio,” disse, “inizi a capire meglio il mondo che hai intorno.
+Ogni strada, ogni casa, ogni oggetto racconta una forma e una direzione.” 🧭🏅🌈
+
+---
+
+# Stato attuale 🗂️✅✨
+
+Struttura generale del **Volume 1** completata.
+Capitolo 1 scritto in versione completa con 10 pagine, posizioni immagini e prompt.
+Capitolo 2 scritto in versione completa con 10 pagine, posizioni immagini e prompt.
+Capitolo 3 scritto in versione completa con 10 pagine, posizioni immagini e prompt.
+Capitolo 4 scritto in versione completa con 10 pagine, posizioni immagini e prompt.
+Capitolo 5 scritto in versione completa con 10 pagine, posizioni immagini e prompt.
+Capitolo 6 scritto in versione completa con 10 pagine, posizioni immagini e prompt.
+Errore corretto: la sequenza è stata ripristinata inserendo il capitolo delle moltiplicazioni prima del capitolo delle divisioni.
+Il progetto viene ora chiuso come **prima parte completa**, con un totale di **6 capitoli** e **60 pagine formato A5**.
+
+# Chiusura del Volume 1 🌟📚🚪
+
+Questo primo libro accompagna i bambini in un viaggio che parte dai numeri, passa per addizioni, sottrazioni, moltiplicazioni e divisioni, e arriva fino alle forme e ai percorsi.
+
+È una prima grande avventura matematica, pensata per far nascere sicurezza, curiosità e piacere nella scoperta.
+
+Ma il viaggio non finisce qui.
+
+Nel **prossimo libro** i piccoli esploratori continueranno il loro cammino con nuove missioni, nuove sfide e nuovi mondi da scoprire: misure, problemi furbi, dati, grafici e una grande avventura finale.
+
+**Fine del Volume 1. Il viaggio continua…** ✨🧭📘

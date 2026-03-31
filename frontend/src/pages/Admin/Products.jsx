@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Plus, Loader2, Trash2, Edit2, Sparkles, BookOpen } from 'lucide-react'
+import { ArrowLeft, Plus, Loader2, Trash2, Edit2, Sparkles, BookOpen, Globe, Gamepad2 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { supabase } from '../../utils/supabase'
 
@@ -15,6 +15,7 @@ export default function AdminProducts() {
     description: '',
     cover_image: '',
     download_link: '',
+    type: 'link',
   })
   const [submitting, setSubmitting] = useState(false)
 
@@ -32,7 +33,7 @@ export default function AdminProducts() {
   }
 
   const resetForm = () => {
-    setFormData({ title: '', description: '', cover_image: '', download_link: '' })
+    setFormData({ title: '', description: '', cover_image: '', download_link: '', type: 'link' })
     setEditingId(null)
     setShowForm(false)
   }
@@ -41,16 +42,21 @@ export default function AdminProducts() {
     e.preventDefault()
     setSubmitting(true)
 
+    const dataToSave = { ...formData }
+    if (dataToSave.type === 'app') {
+      dataToSave.download_link = 'https://app.internal/' + dataToSave.title.toLowerCase().replace(/\s+/g, '-')
+    }
+
     let error
     if (editingId) {
       ({ error } = await supabase
         .from('products')
-        .update(formData)
+        .update(dataToSave)
         .eq('id', editingId))
     } else {
       ({ error } = await supabase
         .from('products')
-        .insert([formData]))
+        .insert([dataToSave]))
     }
 
     if (error) {
@@ -70,6 +76,7 @@ export default function AdminProducts() {
       description: product.description,
       cover_image: product.cover_image || '',
       download_link: product.download_link,
+      type: product.type || 'link',
     })
     setEditingId(product.id)
     setShowForm(true)
@@ -123,6 +130,37 @@ export default function AdminProducts() {
               </h2>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Type selector */}
+              <div>
+                <label className="block font-body font-medium text-gray-600 mb-2">
+                  Tipo prodotto
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, type: 'link' })}
+                    className={`p-4 rounded-xl border-2 transition-all text-left ${formData.type === 'link' ? 'border-pastel-pink-dark bg-pastel-pink/30' : 'border-pastel-lavender hover:border-pastel-pink-dark'}`}
+                  >
+                    <div className="flex items-center gap-2 mb-1">
+                      <Globe className="w-5 h-5 text-pastel-pink-dark" />
+                      <span className="font-display font-semibold text-gray-800">Link Esterno</span>
+                    </div>
+                    <p className="font-body text-sm text-gray-500">Prodotto venduto su Gumroad, Etsy, ecc.</p>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, type: 'app' })}
+                    className={`p-4 rounded-xl border-2 transition-all text-left ${formData.type === 'app' ? 'border-pastel-lavender-dark bg-pastel-lavender/30' : 'border-pastel-lavender hover:border-pastel-lavender-dark'}`}
+                  >
+                    <div className="flex items-center gap-2 mb-1">
+                      <Gamepad2 className="w-5 h-5 text-pastel-lavender-dark" />
+                      <span className="font-display font-semibold text-gray-800">App Interattiva</span>
+                    </div>
+                    <p className="font-body text-sm text-gray-500">Mini-app contenuto nel sito (libri, giochi)</p>
+                  </button>
+                </div>
+              </div>
+
               <div className="grid sm:grid-cols-2 gap-4">
                 <input
                   type="text"
@@ -147,14 +185,16 @@ export default function AdminProducts() {
                 className="input-field min-h-[100px] resize-y"
                 required
               />
-              <input
-                type="url"
-                placeholder="Link al prodotto (es. link Gumroad, Etsy, ecc.)"
-                value={formData.download_link}
-                onChange={(e) => setFormData({ ...formData, download_link: e.target.value })}
-                className="input-field"
-                required
-              />
+              {formData.type === 'link' && (
+                <input
+                  type="url"
+                  placeholder="Link al prodotto (es. link Gumroad, Etsy, ecc.)"
+                  value={formData.download_link}
+                  onChange={(e) => setFormData({ ...formData, download_link: e.target.value })}
+                  className="input-field"
+                  required
+                />
+              )}
               <div className="flex gap-3">
                 <button
                   type="submit"
@@ -222,8 +262,13 @@ export default function AdminProducts() {
                       loading="lazy"
                     />
                   ) : (
-                    <span className="text-4xl">📚</span>
+                    <span className="text-4xl">{product.type === 'app' ? '🎮' : '📚'}</span>
                   )}
+                  <div className="absolute top-3 left-3">
+                    <span className={`badge text-xs ${product.type === 'app' ? 'badge-lavender' : 'badge-pink'}`}>
+                      {product.type === 'app' ? '🎮 App' : '🔗 Link'}
+                    </span>
+                  </div>
                   <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={() => handleEdit(product)}
@@ -246,14 +291,20 @@ export default function AdminProducts() {
                   <p className="font-body text-gray-500 text-sm line-clamp-2 mb-3">
                     {product.description}
                   </p>
-                  <a
-                    href={product.download_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-pastel-pink-dark font-body text-sm font-medium hover:underline"
-                  >
-                    Apri link &rarr;
-                  </a>
+                  {product.type === 'link' ? (
+                    <a
+                      href={product.download_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-pastel-pink-dark font-body text-sm font-medium hover:underline"
+                    >
+                      Apri link &rarr;
+                    </a>
+                  ) : (
+                    <span className="text-pastel-lavender-dark font-body text-sm font-medium">
+                      App interattiva - ID: {product.id.substring(0, 8)}...
+                    </span>
+                  )}
                 </div>
               </motion.div>
             ))}
