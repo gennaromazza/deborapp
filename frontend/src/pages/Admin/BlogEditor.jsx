@@ -141,16 +141,56 @@ export default function BlogEditor() {
       } else if (data?.error) {
         setMessage({ type: 'error', text: data.error })
       } else if (data?.content) {
-        setFormData(prev => ({
-          ...prev,
-          content: data.content,
-          excerpt: data.excerpt || data.content.replace(/<[^>]*>/g, '').slice(0, 200),
-          slug: data.slug || prev.slug,
-          tags: data.tags ? data.tags.join(', ') : prev.tags,
-          meta_title: data.meta_title || prev.meta_title,
-          meta_description: data.meta_description || prev.meta_description,
-          category: data.category || prev.category,
-        }))
+        let parsedContent = data.content
+        
+        // Se il content è un JSON string (l'IA a volte lo restituisce così)
+        if (typeof data.content === 'string' && data.content.trim().startsWith('{')) {
+          try {
+            let cleaned = data.content.trim()
+            cleaned = cleaned.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '')
+            const jsonParsed = JSON.parse(cleaned)
+            parsedContent = jsonParsed.content || data.content
+            setFormData(prev => ({
+              ...prev,
+              content: jsonParsed.content || prev.content,
+              excerpt: jsonParsed.excerpt || prev.excerpt,
+              slug: jsonParsed.slug || prev.slug,
+              tags: jsonParsed.tags ? jsonParsed.tags.join(', ') : prev.tags,
+              meta_title: jsonParsed.meta_title || prev.meta_title,
+              meta_description: jsonParsed.meta_description || prev.meta_description,
+              category: jsonParsed.category || prev.category,
+            }))
+            setMessage({ type: 'success', text: 'Articolo generato con successo!' })
+            setShowAiModal(false)
+            setAiGenerating(false)
+            setTimeout(() => setMessage(null), 8000)
+            return
+          } catch (e) {
+            // Non è JSON, procedi normalmente
+          }
+        }
+        
+        // Se l'edge function ha già parsato il JSON
+        if (data.excerpt || data.slug || data.tags || data.meta_title || data.meta_description) {
+          setFormData(prev => ({
+            ...prev,
+            content: parsedContent,
+            excerpt: data.excerpt || parsedContent.replace(/<[^>]*>/g, '').slice(0, 200),
+            slug: data.slug || prev.slug,
+            tags: data.tags ? data.tags.join(', ') : prev.tags,
+            meta_title: data.meta_title || prev.meta_title,
+            meta_description: data.meta_description || prev.meta_description,
+            category: data.category || prev.category,
+          }))
+        } else {
+          // Fallback: solo content
+          setFormData(prev => ({
+            ...prev,
+            content: parsedContent,
+            excerpt: parsedContent.replace(/<[^>]*>/g, '').slice(0, 200),
+          }))
+        }
+        
         setMessage({ type: 'success', text: 'Articolo generato con successo!' })
         setShowAiModal(false)
       } else {
