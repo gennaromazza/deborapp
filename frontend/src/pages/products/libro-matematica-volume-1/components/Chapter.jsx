@@ -13,7 +13,7 @@ export default function Chapter({ chapterId, pages, title, emoji, onCompletePage
   const [showMiniGame, setShowMiniGame] = useState(false)
   const [miniGameType, setMiniGameType] = useState(null)
   
-  const { addXP } = useGame()
+  const { addXP, XP_VALUES } = useGame()
 
   const page = pages[currentPage]
   if (!page) return null
