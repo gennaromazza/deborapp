@@ -2,6 +2,12 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Mail, Send, Loader2, MapPin, Clock, Heart, MessageSquare } from 'lucide-react'
 import toast from 'react-hot-toast'
+import Breadcrumb from '../components/Breadcrumb'
+import PageNavigation from '../components/PageNavigation'
+import PageTransition from '../components/PageTransition'
+import { supabaseUrl } from '../utils/supabase'
+
+const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd3bmR3cGV3bHJhYWd6cm9zcHViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4OTUwODQsImV4cCI6MjA5MDQ3MTA4NH0.iBeoXAXf9x8OjgCTBW5Uq4vqrLU1jPM3-9na-t6Ihjg'
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -16,18 +22,41 @@ export default function Contact() {
     e.preventDefault()
     setLoading(true)
 
-    await new Promise(resolve => setTimeout(resolve, 1500))
+    try {
+      const res = await fetch(`${supabaseUrl}/functions/v1/send-contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${ANON_KEY}`,
+          'apikey': ANON_KEY,
+        },
+        body: JSON.stringify(formData),
+      })
 
-    toast.success('Messaggio inviato con successo! Ti risponderò presto.')
-    setFormData({ name: '', email: '', subject: '', message: '' })
-    setLoading(false)
+      const data = await res.json()
+      console.log('send-contact response:', { status: res.status, data })
+
+      if (!res.ok || data?.error) {
+        toast.error(data?.error || 'Errore durante l\'invio. Riprova.')
+      } else {
+        toast.success('Messaggio inviato con successo! Ti risponderò presto.')
+        setFormData({ name: '', email: '', subject: '', message: '' })
+      }
+    } catch (err) {
+      console.error('send-contact error:', err)
+      toast.error('Errore di connessione. Riprova.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
-    <div className="overflow-hidden">
-      <section className="relative py-20 bg-mesh">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <motion.div
+    <PageTransition>
+      <div className="overflow-hidden">
+        <section className="relative py-20 bg-mesh">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6">
+            <Breadcrumb />
+            <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -207,12 +236,21 @@ export default function Contact() {
                       </>
                     )}
                   </button>
+
+                  <p className="text-center text-gray-400 text-xs font-body">
+                    In alternativa, scrivimi direttamente a{' '}
+                    <a href="mailto:deboradibelluccidigital@gmail.com" className="text-pastel-pink-dark hover:underline">
+                      deboradibelluccidigital@gmail.com
+                    </a>
+                  </p>
                 </form>
               </div>
             </motion.div>
           </div>
         </div>
       </section>
+      <PageNavigation />
     </div>
+  </PageTransition>
   )
 }
