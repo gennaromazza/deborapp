@@ -16,6 +16,42 @@ export default function BlogList() {
     fetchPosts()
   }, [selectedCategory])
 
+  useEffect(() => {
+    document.title = 'Blog - Consigli, Attività e Idee per Bambini | Debora di Bellucci'
+
+    const setMeta = (name, content, attr = 'name') => {
+      let el = document.querySelector(`meta[${attr}="${name}"]`)
+      if (!el) {
+        el = document.createElement('meta')
+        el.setAttribute(attr, name)
+        document.head.appendChild(el)
+      }
+      el.setAttribute('content', content)
+    }
+
+    setMeta('description', 'Leggi il blog di Debora di Bellucci: consigli pratici, attività creative, schede didattiche e idee per accompagnare i tuoi bambini nel mondo della matematica e della creatività.')
+    setMeta('keywords', 'blog bambini, attività bambini matematica, creatività bambini, educazione bambini, ansia scuola bambini, schede didattiche blog')
+    setMeta('og:title', 'Blog - Consigli, Attività e Idee per Bambini | Debora di Bellucci')
+    setMeta('og:description', 'Leggi il blog di Debora di Bellucci: consigli pratici, attività creative e idee per bambini.', 'property')
+    setMeta('og:type', 'website', 'property')
+    setMeta('og:url', 'https://deborapp.vercel.app/blog', 'property')
+    setMeta('og:image', 'https://deborapp.vercel.app/author_family.png', 'property')
+    setMeta('twitter:card', 'summary_large_image')
+    setMeta('twitter:title', 'Blog - Debora di Bellucci')
+    setMeta('twitter:description', 'Consigli, attività e idee per accompagnare i tuoi bambini.')
+    setMeta('twitter:image', 'https://deborapp.vercel.app/author_family.png')
+
+    let canonical = document.querySelector('link[rel="canonical"]')
+    if (!canonical) {
+      canonical = document.createElement('link')
+      canonical.setAttribute('rel', 'canonical')
+      document.head.appendChild(canonical)
+    }
+    canonical.setAttribute('href', 'https://deborapp.vercel.app/blog')
+
+    return () => {}
+  }, [])
+
   async function fetchPosts() {
     setLoading(true)
     let query = supabase
@@ -141,9 +177,10 @@ export default function BlogList() {
                     <div className="aspect-video overflow-hidden bg-pastel-lavender/30">
                       {post.featured_image ? (
                         <img 
-                          src={post.featured_image} 
-                          alt={post.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          src={rp.featured_image} 
+                          alt={rp.title}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-5xl">

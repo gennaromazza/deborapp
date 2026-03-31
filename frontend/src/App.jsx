@@ -7,7 +7,6 @@ import Contact from './pages/Contact'
 import AccessPin from './pages/AccessPin'
 import BlogList from './pages/Blog'
 import BlogPost from './pages/BlogPost'
-import Sitemap from './pages/Sitemap'
 import ProductRouter from './pages/products/ProductRouter'
 import AdminLogin from './pages/Admin/Login'
 import AdminDashboard from './pages/Admin/Dashboard'
@@ -28,8 +27,6 @@ function App() {
         <Route path="accesso-pin" element={<AccessPin />} />
         <Route path="blog" element={<BlogList />} />
         <Route path="blog/:slug" element={<BlogPost />} />
-        <Route path="sitemap.xml" element={<Sitemap />} />
-        <Route path="sitemap.xml" element={<Sitemap />} />
         <Route path="admin/login" element={<AdminLogin />} />
         <Route path="admin" element={
           <ProtectedRoute>

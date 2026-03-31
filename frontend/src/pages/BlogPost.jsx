@@ -16,6 +16,90 @@ export default function BlogPost() {
     fetchPost()
   }, [slug])
 
+  useEffect(() => {
+    if (post) {
+      const metaTitle = post.meta_title || post.title
+      const metaDescription = post.meta_description || post.excerpt
+
+      document.title = `${metaTitle} | Debora di Bellucci`
+
+      const setMeta = (name, content, attr = 'name') => {
+        let el = document.querySelector(`meta[${attr}="${name}"]`)
+        if (!el) {
+          el = document.createElement('meta')
+          el.setAttribute(attr, name)
+          document.head.appendChild(el)
+        }
+        el.setAttribute('content', content)
+      }
+
+      setMeta('description', metaDescription)
+      setMeta('keywords', post.tags?.join(', ') || '')
+      setMeta('og:title', metaTitle, 'property')
+      setMeta('og:description', metaDescription, 'property')
+      setMeta('og:type', 'article', 'property')
+      setMeta('og:url', `https://deborapp.vercel.app/blog/${slug}`, 'property')
+      setMeta('og:image', post.featured_image || 'https://deborapp.vercel.app/official_logo.png', 'property')
+      setMeta('article:published_time', post.published_at, 'property')
+      setMeta('article:author', post.author_name, 'property')
+      setMeta('twitter:card', 'summary_large_image')
+      setMeta('twitter:title', metaTitle)
+      setMeta('twitter:description', metaDescription)
+      setMeta('twitter:image', post.featured_image || 'https://deborapp.vercel.app/official_logo.png')
+
+      let canonical = document.querySelector('link[rel="canonical"]')
+      if (!canonical) {
+        canonical = document.createElement('link')
+        canonical.setAttribute('rel', 'canonical')
+        document.head.appendChild(canonical)
+      }
+      canonical.setAttribute('href', `https://deborapp.vercel.app/blog/${slug}`)
+
+      let jsonLd = document.getElementById('jsonld-article')
+      if (!jsonLd) {
+        jsonLd = document.createElement('script')
+        jsonLd.id = 'jsonld-article'
+        jsonLd.type = 'application/ld+json'
+        document.head.appendChild(jsonLd)
+      }
+      jsonLd.textContent = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": post.title,
+        "description": post.excerpt,
+        "image": post.featured_image,
+        "datePublished": post.published_at,
+        "dateModified": post.updated_at || post.published_at,
+        "author": {
+          "@type": "Person",
+          "name": post.author_name,
+          "image": post.author_image,
+          "url": "https://deborapp.vercel.app/chi-sono"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Debora di Bellucci",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://deborapp.vercel.app/official_logo.png"
+          }
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": `https://deborapp.vercel.app/blog/${slug}`
+        },
+        "keywords": post.tags?.join(', ') || '',
+        "articleSection": post.category,
+        "inLanguage": "it-IT"
+      })
+    }
+
+    return () => {
+      const jsonLd = document.getElementById('jsonld-article')
+      if (jsonLd) jsonLd.textContent = ''
+    }
+  }, [post, slug])
+
   async function fetchPost() {
     setLoading(true)
     const { data } = await supabase
@@ -101,6 +185,7 @@ export default function BlogPost() {
                     src={post.author_image || '/author_family.png'} 
                     alt={post.author_name}
                     className="w-full h-full object-cover"
+                    loading="lazy"
                   />
                 </div>
                 <span>{post.author_name}</span>
@@ -129,6 +214,7 @@ export default function BlogPost() {
                 src={post.featured_image} 
                 alt={post.title}
                 className="w-full aspect-video object-cover"
+                loading="lazy"
               />
             </motion.div>
           </div>
@@ -151,6 +237,7 @@ export default function BlogPost() {
                   src={post.author_image || '/author_family.png'} 
                   alt={post.author_name}
                   className="w-full h-full object-cover"
+                  loading="lazy"
                 />
               </div>
               <div>
@@ -183,6 +270,7 @@ export default function BlogPost() {
                           src={rp.featured_image} 
                           alt={rp.title}
                           className="w-full h-full object-cover"
+                          loading="lazy"
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-2xl">📝</div>
@@ -197,39 +285,6 @@ export default function BlogPost() {
             </div>
           )}
         </div>
-
-        {/* SEO */}
-        <title>{metaTitle} | Debora di Bellucci</title>
-        <meta name="description" content={metaDescription} />
-        <meta property="og:title" content={metaTitle} />
-        <meta property="og:description" content={metaDescription} />
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://deborapp.vercel.app/blog/${slug}`} />
-        {post.featured_image && <meta property="og:image" content={post.featured_image} />}
-        
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Article",
-            "headline": post.title,
-            "description": post.excerpt,
-            "image": post.featured_image,
-            "datePublished": post.published_at,
-            "author": {
-              "@type": "Person",
-              "name": post.author_name,
-              "image": post.author_image
-            },
-            "publisher": {
-              "@type": "Organization",
-              "name": "Debora di Bellucci",
-              "logo": {
-                "@type": "ImageObject",
-                "url": "https://deborapp.vercel.app/official_logo.png"
-              }
-            }
-          })}
-        </script>
       </div>
     </PageTransition>
   )

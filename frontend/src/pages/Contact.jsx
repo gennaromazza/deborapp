@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Mail, Send, Loader2, MapPin, Clock, Heart, MessageSquare } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -17,6 +17,41 @@ export default function Contact() {
     message: '',
   })
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    document.title = 'Contatti - Debora di Bellucci | Scrivimi per Informazioni e Collaborazioni'
+
+    const setMeta = (name, content, attr = 'name') => {
+      let el = document.querySelector(`meta[${attr}="${name}"]`)
+      if (!el) {
+        el = document.createElement('meta')
+        el.setAttribute(attr, name)
+        document.head.appendChild(el)
+      }
+      el.setAttribute('content', content)
+    }
+
+    setMeta('description', 'Contatta Debora di Bellucci per informazioni sui prodotti, problemi con il PIN, richieste di collaborazione o feedback. Risposta entro 24-48 ore.')
+    setMeta('og:title', 'Contatti - Debora di Bellucci')
+    setMeta('og:description', 'Hai domande sui prodotti digitali per bambini? Contatta Debora di Bellucci.', 'property')
+    setMeta('og:type', 'website', 'property')
+    setMeta('og:url', 'https://deborapp.vercel.app/contatti', 'property')
+    setMeta('og:image', 'https://deborapp.vercel.app/official_logo.png', 'property')
+    setMeta('twitter:card', 'summary_large_image')
+    setMeta('twitter:title', 'Contatti - Debora di Bellucci')
+    setMeta('twitter:description', 'Contatta Debora di Bellucci per informazioni sui prodotti.')
+    setMeta('twitter:image', 'https://deborapp.vercel.app/official_logo.png')
+
+    let canonical = document.querySelector('link[rel="canonical"]')
+    if (!canonical) {
+      canonical = document.createElement('link')
+      canonical.setAttribute('rel', 'canonical')
+      document.head.appendChild(canonical)
+    }
+    canonical.setAttribute('href', 'https://deborapp.vercel.app/contatti')
+
+    return () => {}
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault()

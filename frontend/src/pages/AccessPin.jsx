@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Key, ArrowRight, Loader2, CheckCircle, Sparkles, Gamepad2, FileText, Package } from 'lucide-react'
@@ -13,6 +13,42 @@ export default function AccessPin() {
   const [productData, setProductData] = useState(null)
   const [customerName, setCustomerName] = useState('')
   const navigate = useNavigate()
+
+  useEffect(() => {
+    document.title = 'Accedi con il tuo PIN - Debora di Bellucci'
+
+    const setMeta = (name, content, attr = 'name') => {
+      let el = document.querySelector(`meta[${attr}="${name}"]`)
+      if (!el) {
+        el = document.createElement('meta')
+        el.setAttribute(attr, name)
+        document.head.appendChild(el)
+      }
+      el.setAttribute('content', content)
+    }
+
+    setMeta('description', 'Inserisci il tuo codice PIN a 6 cifre per accedere ai prodotti digitali acquistati. Hai ricevuto il PIN via email dopo l\'acquisto su Gumroad o Etsy.')
+    setMeta('robots', 'noindex, nofollow')
+    setMeta('og:title', 'Accedi con il tuo PIN - Debora di Bellucci')
+    setMeta('og:description', 'Inserisci il tuo codice PIN per accedere ai prodotti digitali acquistati.', 'property')
+    setMeta('og:type', 'website', 'property')
+    setMeta('og:url', 'https://deborapp.vercel.app/accesso-pin', 'property')
+    setMeta('og:image', 'https://deborapp.vercel.app/official_logo.png', 'property')
+    setMeta('twitter:card', 'summary_large_image')
+    setMeta('twitter:title', 'Accedi con il tuo PIN')
+    setMeta('twitter:description', 'Inserisci il tuo codice PIN per accedere ai prodotti digitali.')
+    setMeta('twitter:image', 'https://deborapp.vercel.app/official_logo.png')
+
+    let canonical = document.querySelector('link[rel="canonical"]')
+    if (!canonical) {
+      canonical = document.createElement('link')
+      canonical.setAttribute('rel', 'canonical')
+      document.head.appendChild(canonical)
+    }
+    canonical.setAttribute('href', 'https://deborapp.vercel.app/accesso-pin')
+
+    return () => {}
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault()

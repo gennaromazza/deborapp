@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Heart, Sparkles, BookOpen, Star, Palette, Lightbulb, GraduationCap, Coffee, Baby, Home, Clock, Smartphone } from 'lucide-react'
 import Breadcrumb from '../components/Breadcrumb'
@@ -18,6 +19,72 @@ const itemVariants = {
 }
 
 export default function About() {
+  useEffect(() => {
+    document.title = 'Chi sono - Debora di Bellucci | Mamma e Creatrice di Contenuti per Bambini'
+
+    const setMeta = (name, content, attr = 'name') => {
+      let el = document.querySelector(`meta[${attr}="${name}"]`)
+      if (!el) {
+        el = document.createElement('meta')
+        el.setAttribute(attr, name)
+        document.head.appendChild(el)
+      }
+      el.setAttribute('content', content)
+    }
+
+    setMeta('description', 'Scopri la storia di Debora di Bellucci, mamma di Antonio e Gabriel, creatrice di contenuti digitali per bambini. Storie, attività creative e schede didattiche.')
+    setMeta('og:title', 'Chi sono - Debora di Bellucci | Mamma e Creatrice di Contenuti per Bambini')
+    setMeta('og:description', 'Scopri la storia di Debora di Bellucci, mamma e creatrice di contenuti digitali per bambini da Aversa.', 'property')
+    setMeta('og:type', 'profile', 'property')
+    setMeta('og:url', 'https://deborapp.vercel.app/chi-sono', 'property')
+    setMeta('og:image', 'https://deborapp.vercel.app/author_family.png', 'property')
+    setMeta('twitter:card', 'summary_large_image')
+    setMeta('twitter:title', 'Chi sono - Debora di Bellucci')
+    setMeta('twitter:description', 'Scopri la storia di Debora di Bellucci, mamma e creatrice di contenuti digitali per bambini.')
+    setMeta('twitter:image', 'https://deborapp.vercel.app/author_family.png')
+
+    let canonical = document.querySelector('link[rel="canonical"]')
+    if (!canonical) {
+      canonical = document.createElement('link')
+      canonical.setAttribute('rel', 'canonical')
+      document.head.appendChild(canonical)
+    }
+    canonical.setAttribute('href', 'https://deborapp.vercel.app/chi-sono')
+
+    let jsonLd = document.getElementById('jsonld-about')
+    if (!jsonLd) {
+      jsonLd = document.createElement('script')
+      jsonLd.id = 'jsonld-about'
+      jsonLd.type = 'application/ld+json'
+      document.head.appendChild(jsonLd)
+    }
+    jsonLd.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "ProfilePage",
+      "mainEntity": {
+        "@type": "Person",
+        "name": "Debora di Bellucci",
+        "url": "https://deborapp.vercel.app/chi-sono",
+        "image": "https://deborapp.vercel.app/author_family.png",
+        "jobTitle": "Creatrice di contenuti digitali per bambini",
+        "description": "Mamma di Antonio e Gabriel, 38 anni, vivo ad Aversa. Creo contenuti digitali per bambini con la missione di allontanarli dagli schermi e accendere la loro fantasia.",
+        "birthPlace": {
+          "@type": "Place",
+          "name": "Aversa, Italia"
+        },
+        "knowsAbout": ["Educazione bambini", "Attività creative", "Matematica per bambini", "Schede didattiche", "Storie per bambini"],
+        "worksFor": {
+          "@type": "Organization",
+          "name": "Debora di Bellucci Digital",
+          "url": "https://deborapp.vercel.app"
+        }
+      }
+    })
+
+    return () => {
+      if (jsonLd) jsonLd.textContent = ''
+    }
+  }, [])
   return (
     <PageTransition>
       <div className="overflow-hidden">

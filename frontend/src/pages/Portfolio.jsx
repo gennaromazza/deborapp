@@ -24,6 +24,63 @@ export default function Portfolio() {
     fetchProducts()
   }, [])
 
+  useEffect(() => {
+    document.title = 'Prodotti - Storie, Schede Didattiche e Attività per Bambini | Debora di Bellucci'
+
+    const setMeta = (name, content, attr = 'name') => {
+      let el = document.querySelector(`meta[${attr}="${name}"]`)
+      if (!el) {
+        el = document.createElement('meta')
+        el.setAttribute(attr, name)
+        document.head.appendChild(el)
+      }
+      el.setAttribute('content', content)
+    }
+
+    setMeta('description', 'Scopri i prodotti digitali di Debora di Bellucci: libri interattivi di matematica, schede didattiche, storie e attività creative per bambini da 3 a 10 anni.')
+    setMeta('keywords', 'schede didattiche bambini, libro matematica interattivo, attività creative bambini, storie per bambini, risorse didattiche digitali, giochi educativi 6-10 anni')
+    setMeta('og:title', 'Prodotti - Storie, Schede Didattiche e Attività per Bambini')
+    setMeta('og:description', 'Scopri i prodotti digitali di Debora di Bellucci: libri interattivi, schede didattiche e attività creative per bambini.', 'property')
+    setMeta('og:type', 'website', 'property')
+    setMeta('og:url', 'https://deborapp.vercel.app/portfolio', 'property')
+    setMeta('og:image', 'https://deborapp.vercel.app/official_logo.png', 'property')
+    setMeta('twitter:card', 'summary_large_image')
+    setMeta('twitter:title', 'Prodotti - Debora di Bellucci')
+    setMeta('twitter:description', 'Scopri i prodotti digitali di Debora di Bellucci per bambini.')
+    setMeta('twitter:image', 'https://deborapp.vercel.app/official_logo.png')
+
+    let canonical = document.querySelector('link[rel="canonical"]')
+    if (!canonical) {
+      canonical = document.createElement('link')
+      canonical.setAttribute('rel', 'canonical')
+      document.head.appendChild(canonical)
+    }
+    canonical.setAttribute('href', 'https://deborapp.vercel.app/portfolio')
+
+    let jsonLd = document.getElementById('jsonld-portfolio')
+    if (!jsonLd) {
+      jsonLd = document.createElement('script')
+      jsonLd.id = 'jsonld-portfolio'
+      jsonLd.type = 'application/ld+json'
+      document.head.appendChild(jsonLd)
+    }
+    jsonLd.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Prodotti di Debora di Bellucci",
+      "description": "Catalogo completo di contenuti digitali per bambini: libri interattivi, schede didattiche, storie e attività creative.",
+      "url": "https://deborapp.vercel.app/portfolio",
+      "author": {
+        "@type": "Person",
+        "name": "Debora di Bellucci"
+      }
+    })
+
+    return () => {
+      if (jsonLd) jsonLd.textContent = ''
+    }
+  }, [])
+
   return (
     <PageTransition>
       <section className="py-16">

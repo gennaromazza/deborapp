@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Allow: /blog/
+Allow: /portfolio
+Allow: /chi-sono
+Allow: /contatti
+Disallow: /admin/
+Disallow: /accesso-pin
+Disallow: /prodotto/
+
+Sitemap: https://deborapp.vercel.app/sitemap.xml

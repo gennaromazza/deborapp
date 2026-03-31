@@ -43,6 +43,134 @@ export default function Home() {
     fetchFeatured()
   }, [])
 
+  useEffect(() => {
+    document.title = 'Debora di Bellucci - Storie, Attività e Schede Didattiche per Bambini'
+
+    const setMeta = (name, content, attr = 'name') => {
+      let el = document.querySelector(`meta[${attr}="${name}"]`)
+      if (!el) {
+        el = document.createElement('meta')
+        el.setAttribute(attr, name)
+        document.head.appendChild(el)
+      }
+      el.setAttribute('content', content)
+    }
+
+    setMeta('description', 'Debora di Bellucci crea storie incantevoli, attività creative e schede didattiche per bambini. Contenuti digitali per ispirare fantasia e apprendimento.')
+    setMeta('keywords', 'attività bambini, schede didattiche, libro matematica bambini, imparare matematica giocando, storie per bambini, contenuti digitali bambini, attività creative fai da te bambini')
+    setMeta('og:title', 'Debora di Bellucci - Storie, Attività e Schede Didattiche per Bambini')
+    setMeta('og:description', 'Debora di Bellucci crea storie incantevoli, attività creative e schede didattiche per bambini. Contenuti digitali per ispirare fantasia e apprendimento.', 'property')
+    setMeta('og:type', 'website', 'property')
+    setMeta('og:url', 'https://deborapp.vercel.app/', 'property')
+    setMeta('og:image', 'https://deborapp.vercel.app/official_logo.png', 'property')
+    setMeta('og:image:width', '1200', 'property')
+    setMeta('og:image:height', '630', 'property')
+    setMeta('twitter:card', 'summary_large_image')
+    setMeta('twitter:title', 'Debora di Bellucci - Storie, Attività e Schede Didattiche per Bambini')
+    setMeta('twitter:description', 'Debora di Bellucci crea storie incantevoli, attività creative e schede didattiche per bambini.')
+    setMeta('twitter:image', 'https://deborapp.vercel.app/official_logo.png')
+
+    let canonical = document.querySelector('link[rel="canonical"]')
+    if (!canonical) {
+      canonical = document.createElement('link')
+      canonical.setAttribute('rel', 'canonical')
+      document.head.appendChild(canonical)
+    }
+    canonical.setAttribute('href', 'https://deborapp.vercel.app/')
+
+    let jsonLd = document.getElementById('jsonld-home')
+    if (!jsonLd) {
+      jsonLd = document.createElement('script')
+      jsonLd.id = 'jsonld-home'
+      jsonLd.type = 'application/ld+json'
+      document.head.appendChild(jsonLd)
+    }
+    jsonLd.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://deborapp.vercel.app/#website",
+          "name": "Debora di Bellucci",
+          "url": "https://deborapp.vercel.app/",
+          "description": "Contenuti digitali per bambini - Storie, attività creative e schede didattiche",
+          "inLanguage": "it-IT",
+          "author": {
+            "@id": "https://deborapp.vercel.app/#person"
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://deborapp.vercel.app/#organization",
+          "name": "Debora di Bellucci",
+          "url": "https://deborapp.vercel.app/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://deborapp.vercel.app/official_logo.png"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "deboradibelluccidigital@gmail.com",
+            "contactType": "customer support",
+            "availableLanguage": "Italian"
+          },
+          "sameAs": []
+        },
+        {
+          "@type": "Person",
+          "@id": "https://deborapp.vercel.app/#person",
+          "name": "Debora di Bellucci",
+          "url": "https://deborapp.vercel.app/chi-sono",
+          "jobTitle": "Creatrice di contenuti digitali per bambini",
+          "description": "Mamma di Antonio e Gabriel, 38 anni, vivo ad Aversa. Creo contenuti digitali per bambini con la missione di allontanarli dagli schermi e accendere la loro fantasia.",
+          "knowsAbout": ["Educazione bambini", "Attività creative", "Matematica per bambini", "Schede didattiche"]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://deborapp.vercel.app/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Cosa offre Debora di Bellucci?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Debora di Bellucci crea storie originali, attività creative, schede didattiche e contenuti digitali per bambini. I suoi prodotti includono libri interattivi di matematica, materiali scaricabili e risorse educative per genitori e insegnanti."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Come funziona il sistema PIN per accedere ai prodotti?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Dopo aver acquistato un prodotto su piattaforme come Gumroad o Etsy, riceverai un'email con un codice PIN a 6 cifre. Inserisci il PIN nella pagina Accesso PIN del sito per sbloccare immediatamente i tuoi contenuti digitali."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Per quale fascia d'età sono pensati i contenuti?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "I contenuti di Debora di Bellucci sono progettati principalmente per bambini dai 3 ai 10 anni, con attività differenziate per età: giochi sensoriali per i più piccoli, schede didattiche e libri interattivi di matematica per la scuola primaria."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "I prodotti sono scaricabili o si usano online?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Dipende dal tipo di prodotto. I materiali come schede e attività creative sono scaricabili in formato PDF. I libri interattivi, come il Libro di Matematica, si utilizzano direttamente online attraverso il sito web."
+              }
+            }
+          ]
+        }
+      ]
+    })
+
+    return () => {
+      if (jsonLd) jsonLd.textContent = ''
+    }
+  }, [])
+
   return (
     <div className="overflow-hidden">
       <section className="relative min-h-[95vh] flex items-center justify-center bg-mesh">
