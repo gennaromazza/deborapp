@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { BookOpen, Home, LayoutGrid, Key, Menu, X, User, Mail, Sparkles, ChevronUp, ChevronRight, Heart, Star } from 'lucide-react'
+import { BookOpen, Home, LayoutGrid, Key, Menu, X, User, Mail, Sparkles, ChevronUp, ChevronRight, Heart, Star, FileText } from 'lucide-react'
 
 export default function Layout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -40,6 +40,7 @@ export default function Layout() {
   const navLinks = [
     { path: '/', label: 'Home', icon: Home },
     { path: '/chi-sono', label: 'Chi sono', icon: User },
+    { path: '/blog', label: 'Blog', icon: FileText },
     { path: '/portfolio', label: 'Portfolio', icon: LayoutGrid },
     { path: '/contatti', label: 'Contatti', icon: Mail },
     { path: '/accesso-pin', label: 'Accedi con PIN', icon: Key },

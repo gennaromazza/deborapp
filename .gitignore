@@ -2,5 +2,8 @@ node_modules/
 dist/
 .env
 *.local
-
 .vercel
+
+# Note interne (non committere)
+NOTES.md
+DEPLOY_GUIDE.md

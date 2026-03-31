@@ -1,20 +1,21 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Users, BookOpen, LogOut, ArrowRight, Sparkles, TrendingUp } from 'lucide-react'
+import { Users, BookOpen, LogOut, ArrowRight, Sparkles, TrendingUp, FileText } from 'lucide-react'
 import { supabase } from '../../utils/supabase'
 
 export default function AdminDashboard() {
-  const [stats, setStats] = useState({ users: 0, products: 0 })
+  const [stats, setStats] = useState({ users: 0, products: 0, posts: 0 })
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function fetchStats() {
-      const [{ count: userCount }, { count: productCount }] = await Promise.all([
+      const [{ count: userCount }, { count: productCount }, { count: postCount }] = await Promise.all([
         supabase.from('users').select('*', { count: 'exact', head: true }),
         supabase.from('products').select('*', { count: 'exact', head: true }),
+        supabase.from('blog_posts').select('*', { count: 'exact', head: true }),
       ])
-      setStats({ users: userCount || 0, products: productCount || 0 })
+      setStats({ users: userCount || 0, products: productCount || 0, posts: postCount || 0 })
       setLoading(false)
     }
     fetchStats()
@@ -57,7 +58,7 @@ export default function AdminDashboard() {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-6 mb-12">
+        <div className="grid sm:grid-cols-3 gap-6 mb-12">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -84,8 +85,9 @@ export default function AdminDashboard() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
             className="card p-6"
           >
             <div className="flex items-center justify-between">
@@ -104,6 +106,32 @@ export default function AdminDashboard() {
               className="mt-4 inline-flex items-center gap-1 text-pastel-lavender-dark font-body font-medium hover:underline text-sm"
             >
               Gestisci prodotti
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="card p-6"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-body text-gray-500 mb-1">Articoli Blog</p>
+                <p className="font-display text-4xl font-bold text-pastel-mint-dark">
+                  {loading ? '...' : stats.posts}
+                </p>
+              </div>
+              <div className="w-14 h-14 rounded-2xl bg-pastel-mint flex items-center justify-center">
+                <FileText className="w-7 h-7 text-pastel-mint-dark" />
+              </div>
+            </div>
+            <Link
+              to="/admin/blog"
+              className="mt-4 inline-flex items-center gap-1 text-pastel-mint-dark font-body font-medium hover:underline text-sm"
+            >
+              Gestisci blog
               <ArrowRight className="w-4 h-4" />
             </Link>
           </motion.div>
