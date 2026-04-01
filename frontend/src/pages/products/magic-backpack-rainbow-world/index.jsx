@@ -3,7 +3,7 @@ import useAudio from './hooks/useAudio'
 import { loadProgress, saveProgress, addCollectedWord, completeMission, unlockWorld } from './hooks/useProgress'
 import { useUserProfile, saveUserProfile } from './hooks/useUserProfile'
 import { getDialog } from './utils/dialogs'
-import { checkAndUnlockStickers, StickerBook, StickerUnlockPopup } from './utils/stickers.jsx'
+import { checkAndUnlockStickers, StickerBook, StickerUnlockPopup, StickerCorner } from './utils/stickers.jsx'
 import { WORLDS } from './data/worlds'
 import OnboardingFlow from './components/OnboardingFlow'
 import AvatarDisplay from './components/AvatarDisplay'
@@ -13,6 +13,10 @@ import BackpackView from './components/BackpackView'
 import VoiceWarning from './components/VoiceWarning'
 import RewardPopup from './components/RewardPopup'
 import ZainettoGuide from './components/ZainettoGuide'
+import ParentMenu from './components/ParentMenu'
+import Celebration from './components/Celebration'
+import OfflineIndicator from './components/OfflineIndicator'
+import { useSoundEffects } from './hooks/useSoundEffects'
 import RainbowWorld from './worlds/RainbowWorld'
 import MyLittlePets from './worlds/MyLittlePets'
 import IntoTheWild from './worlds/IntoTheWild'
@@ -33,6 +37,11 @@ export default function MagicBackpackRainbowWorld({ productId, chapterId }) {
   const [showStickerBook, setShowStickerBook] = useState(false)
   const [newSticker, setNewSticker] = useState(null)
   const [magicMoment, setMagicMoment] = useState(null)
+  const [showParentMenu, setShowParentMenu] = useState(false)
+  const [avatarReaction, setAvatarReaction] = useState('idle')
+  const [avatarSparkle, setAvatarSparkle] = useState(false)
+  const [celebration, setCelebration] = useState({ active: false, type: null, worldColors: null })
+  const { playClick, playSuccess, playError, playPop, playUnlock } = useSoundEffects()
 
   useEffect(() => {
     if (isOnboarded && profile?.childName) {
@@ -62,6 +71,8 @@ export default function MagicBackpackRainbowWorld({ productId, chapterId }) {
   const handleOnboardingComplete = (data) => {
     const userProfile = {
       childName: data.childName,
+      childGender: data.childGender || 'male',
+      childAge: data.childAge || '4-5',
       familyMembers: data.familyMembers || [],
       avatarUrl: data.photoPreview || null,
       consentGiven: data.consentGiven,
@@ -82,6 +93,8 @@ export default function MagicBackpackRainbowWorld({ productId, chapterId }) {
     setRewardMessage(msg)
     setRewardVisible(true)
     setTimeout(() => setRewardVisible(false), 2000)
+    setAvatarReaction('success')
+    setTimeout(() => setAvatarReaction('idle'), 1000)
   }
 
   const handleWorldSelect = (worldId) => {
@@ -97,6 +110,8 @@ export default function MagicBackpackRainbowWorld({ productId, chapterId }) {
     setProgress(loadProgress())
     setCurrentView('map')
     showZainetto('Bentornato alla mappa! Quale mondo scegli?')
+    setCelebration({ active: true, type: 'mission_complete', worldColors: null })
+    setTimeout(() => setCelebration({ active: false, type: null, worldColors: null }), 2000)
   }
 
   const handleBackpackOpen = () => {
@@ -115,16 +130,29 @@ export default function MagicBackpackRainbowWorld({ productId, chapterId }) {
     const newStickers = checkAndUnlockStickers(progress)
     if (newStickers.length > 0) {
       setNewSticker(newStickers[0])
+      setRecentStickers(newStickers)
       audio.speakItalian(`Hai sbloccato un nuovo adesivo! ${newStickers[0].name}!`)
     }
   }, [progress])
 
+  const [recentStickers, setRecentStickers] = useState([])
+
   useEffect(() => {
     if (progress.collectedWords?.length > 0 && progress.collectedWords.length % 10 === 0) {
       setMagicMoment('coriandoli')
-      setTimeout(() => setMagicMoment(null), 3000)
+      setAvatarSparkle(true)
+      setTimeout(() => {
+        setMagicMoment(null)
+        setAvatarSparkle(false)
+      }, 3000)
     }
   }, [progress.collectedWords?.length])
+
+  const handleParentAction = (action) => {
+    if (action === 'edit') {
+      setShowOnboarding(true)
+    }
+  }
 
   const renderView = () => {
     const commonProps = {
@@ -167,7 +195,6 @@ export default function MagicBackpackRainbowWorld({ productId, chapterId }) {
       <ZainettoGuide message={zainettoMessage} visible={zainettoVisible} audio={audio} />
       {showTutorial && <InteractiveTutorial onComplete={handleTutorialComplete} audio={audio} />}
       {showStickerBook && <StickerBook onClose={() => setShowStickerBook(false)} profile={profile} />}
-      <StickerUnlockPopup sticker={newSticker} onClose={() => setNewSticker(null)} />
       {magicMoment === 'coriandoli' && (
         <div className="fixed inset-0 pointer-events-none z-50">
           {[...Array(30)].map((_, i) => (
@@ -191,6 +218,46 @@ export default function MagicBackpackRainbowWorld({ productId, chapterId }) {
           `}</style>
         </div>
       )}
+      
+      <button
+        onClick={() => setShowParentMenu(true)}
+        className="absolute top-4 right-4 z-40 bg-white bg-opacity-90 rounded-full p-3 shadow-lg hover:scale-110 transition-transform"
+        title="Menu Genitori"
+      >
+        👨
+      </button>
+
+      {currentView !== 'backpack' && currentView !== 'map' && (
+        <div className="absolute top-4 right-16 z-40">
+          <AvatarDisplay
+            avatarUrl={profile?.avatarUrl}
+            childName={profile?.childName}
+            size="sm"
+            showName={false}
+            reaction={avatarReaction}
+            showSparkle={avatarSparkle}
+          />
+        </div>
+      )}
+
+      <ParentMenu
+        isOpen={showParentMenu}
+        onClose={() => setShowParentMenu(false)}
+        profile={profile}
+        onEditProfile={() => setShowOnboarding(true)}
+        onChangeAvatar={() => setShowOnboarding(true)}
+        onRestartOnboarding={() => setShowOnboarding(true)}
+      />
+
+      <Celebration
+        type={celebration.type}
+        active={celebration.active}
+        worldColors={celebration.worldColors}
+        onComplete={() => setCelebration({ active: false, type: null, worldColors: null })}
+      />
+
+      <StickerCorner audio={audio} recentStickers={recentStickers} />
+      <OfflineIndicator />
     </>
   )
 }

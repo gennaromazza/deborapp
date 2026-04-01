@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import useAudio from '../hooks/useAudio'
+import { useDragAndDrop } from '../hooks/useDragAndDrop'
 import { loadProgress, addCollectedWord, completeMission, unlockWorld } from '../hooks/useProgress'
+import { getDialog } from '../utils/dialogs'
 import { PETS_WORLD } from '../data/words/pets'
+import { useMissionSelector, getDifficultyLabel } from '../hooks/useMissionSelector'
 import WordObject from '../components/WordObject'
 import MissionBanner from '../components/MissionBanner'
 import RewardPopup from '../components/RewardPopup'
-import Backpack from '../components/Backpack'
+import BackpackDropZone from '../components/BackpackDropZone'
 import SentenceBuilder from '../components/SentenceBuilder'
 import SpeakingPractice from '../components/SpeakingPractice'
 import FillTheGap from '../components/FillTheGap'
@@ -15,18 +18,46 @@ const Sparkle = ({ x, y }) => (<div className="absolute pointer-events-none" sty
 export default function MyLittlePets({ onBack, onBackpackOpen, showReward, profile, showZainetto }) {
   const audio = useAudio()
   const progress = loadProgress()
-  const [currentMission, setCurrentMission] = useState(PETS_WORLD.missions[0])
-  const [missionIndex, setMissionIndex] = useState(0)
+  const childAge = profile?.childAge || '4-5'
+  const {
+    currentMission,
+    currentMissionIndex,
+    totalMissions,
+    generateSession,
+    nextMission,
+    isComplete,
+  } = useMissionSelector(PETS_WORLD, childAge)
   const [rewardVisible, setRewardVisible] = useState(false)
   const [rewardMessage, setRewardMessage] = useState('')
   const [collected, setCollected] = useState({})
-  const [draggingObj, setDraggingObj] = useState(null)
-  const [dragPos, setDragPos] = useState({ x: 0, y: 0 })
   const [sparkles, setSparkles] = useState([])
   const [selectedMatch, setSelectedMatch] = useState(null)
   const [tapCompleted, setTapCompleted] = useState([])
+  const [backpackOpen, setBackpackOpen] = useState(false)
+
+  const handleDrop = useCallback((obj, pos) => {
+    if (!currentMission.targetWords.includes(obj.id)) {
+      audio.speakItalian('Riprova!')
+      return false
+    }
+    setCollected(prev => ({ ...prev, [obj.id]: true }))
+    addSparkle(pos.x, pos.y)
+    const praise = profile ? `Bravo ${profile.childName}!` : 'Bravo!'
+    audio.speakItalian(praise)
+    addCollectedWord(obj.id)
+    setTimeout(() => handleMissionComplete(), 1000)
+    return true
+  }, [currentMission, profile, audio])
+
+  const {
+    draggingObj,
+    dragPos,
+    isOverDropZone,
+    handleStart: handleDragStart,
+  } = useDragAndDrop({ onDrop: handleDrop })
 
   useEffect(() => {
+    const difficulty = getDifficultyLabel(childAge)
     const msg = profile ? `Ciao ${profile.childName}! Benvenuto nel mondo degli animali!` : 'Benvenuto nel mondo degli animali!'
     audio.speakItalian(msg)
     if (showZainetto) showZainetto(msg)
@@ -47,21 +78,17 @@ export default function MyLittlePets({ onBack, onBackpackOpen, showReward, profi
 
   const handleMissionComplete = () => {
     completeMission(currentMission.id)
-    const successMsg = profile ? `Bravo ${profile.childName}! 🎉` : 'Bravo! 🎉'
+    const dialogType = profile?.familyMembers?.length > 0 && Math.random() > 0.5 
+      ? (Math.random() > 0.5 ? 'success_with_parent' : 'success_with_friend')
+      : 'success'
+    const successMsg = getDialog(dialogType, profile) + ' 🎉'
     showLocalReward(successMsg)
     audio.speakItalian(successMsg)
-    const nextIndex = missionIndex + 1
-    if (nextIndex < PETS_WORLD.missions.length) {
-      setMissionIndex(nextIndex)
-      setCurrentMission(PETS_WORLD.missions[nextIndex])
-      setCollected({})
-      setTapCompleted([])
-      setSelectedMatch(null)
-    } else {
-      unlockWorld('wild')
-      const completeMsg = profile ? `${profile.childName} ha completato il mondo degli animali! 🏆` : 'Mondo completato! 🏆'
-      setTimeout(() => { showLocalReward(completeMsg); audio.speakItalian(completeMsg); setTimeout(() => onBack(), 3000) }, 1000)
-    }
+    setCollected({})
+    setTapCompleted([])
+    setSelectedMatch(null)
+    if (isComplete) { unlockWorld('wild'); const completeMsg = getDialog('world_complete', profile, { world: 'mondo degli animali' }); setTimeout(() => { showLocalReward(completeMsg); audio.speakItalian(completeMsg); setTimeout(() => onBack(), 3000) }, 1000) }
+    else { nextMission() }
   }
 
   const handleTap = (word) => {
@@ -73,27 +100,21 @@ export default function MyLittlePets({ onBack, onBackpackOpen, showReward, profi
     }
   }
 
-  const handleDragStart = (e, obj) => {
-    if (collected[obj.id]) return
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX; const clientY = e.touches ? e.touches[0].clientY : e.clientY
-    setDraggingObj(obj); setDragPos({ x: clientX, y: clientY })
-    const handleMove = (ev) => { const cx = ev.touches ? ev.touches[0].clientX : ev.clientX; const cy = ev.touches ? ev.touches[0].clientY : ev.clientY; setDragPos({ x: cx, y: cy }) }
-    const handleEnd = () => {
-      document.removeEventListener('mousemove', handleMove); document.removeEventListener('mouseup', handleEnd); document.removeEventListener('touchmove', handleMove); document.removeEventListener('touchend', handleEnd)
-      const backpackY = window.innerHeight - 120; const backpackX = window.innerWidth / 2; const dist = Math.sqrt(Math.pow(dragPos.x - backpackX, 2) + Math.pow(dragPos.y - backpackY, 2))
-      if (dist < 150 && currentMission.targetWords.includes(obj.id)) { setCollected(prev => ({ ...prev, [obj.id]: true })); addSparkle(dragPos.x, dragPos.y); const praise = profile ? `Bravo ${profile.childName}!` : 'Bravo!'; audio.speakItalian(praise); addCollectedWord(obj.id); setTimeout(() => handleMissionComplete(), 1000) }
-      else if (dist < 150) audio.speakItalian('Riprova!')
-      setDraggingObj(null)
-    }
-    document.addEventListener('mousemove', handleMove); document.addEventListener('mouseup', handleEnd); document.addEventListener('touchmove', handleMove); document.addEventListener('touchend', handleEnd)
-  }
-
   const handleMatchSelect = (word) => { setSelectedMatch(word.id); if (currentMission.targetWords.includes(word.id)) { const praise = profile ? `Bravo ${profile.childName}!` : 'Bravo!'; audio.speakItalian(praise); addCollectedWord(word.id); setTimeout(() => handleMissionComplete(), 1500) } else { audio.speakItalian('Riprova!'); setTimeout(() => setSelectedMatch(null), 800) } }
 
   const renderExercise = () => {
     switch (currentMission.type) {
-      case 'tap': return (<div className="absolute inset-0 flex flex-col items-center justify-center pt-20"><p className="text-white text-xl font-bold mb-8 drop-shadow-lg">{currentMission.instruction} ({tapCompleted.length}/{PETS_WORLD.words.length})</p><div className="flex flex-wrap gap-6 justify-center px-4">{PETS_WORLD.words.map(word => (<WordObject key={word.id} obj={word} onTap={handleTap} isCollected={tapCompleted.includes(word.id)} isTarget={!tapCompleted.includes(word.id)} missionActive={true} />))}</div></div>)
-      case 'drag': return (<div className="absolute inset-0 flex flex-col items-center justify-center pt-20"><div className="flex flex-wrap gap-6 justify-center px-4">{PETS_WORLD.words.map(word => (<WordObject key={word.id} obj={word} onTap={() => audio.speakWord(word.word)} onDragStart={handleDragStart} isCollected={!!collected[word.id]} isTarget={currentMission.targetWords.includes(word.id)} missionActive={true} />))}</div>{draggingObj && (<div className="fixed pointer-events-none z-50 text-6xl" style={{ left: dragPos.x - 40, top: dragPos.y - 40, transform: 'scale(1.2)', filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.3))' }}>{draggingObj.emoji}</div>)}{sparkles.map(s => <Sparkle key={s.id} x={s.x} y={s.y} />)}</div>)
+      case 'tap': return (<div className="absolute inset-0 flex flex-col items-center justify-center pt-20"><p className="text-white text-xl font-bold mb-8 drop-shadow-lg">{currentMission.instruction} ({tapCompleted.length}/{PETS_WORLD.words.length})</p><div className="flex flex-wrap gap-6 justify-center px-4">{PETS_WORLD.words.map(word => (<WordObject key={word.id} obj={word} onTap={handleTap} isCollected={tapCompleted.includes(word.id)} isTarget={!tapCompleted.includes(word.id)} missionActive={true} audio={audio} />))}</div></div>)
+      case 'drag': return (
+        <div className="absolute inset-0 flex flex-col items-center justify-center pt-20 pb-32">
+          <p className="text-white text-xl font-bold mb-6 drop-shadow-lg text-center">{currentMission.instruction}</p>
+          <div className="flex flex-wrap gap-6 justify-center px-4">
+            {PETS_WORLD.words.map(word => (<WordObject key={word.id} obj={word} onTap={handleTap} onDragStart={(e) => handleDragStart(e, word)} isCollected={!!collected[word.id]} isTarget={currentMission.targetWords.includes(word.id)} missionActive={true} audio={audio} />))}
+          </div>
+          {draggingObj && (<div className="fixed pointer-events-none z-50 transition-transform duration-75" style={{ left: dragPos.x - 40, top: dragPos.y - 40, transform: 'scale(1.3)', filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.4))' }}><div className="text-7xl">{draggingObj.emoji}</div></div>)}
+          {sparkles.map(s => <Sparkle key={s.id} x={s.x} y={s.y} />)}
+        </div>
+      )
       case 'match': const targetWord = PETS_WORLD.words.find(w => currentMission.targetWords.includes(w.id)); const options = [targetWord, ...PETS_WORLD.words.filter(w => !currentMission.targetWords.includes(w.id)).slice(0, 2)]; const shuffled = [...options].sort(() => Math.random() - 0.5); return (<div className="absolute inset-0 flex flex-col items-center justify-center pt-20"><p className="text-white text-xl font-bold mb-8 drop-shadow-lg">{currentMission.instruction}</p><div className="flex gap-6 justify-center px-4">{shuffled.map(word => (<div key={word.id} className={`cursor-pointer transition-all duration-300 ${selectedMatch === word.id ? 'scale-110' : 'hover:scale-105'}`} onClick={() => handleMatchSelect(word)}><div className="text-6xl">{word.emoji}</div>{selectedMatch === word.id && currentMission.targetWords.includes(word.id) && (<div className="text-green-400 text-2xl mt-2">✓</div>)}</div>))}</div></div>)
       case 'sentence': return <SentenceBuilder sentences={currentMission.sentences} audio={audio} profile={profile} onComplete={handleMissionComplete} />
       case 'speaking': return <SpeakingPractice sentences={currentMission.sentences} audio={audio} profile={profile} onComplete={handleMissionComplete} />
@@ -102,13 +123,36 @@ export default function MyLittlePets({ onBack, onBackpackOpen, showReward, profi
     }
   }
 
+  const hasDragMission = currentMission.type === 'drag'
+
   return (
     <div className={`relative w-full h-screen overflow-hidden bg-gradient-to-br ${PETS_WORLD.background}`}>
       <style>{`@keyframes sparkle { 0% { opacity: 0; transform: scale(0) rotate(0deg); } 50% { opacity: 1; transform: scale(1.2) rotate(180deg); } 100% { opacity: 0; transform: scale(0) rotate(360deg); } }`}</style>
       <button onClick={onBack} className="absolute top-4 left-4 z-40 text-white font-bold bg-black bg-opacity-30 rounded-full px-4 py-2 hover:bg-opacity-50">← Mappa</button>
-      <MissionBanner mission={currentMission?.instruction} completed={false} profile={profile} />
-      {renderExercise()}
-      <Backpack isOpen={false} animation="" collectedItems={progress.collectedWords.reduce((acc, w) => ({ ...acc, [w]: true }), {})} onToggle={onBackpackOpen} objects={PETS_WORLD.words} profile={profile} />
+      <MissionBanner mission={currentMission?.instruction} completed={false} profile={profile} difficulty={getDifficultyLabel(childAge)} progress={`${currentMissionIndex + 1}/${totalMissions}`} />
+      {!currentMission && <div className="absolute inset-0 flex items-center justify-center"><span className="text-white text-2xl font-bold">Caricamento...</span></div>}
+      {currentMission && renderExercise()}
+      {hasDragMission ? (
+        <BackpackDropZone
+          isOpen={backpackOpen}
+          isDropTarget={isOverDropZone}
+          collectedItems={progress.collectedWords.reduce((acc, w) => ({ ...acc, [w]: true }), {})}
+          onToggle={() => setBackpackOpen(!backpackOpen)}
+          objects={PETS_WORLD.words}
+          profile={profile}
+          hasTarget={!!draggingObj && currentMission.targetWords.includes(draggingObj.id)}
+        />
+      ) : (
+        <BackpackDropZone
+          isOpen={backpackOpen}
+          isDropTarget={false}
+          collectedItems={progress.collectedWords.reduce((acc, w) => ({ ...acc, [w]: true }), {})}
+          onToggle={() => setBackpackOpen(!backpackOpen)}
+          objects={PETS_WORLD.words}
+          profile={profile}
+          hasTarget={false}
+        />
+      )}
       <RewardPopup message={rewardMessage} visible={rewardVisible} />
     </div>
   )

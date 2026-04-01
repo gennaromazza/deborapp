@@ -103,7 +103,7 @@ export default function SentenceBuilder({ sentences, audio, profile, onComplete 
         {placedWords.map((word, i) => (
           <div
             key={i}
-            className={`w-20 h-14 rounded-xl border-4 flex items-center justify-center transition-all ${
+            className={`w-24 h-14 rounded-xl border-4 flex items-center justify-center gap-1 transition-all ${
               word
                 ? isCorrect === true
                   ? 'border-green-400 bg-green-100 glow'
@@ -114,12 +114,28 @@ export default function SentenceBuilder({ sentences, audio, profile, onComplete 
                 ? 'border-yellow-400 bg-yellow-50 shake'
                 : 'border-dashed border-gray-300 bg-gray-50'
             }`}
-            onClick={() => word && handleWordClick(word, true)}
           >
             {word && (
-              <span className={`font-bold text-sm ${isCorrect === true ? 'text-green-700' : 'text-purple-700'}`}>
-                {word}
-              </span>
+              <>
+                <span 
+                  className="font-bold text-sm cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleWordClick(word, true)
+                  }}
+                >
+                  {word}
+                </span>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    audio.speakWord(word)
+                  }}
+                  className="text-purple-600 hover:text-purple-800 hover:scale-110 transition-transform"
+                >
+                  🔊
+                </button>
+              </>
             )}
           </div>
         ))}
@@ -131,7 +147,10 @@ export default function SentenceBuilder({ sentences, audio, profile, onComplete 
             key={`${word}-${i}`}
             className="px-5 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-xl shadow-lg hover:scale-105 transition-transform pop-in"
             style={{ animationDelay: `${i * 0.1}s` }}
-            onClick={() => handleWordClick(word)}
+            onClick={() => {
+              handleWordClick(word)
+              audio.speakWord(word)
+            }}
           >
             {word}
           </button>

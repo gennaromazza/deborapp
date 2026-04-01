@@ -58,7 +58,7 @@ const useAudio = () => {
         spokenPitch = pitch - 0.1
         break
       case 'sentence':
-        spokenText = text.startsWith('It') ? text : `It's ${text}`
+        spokenText = text
         spokenRate = rate || 0.9
         break
       default:

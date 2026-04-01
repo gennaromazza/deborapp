@@ -47,6 +47,7 @@ export function saveProgress(progress) {
 
     const updated = { ...progress, lastVisit: today, streakDays }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
+    window.dispatchEvent(new CustomEvent('progress-updated', { detail: updated }))
     return updated
   } catch (e) {
     console.warn('Failed to save progress:', e)
@@ -113,4 +114,8 @@ export function getWorldProgress(worldId) {
 export function resetProgress() {
   localStorage.removeItem(STORAGE_KEY)
   return { ...defaultProgress }
+}
+
+export function clearProgress() {
+  localStorage.removeItem(STORAGE_KEY)
 }

@@ -3,6 +3,8 @@ import { useState, useCallback } from 'react'
 export default function OnboardingFlow({ onComplete }) {
   const [step, setStep] = useState(0)
   const [childName, setChildName] = useState('')
+  const [childGender, setChildGender] = useState('male')
+  const [childAge, setChildAge] = useState('4-5')
   const [familyNames, setFamilyNames] = useState(['', '', '', ''])
   const [familyRoles, setFamilyRoles] = useState(['Mamma', 'Papà', 'Nonna', 'Amico/a'])
   const [photo, setPhoto] = useState(null)
@@ -46,6 +48,8 @@ export default function OnboardingFlow({ onComplete }) {
 
     onComplete({
       childName: childName.trim(),
+      childGender,
+      childAge,
       familyMembers,
       photo,
       photoPreview,
@@ -85,6 +89,54 @@ export default function OnboardingFlow({ onComplete }) {
           Ciao {childName}! 👋
         </p>
       )}
+      <div className="mt-6">
+        <h3 className="text-lg font-bold text-purple-600 mb-3">Sesso del bambino:</h3>
+        <div className="flex justify-center gap-4">
+          <button
+            onClick={() => setChildGender('male')}
+            className={`px-6 py-3 rounded-2xl font-bold text-lg transition-all ${
+              childGender === 'male'
+                ? 'bg-blue-500 text-white scale-110 shadow-lg'
+                : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+            }`}
+          >
+            👦 Maschio
+          </button>
+          <button
+            onClick={() => setChildGender('female')}
+            className={`px-6 py-3 rounded-2xl font-bold text-lg transition-all ${
+              childGender === 'female'
+                ? 'bg-pink-500 text-white scale-110 shadow-lg'
+                : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+            }`}
+          >
+            👧 Femmina
+          </button>
+        </div>
+        <h3 className="text-lg font-bold text-purple-600 mb-3 mt-6">Età del bambino:</h3>
+        <div className="flex justify-center gap-3 flex-wrap">
+          {[
+            { value: '3-4', label: '3-4 anni', emoji: '🐣' },
+            { value: '4-5', label: '4-5 anni', emoji: '🐥' },
+            { value: '5-6', label: '5-6 anni', emoji: '🐤' },
+            { value: '6-7', label: '6-7 anni', emoji: '🦋' },
+            { value: '7-8', label: '7-8 anni', emoji: '🌟' },
+          ].map(age => (
+            <button
+              key={age.value}
+              onClick={() => setChildAge(age.value)}
+              className={`px-4 py-3 rounded-2xl font-bold transition-all ${
+                childAge === age.value
+                  ? 'bg-purple-500 text-white scale-110 shadow-lg'
+                  : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+              }`}
+            >
+              <div className="text-xl">{age.emoji}</div>
+              <div className="text-xs">{age.label}</div>
+            </button>
+          ))}
+        </div>
+      </div>
     </div>,
 
     // Step 2: Family Names

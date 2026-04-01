@@ -89,8 +89,22 @@ export default function FillTheGap({ sentences, audio, profile, onComplete }) {
                       : 'border-purple-400 bg-purple-100 text-purple-700'
                     : 'border-dashed border-gray-300 bg-gray-100 text-gray-400'
                 }`}
+                onClick={() => selectedAnswer && audio.speakWord(selectedAnswer)}
               >
-                {selectedAnswer === word ? selectedAnswer : '___'}
+                {selectedAnswer === word ? (
+                  <span className="flex items-center gap-2">
+                    {selectedAnswer}
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        audio.speakWord(selectedAnswer)
+                      }}
+                      className="text-purple-600 hover:text-purple-800"
+                    >
+                      🔊
+                    </button>
+                  </span>
+                ) : '___'}
               </span>
             ) : (
               <span key={i} className="text-xl font-bold text-gray-700">
@@ -115,7 +129,10 @@ export default function FillTheGap({ sentences, audio, profile, onComplete }) {
                 : 'bg-white text-purple-700 hover:bg-purple-100 hover:scale-105'
             }`}
             style={{ animationDelay: `${i * 0.1}s` }}
-            onClick={() => handleSelect(word)}
+            onClick={() => {
+              handleSelect(word)
+              audio.speakWord(word)
+            }}
           >
             {word}
           </button>
