@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { supabase } from '../../utils/supabase'
 import LibroMatematicaVolume1 from './libro-matematica-volume-1'
+import MagicBackpackRainbowWorld from './magic-backpack-rainbow-world'
 
 const productComponents = {
   'libro-matematica-volume-1': LibroMatematicaVolume1,
+  'magic-backpack-rainbow-world': MagicBackpackRainbowWorld,
 }
 
 export default function ProductRouter() {
