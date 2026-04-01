@@ -33,6 +33,8 @@ async function generateSitemap() {
     { url: '/attivita', priority: '0.9', changefreq: 'weekly' },
     { url: '/contatti', priority: '0.7', changefreq: 'monthly' },
     { url: '/blog', priority: '0.9', changefreq: 'daily' },
+    { url: '/accesso-pin', priority: '0.5', changefreq: 'monthly' },
+    { url: '/acquista', priority: '0.8', changefreq: 'weekly' },
   ]
 
   const blogPosts = (posts || []).map(post => ({

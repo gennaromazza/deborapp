@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Check, Sparkles, ArrowRight, Coffee, Croissant, UtensilsCrossed, CakeSlice } from 'lucide-react'
 import { supabase } from '../utils/supabase'
