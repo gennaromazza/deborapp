@@ -40,7 +40,11 @@ CREATE POLICY "Orders creabili da chiunque"
 
 -- Policy: orders modificabili da authenticated (admin)
 CREATE POLICY "Orders modificabili da authenticated"
-  ON orders FOR ALL
+  ON orders FOR UPDATE
+  USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Orders eliminabili da authenticated"
+  ON orders FOR DELETE
   USING (auth.role() = 'authenticated');
 
 
