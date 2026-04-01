@@ -175,18 +175,35 @@ export default function PricingTiers() {
                 ))}
               </ul>
 
-              <Link
-                to={`/acquista?tier=${tier.tier_key}`}
-                className={`w-full flex items-center justify-center gap-2 py-3 rounded-2xl font-display font-semibold text-sm transition-all duration-300 ${
-                  isRecommended
-                    ? 'bg-gradient-to-r from-pastel-pink-dark to-pastel-lavender-dark text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5'
-                    : 'bg-pastel-cream text-gray-700 hover:bg-pastel-pink hover:text-pastel-pink-dark'
-                }`}
-              >
-                <Sparkles className="w-4 h-4" />
-                Sblocca
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+              {tier.stripe_payment_link ? (
+                <a
+                  href={tier.stripe_payment_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`w-full flex items-center justify-center gap-2 py-3 rounded-2xl font-display font-semibold text-sm transition-all duration-300 ${
+                    isRecommended
+                      ? 'bg-gradient-to-r from-pastel-pink-dark to-pastel-lavender-dark text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5'
+                      : 'bg-pastel-cream text-gray-700 hover:bg-pastel-pink hover:text-pastel-pink-dark'
+                  }`}
+                >
+                  <Sparkles className="w-4 h-4" />
+                  Sblocca
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+              ) : (
+                <Link
+                  to={`/acquista?tier=${tier.tier_key}`}
+                  className={`w-full flex items-center justify-center gap-2 py-3 rounded-2xl font-display font-semibold text-sm transition-all duration-300 ${
+                    isRecommended
+                      ? 'bg-gradient-to-r from-pastel-pink-dark to-pastel-lavender-dark text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5'
+                      : 'bg-pastel-cream text-gray-700 hover:bg-pastel-pink hover:text-pastel-pink-dark'
+                  }`}
+                >
+                  <Sparkles className="w-4 h-4" />
+                  Sblocca
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              )}
             </div>
           </motion.div>
         )
