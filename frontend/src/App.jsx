@@ -5,6 +5,7 @@ import About from './pages/About'
 import Portfolio from './pages/Portfolio'
 import Activities from './pages/Activities'
 import ThankYou from './pages/ThankYou'
+import Checkout from './pages/Checkout'
 import Contact from './pages/Contact'
 import AccessPin from './pages/AccessPin'
 import BlogList from './pages/Blog'
@@ -27,6 +28,7 @@ function App() {
         <Route path="portfolio" element={<Portfolio />} />
         <Route path="attivita" element={<Activities />} />
         <Route path="grazie" element={<ThankYou />} />
+        <Route path="acquista" element={<Checkout />} />
         <Route path="contatti" element={<Contact />} />
         <Route path="accesso-pin" element={<AccessPin />} />
         <Route path="blog" element={<BlogList />} />

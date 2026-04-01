@@ -174,25 +174,18 @@ export default function PricingTiers() {
                 ))}
               </ul>
 
-              <a
-                href={tier.stripe_payment_link || '#'}
-                target={tier.stripe_payment_link ? '_blank' : undefined}
-                rel={tier.stripe_payment_link ? 'noopener noreferrer' : undefined}
+              <Link
+                to={`/acquista?tier=${tier.tier_key}`}
                 className={`w-full flex items-center justify-center gap-2 py-3 rounded-2xl font-display font-semibold text-sm transition-all duration-300 ${
                   isRecommended
                     ? 'bg-gradient-to-r from-pastel-pink-dark to-pastel-lavender-dark text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5'
                     : 'bg-pastel-cream text-gray-700 hover:bg-pastel-pink hover:text-pastel-pink-dark'
                 }`}
-                onClick={(e) => {
-                  if (!tier.stripe_payment_link) {
-                    e.preventDefault()
-                  }
-                }}
               >
                 <Sparkles className="w-4 h-4" />
                 Sblocca
                 <ArrowRight className="w-4 h-4" />
-              </a>
+              </Link>
             </div>
           </motion.div>
         )

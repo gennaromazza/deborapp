@@ -1,21 +1,22 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Users, BookOpen, LogOut, ArrowRight, Sparkles, TrendingUp, FileText } from 'lucide-react'
+import { Users, BookOpen, LogOut, ArrowRight, Sparkles, TrendingUp, FileText, Clock } from 'lucide-react'
 import { supabase } from '../../utils/supabase'
 
 export default function AdminDashboard() {
-  const [stats, setStats] = useState({ users: 0, products: 0, posts: 0 })
+  const [stats, setStats] = useState({ users: 0, products: 0, posts: 0, pendingOrders: 0 })
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function fetchStats() {
-      const [{ count: userCount }, { count: productCount }, { count: postCount }] = await Promise.all([
+      const [{ count: userCount }, { count: productCount }, { count: postCount }, { data: pendingData }] = await Promise.all([
         supabase.from('users').select('*', { count: 'exact', head: true }),
         supabase.from('products').select('*', { count: 'exact', head: true }),
         supabase.from('blog_posts').select('*', { count: 'exact', head: true }),
+        supabase.from('orders').select('id').eq('status', 'pending'),
       ])
-      setStats({ users: userCount || 0, products: productCount || 0, posts: postCount || 0 })
+      setStats({ users: userCount || 0, products: productCount || 0, posts: postCount || 0, pendingOrders: pendingData?.length || 0 })
       setLoading(false)
     }
     fetchStats()
@@ -58,7 +59,7 @@ export default function AdminDashboard() {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-3 gap-6 mb-12">
+        <div className="grid sm:grid-cols-3 gap-6 mb-6">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -136,6 +137,38 @@ export default function AdminDashboard() {
             </Link>
           </motion.div>
         </div>
+
+        {/* Ordini Pendenti */}
+        {stats.pendingOrders > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="card p-6 mb-6 border-2 border-amber-200"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <Clock className="w-5 h-5 text-amber-500" />
+                  <p className="font-body text-gray-600 font-medium">Ordini Pendenti</p>
+                </div>
+                <p className="font-display text-4xl font-bold text-amber-600">
+                  {loading ? '...' : stats.pendingOrders}
+                </p>
+              </div>
+              <div className="w-14 h-14 rounded-2xl bg-amber-100 flex items-center justify-center">
+                <Clock className="w-7 h-7 text-amber-600" />
+              </div>
+            </div>
+            <Link
+              to="/admin/utenti"
+              className="mt-4 inline-flex items-center gap-1 text-amber-600 font-body font-medium hover:underline text-sm"
+            >
+              Gestisci ordini
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </motion.div>
+        )}
 
         <div className="card p-8 text-center">
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-pastel-mint mb-4">

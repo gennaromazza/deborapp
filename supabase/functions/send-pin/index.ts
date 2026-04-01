@@ -42,9 +42,16 @@ serve(async (req) => {
   }
 
   try {
-    const { first_name, last_name, email, product_id, pin, resend } = await req.json()
+    const body = await req.json()
+    const { first_name, last_name, email, pin, resend } = body
 
-    if (!first_name || !last_name || !email || !product_id || !pin) {
+    // Supporta sia product_ids (array) che product_id (singolo, legacy)
+    let productIds: string[] = body.product_ids || []
+    if (!productIds.length && body.product_id) {
+      productIds = [body.product_id]
+    }
+
+    if (!first_name || !last_name || !email || !pin || productIds.length === 0) {
       return new Response(
         JSON.stringify({ error: 'Campi obbligatori mancanti' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -56,31 +63,91 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    const { data: product, error: productError } = await supabase
+    // Recupera tutti i prodotti
+    const { data: products, error: productsError } = await supabase
       .from('products')
-      .select('title, download_link')
-      .eq('id', product_id)
-      .single()
+      .select('id, title, download_link')
+      .in('id', productIds)
 
-    if (productError || !product) {
+    if (productsError || !products || products.length === 0) {
       return new Response(
-        JSON.stringify({ error: 'Prodotto non trovato' }),
+        JSON.stringify({ error: 'Prodotti non trovati' }),
         { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
 
-    if (!resend) {
-      const { error: insertError } = await supabase
-        .from('users')
-        .insert([{ first_name, last_name, email, pin, product_id }])
+    let userId: string
 
-      if (insertError) {
+    if (!resend) {
+      // Inserisci utente con product_ids come array (per riferimento rapido)
+      const { data: insertedUser, error: insertError } = await supabase
+        .from('users')
+        .insert([{
+          first_name,
+          last_name,
+          email,
+          pin,
+          product_ids: productIds,
+          product_id: productIds[0], // legacy: primo prodotto
+        }])
+        .select('id')
+        .single()
+
+      if (insertError || !insertedUser) {
         return new Response(
-          JSON.stringify({ error: 'Errore salvataggio utente: ' + insertError.message }),
+          JSON.stringify({ error: 'Errore salvataggio utente: ' + insertError?.message }),
           { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         )
       }
+
+      userId = insertedUser.id
+
+      // Inserisci relazioni in customer_products
+      const customerProductsRows = productIds.map((productId: string) => ({
+        customer_id: userId,
+        product_id: productId,
+      }))
+
+      const { error: cpError } = await supabase
+        .from('customer_products')
+        .insert(customerProductsRows)
+
+      if (cpError) {
+        return new Response(
+          JSON.stringify({ error: 'Errore salvataggio relazioni prodotti: ' + cpError.message }),
+          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
+      }
+    } else {
+      // Reinvio: trova utente esistente
+      const { data: existingUser } = await supabase
+        .from('users')
+        .select('id')
+        .eq('pin', pin)
+        .single()
+
+      if (!existingUser) {
+        return new Response(
+          JSON.stringify({ error: 'Utente non trovato per il PIN fornito' }),
+          { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
+      }
+
+      userId = existingUser.id
     }
+
+    // Costruisci la lista prodotti per l'email
+    const productListHtml = products.map((p) => `
+      <tr>
+        <td style="padding: 8px 0; border-bottom: 1px dashed #F8E8EE; color: #6B6B6B; font-size: 14px;">
+          ${p.title}
+        </td>
+      </tr>
+    `).join('')
+
+    const emailSubject = products.length === 1
+      ? `Il tuo codice di accesso per "${products[0].title}"`
+      : `I tuoi codici di accesso - ${products.length} attività`
 
     const emailHtml = `
       <div style="font-family: 'Nunito', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #FFF8F0; border-radius: 24px;">
@@ -91,16 +158,23 @@ serve(async (req) => {
           Ciao ${first_name}!
         </h1>
         <p style="color: #6B6B6B; font-size: 16px; text-align: center; line-height: 1.6;">
-          Grazie per aver acquistato <strong style="color: #C4B0D8;">${product.title}</strong>.<br>
-          Ecco il tuo codice di accesso personale:
+          Grazie per il tuo acquisto! Ecco il tuo codice di accesso personale:
         </p>
         <div style="text-align: center; margin: 30px 0;">
           <span style="display: inline-block; background: linear-gradient(135deg, #F8E8EE, #E8E0F0); padding: 16px 40px; border-radius: 16px; font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #C4B0D8; font-family: monospace;">
             ${pin}
           </span>
         </div>
+        <p style="color: #6B6B6B; font-size: 16px; text-align: center; line-height: 1.6;">
+          Questo PIN sblocca le seguenti <strong style="color: #C4B0D8;">${products.length} attività</strong>:
+        </p>
+        <div style="text-align: center; margin: 20px 0;">
+          <table style="margin: 0 auto; width: 100%; max-width: 400px;">
+            ${productListHtml}
+          </table>
+        </div>
         <p style="color: #6B6B6B; font-size: 14px; text-align: center; line-height: 1.6;">
-          Visita il sito e inserisci questo PIN nella pagina "Accedi con PIN" per sbloccare il tuo prodotto.
+          Visita il sito e inserisci questo PIN nella pagina "Accedi con PIN" per sbloccare tutte le tue attività.
         </p>
         <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #F8E8EE;">
           <p style="color: #A0A0A0; font-size: 12px;">
@@ -112,11 +186,7 @@ serve(async (req) => {
       </div>
     `
 
-    await sendEmail(
-      email,
-      `Il tuo codice di accesso per "${product.title}"`,
-      emailHtml
-    )
+    await sendEmail(email, emailSubject, emailHtml)
 
     return new Response(
       JSON.stringify({ success: true, message: 'PIN generato e email inviata' }),
