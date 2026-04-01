@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowRight, Sparkles, Heart, Star, BookOpen, Palette, Lightbulb, Users, Award, ChevronRight, Quote } from 'lucide-react'
+import { ArrowRight, Sparkles, Heart, Star, BookOpen, Palette, Lightbulb, Users, Award, ChevronRight, Quote, Instagram } from 'lucide-react'
 import { supabase } from '../utils/supabase'
 import ProductCard from '../components/ProductCard'
 
@@ -507,6 +507,71 @@ export default function Home() {
                 )}
               </motion.div>
             ))}
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="relative"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-400 via-pink-500 to-orange-400 rounded-5xl blur-2xl opacity-20 -z-10" />
+            <div className="bg-white/90 backdrop-blur-lg p-10 md:p-14 rounded-5xl shadow-soft-lg border border-pink-100">
+              <div className="text-center mb-10">
+                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-100 via-pink-100 to-orange-100 px-4 py-1.5 rounded-full mb-4">
+                  <Instagram className="w-4 h-4 text-pink-500" />
+                  <span className="font-body text-sm font-medium text-gray-700">Seguici su Instagram</span>
+                </div>
+                <h2 className="font-display text-3xl md:text-4xl font-extrabold text-gray-800 mb-3">
+                  Unisciti alla community di{' '}
+                  <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 bg-clip-text text-transparent">
+                    @mammabisdioggi
+                  </span>
+                </h2>
+                <p className="font-body text-lg text-gray-500 leading-relaxed max-w-2xl mx-auto">
+                  Anteprime, idee creative, consigli per mamme e papà, e tanti momenti per ispirare le vostre giornate insieme.
+                </p>
+              </div>
+
+              <div className="elfsight-app-placeholder" data-elfsight-app-id="placeholder">
+                <a
+                  href="https://www.instagram.com/mammabisdioggi"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block max-w-md mx-auto bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-[3px] rounded-2xl hover:scale-105 transition-transform"
+                >
+                  <div className="bg-white rounded-2xl p-6 flex flex-col items-center gap-4">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-[3px]">
+                      <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
+                        <Instagram className="w-10 h-10 text-pink-500" />
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <p className="font-display font-bold text-lg text-gray-800">@mammabisdioggi</p>
+                      <p className="font-body text-sm text-gray-500">Clicca per vedere il feed su Instagram</p>
+                    </div>
+                    <span className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 text-white font-body font-semibold shadow-md">
+                      <Instagram className="w-5 h-5" />
+                      Seguici ora
+                      <ArrowRight className="w-4 h-4" />
+                    </span>
+                  </div>
+                </a>
+              </div>
+
+              <p className="text-center text-xs text-gray-400 mt-6">
+                Per visualizzare il feed direttamente qui, configura un widget gratuito su{' '}
+                <a href="https://elfsight.com/instagram-feed-instalink/" target="_blank" rel="noopener noreferrer" className="text-pink-500 hover:underline">
+                  Elfsight Instagram Feed
+                </a>{' '}
+                e inserisci lo script in <code className="bg-gray-100 px-1.5 py-0.5 rounded text-xs">index.html</code>
+              </p>
+            </div>
           </motion.div>
         </div>
       </section>
