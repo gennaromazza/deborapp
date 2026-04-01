@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowRight, Sparkles, Heart, Star, BookOpen, Palette, Lightbulb, Users, Award, ChevronRight, Quote, Instagram } from 'lucide-react'
+import { ArrowRight, Sparkles, Heart, Star, BookOpen, Palette, Lightbulb, Users, Award, ChevronRight, Quote, Instagram, Gift, Clock, ArrowUpRight } from 'lucide-react'
 import { supabase } from '../utils/supabase'
 import ProductCard from '../components/ProductCard'
 
@@ -30,6 +30,8 @@ const itemVariants = {
 
 export default function Home() {
   const [featuredProducts, setFeaturedProducts] = useState([])
+  const [freeProducts, setFreeProducts] = useState([])
+  const [totalProducts, setTotalProducts] = useState(0)
 
   useEffect(() => {
     async function fetchFeatured() {
@@ -41,6 +43,31 @@ export default function Home() {
       if (data) setFeaturedProducts(data)
     }
     fetchFeatured()
+  }, [])
+
+  useEffect(() => {
+    async function fetchFreeProducts() {
+      const now = new Date().toISOString()
+      const { data } = await supabase
+        .from('products')
+        .select('*')
+        .eq('is_free', true)
+        .or(`free_until.is.null,free_until.gt.${now}`)
+        .order('created_at', { ascending: false })
+        .limit(3)
+      if (data) setFreeProducts(data)
+    }
+    fetchFreeProducts()
+  }, [])
+
+  useEffect(() => {
+    async function fetchTotal() {
+      const { count } = await supabase
+        .from('products')
+        .select('*', { count: 'exact', head: true })
+      if (count) setTotalProducts(count)
+    }
+    fetchTotal()
   }, [])
 
   useEffect(() => {
@@ -510,6 +537,122 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      {freeProducts.length > 0 && (
+        <section className="py-24 bg-gradient-to-b from-green-50 via-emerald-50 to-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <motion.div
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="inline-block mb-4"
+              >
+                <Gift className="w-10 h-10 text-green-500" />
+              </motion.div>
+              <span className="badge mb-4 inline-flex" style={{ background: '#DCFCE7', color: '#166534' }}>
+                <Sparkles className="w-3.5 h-3.5" />
+                Prova prima di scegliere
+              </span>
+              <h2 className="section-title">
+                Assaggia la magia, senza impegno
+              </h2>
+              <p className="section-subtitle max-w-2xl mx-auto">
+                Ecco alcune attività gratuite che ho preparato per voi. Provatele, divertitevi insieme — poi se vi va, scoprite tutto il resto.
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-3 gap-8 mb-10">
+              {freeProducts.map((product, index) => {
+                const now = new Date()
+                const freeUntil = product.free_until ? new Date(product.free_until) : null
+                const daysLeft = freeUntil ? Math.ceil((freeUntil - now) / (1000 * 60 * 60 * 24)) : null
+
+                return (
+                  <motion.div
+                    key={product.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    whileHover={{ y: -8 }}
+                    className="group"
+                  >
+                    <Link to={`/prodotto/${product.id}`} className="block card overflow-hidden h-full">
+                      <div className="aspect-[4/3] bg-gradient-to-br from-green-100 to-emerald-100 relative overflow-hidden">
+                        {product.cover_image ? (
+                          <img
+                            src={product.cover_image}
+                            alt={product.title}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <Gift className="w-16 h-16 text-green-300" />
+                          </div>
+                        )}
+                        <div className="absolute top-3 left-3">
+                          <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-body font-medium bg-green-100 text-green-700 shadow-sm">
+                            <Gift className="w-3 h-3" />
+                            Gratuito
+                          </span>
+                        </div>
+                        {daysLeft !== null && daysLeft <= 7 && (
+                          <div className="absolute top-3 right-3">
+                            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-body font-medium bg-amber-100 text-amber-700">
+                              <Clock className="w-3 h-3" />
+                              {daysLeft === 0 ? 'Oggi!' : `${daysLeft}g`}
+                            </span>
+                          </div>
+                        )}
+                        <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all">
+                          <div className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
+                            <ArrowUpRight className="w-5 h-5 text-green-600" />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="p-6">
+                        <h3 className="font-display font-bold text-lg text-gray-800 mb-2 group-hover:text-green-600 transition-colors">
+                          {product.title}
+                        </h3>
+                        <p className="font-body text-gray-500 text-sm line-clamp-2">
+                          {product.description}
+                        </p>
+                        <div className="mt-4 flex items-center gap-1 text-green-600 font-body text-sm font-medium">
+                          Prova ora
+                          <ArrowRight className="w-4 h-4" />
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                )
+              })}
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="text-center"
+            >
+              <p className="font-body text-gray-500 mb-4">
+                Queste sono solo <strong>{freeProducts.length}</strong> delle <strong>{totalProducts}</strong> attività disponibili
+              </p>
+              <Link to="/attivita" className="btn-primary inline-flex items-center gap-2">
+                Scopri tutti i livelli
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+              <p className="font-body text-gray-400 text-sm mt-4">
+                Ogni attività è un momento speciale da vivere insieme. Scegliete quello che vi ispira di più.
+              </p>
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       <section className="py-20 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
