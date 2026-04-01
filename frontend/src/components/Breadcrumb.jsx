@@ -11,6 +11,14 @@ const breadcrumbMap = {
     { label: 'Home', path: '/' },
     { label: 'Portfolio', path: '/portfolio' },
   ],
+  '/attivita': [
+    { label: 'Home', path: '/' },
+    { label: 'Attività', path: '/attivita' },
+  ],
+  '/grazie': [
+    { label: 'Home', path: '/' },
+    { label: 'Grazie', path: '/grazie' },
+  ],
   '/contatti': [
     { label: 'Home', path: '/' },
     { label: 'Contatti', path: '/contatti' },

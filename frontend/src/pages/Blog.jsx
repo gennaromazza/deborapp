@@ -176,9 +176,9 @@ export default function BlogList() {
                   <Link to={`/blog/${post.slug}`}>
                     <div className="aspect-video overflow-hidden bg-pastel-lavender/30">
                       {post.featured_image ? (
-                        <img 
-                          src={rp.featured_image} 
-                          alt={rp.title}
+                        <img
+                          src={post.featured_image}
+                          alt={post.title}
                           className="w-full h-full object-cover"
                           loading="lazy"
                         />

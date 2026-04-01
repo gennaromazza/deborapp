@@ -41,7 +41,7 @@ export default function Layout() {
     { path: '/', label: 'Home', icon: Home },
     { path: '/chi-sono', label: 'Chi sono', icon: User },
     { path: '/blog', label: 'Blog', icon: FileText },
-    { path: '/portfolio', label: 'Portfolio', icon: LayoutGrid },
+    { path: '/attivita', label: 'Attività', icon: LayoutGrid },
     { path: '/contatti', label: 'Contatti', icon: Mail },
     { path: '/accesso-pin', label: 'Accedi con PIN', icon: Key },
   ]
@@ -269,18 +269,16 @@ export default function Layout() {
                 Contenuti
               </h4>
               <div className="space-y-3">
-                <Link to="/portfolio" className="group flex items-center gap-2 font-body text-gray-500 text-sm hover:text-pastel-lavender-dark transition-all">
-                  <ChevronRight className="w-3.5 h-3.5 text-pastel-lavender-dark group-hover:translate-x-0.5 transition-all" />
-                  Storie
-                </Link>
-                <Link to="/portfolio" className="group flex items-center gap-2 font-body text-gray-500 text-sm hover:text-pastel-lavender-dark transition-all">
-                  <ChevronRight className="w-3.5 h-3.5 text-pastel-lavender-dark group-hover:translate-x-0.5 transition-all" />
-                  Attività creative
-                </Link>
-                <Link to="/portfolio" className="group flex items-center gap-2 font-body text-gray-500 text-sm hover:text-pastel-lavender-dark transition-all">
-                  <ChevronRight className="w-3.5 h-3.5 text-pastel-lavender-dark group-hover:translate-x-0.5 transition-all" />
-                  Materiali digitali
-                </Link>
+                {navLinks.filter(l => l.path !== '/' && l.path !== '/accesso-pin' && l.path !== '/admin/login').map(({ path, label }) => (
+                  <Link
+                    key={path}
+                    to={path}
+                    className="group flex items-center gap-2 font-body text-gray-500 text-sm hover:text-pastel-lavender-dark transition-all"
+                  >
+                    <ChevronRight className="w-3.5 h-3.5 text-pastel-lavender-dark group-hover:translate-x-0.5 transition-all" />
+                    {label}
+                  </Link>
+                ))}
                 <Link to="/accesso-pin" className="group flex items-center gap-2 font-body text-gray-500 text-sm hover:text-pastel-lavender-dark transition-all">
                   <ChevronRight className="w-3.5 h-3.5 text-pastel-lavender-dark group-hover:translate-x-0.5 transition-all" />
                   Accedi con PIN

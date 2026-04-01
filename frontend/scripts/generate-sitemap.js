@@ -30,6 +30,7 @@ async function generateSitemap() {
     { url: '/', priority: '1.0', changefreq: 'weekly' },
     { url: '/chi-sono', priority: '0.8', changefreq: 'monthly' },
     { url: '/portfolio', priority: '0.8', changefreq: 'weekly' },
+    { url: '/attivita', priority: '0.9', changefreq: 'weekly' },
     { url: '/contatti', priority: '0.7', changefreq: 'monthly' },
     { url: '/blog', priority: '0.9', changefreq: 'daily' },
   ]

@@ -20,6 +20,9 @@ export default function AdminProducts() {
     cover_images: [],
     download_link: '',
     type: 'link',
+    category: 'attivita-stampabili',
+    price_tier: 'single',
+    usage_context: 'da-stampare',
   })
   const [submitting, setSubmitting] = useState(false)
   const [imageQueue, setImageQueue] = useState([])
@@ -39,7 +42,7 @@ export default function AdminProducts() {
   }
 
   const resetForm = () => {
-    setFormData({ title: '', description: '', cover_image: '', cover_images: [], download_link: '', type: 'link' })
+    setFormData({ title: '', description: '', cover_image: '', cover_images: [], download_link: '', type: 'link', category: 'attivita-stampabili', price_tier: 'single', usage_context: 'da-stampare' })
     setImageQueue([])
     setEditingId(null)
     setShowForm(false)
@@ -205,6 +208,9 @@ export default function AdminProducts() {
           cover_images: newCoverImages,
           download_link: formData.download_link,
           type: formData.type,
+          category: formData.category,
+          price_tier: formData.price_tier,
+          usage_context: formData.usage_context,
         }
 
         console.log('Dati da salvare:', dataToSave)
@@ -245,6 +251,9 @@ export default function AdminProducts() {
       cover_images: product.cover_images || [],
       download_link: product.download_link,
       type: product.type || 'link',
+      category: product.category || 'attivita-stampabili',
+      price_tier: product.price_tier || 'single',
+      usage_context: product.usage_context || 'da-stampare',
     })
     setEditingId(product.id)
     setShowForm(true)
@@ -328,6 +337,56 @@ export default function AdminProducts() {
                     </div>
                     <p className="font-body text-sm text-gray-500">Mini-app contenuto nel sito (libri, giochi)</p>
                   </button>
+                </div>
+              </div>
+
+              <div className="grid sm:grid-cols-3 gap-4">
+                <div>
+                  <label className="block font-body font-medium text-gray-600 mb-2">
+                    Categoria
+                  </label>
+                  <select
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    className="input-field"
+                  >
+                    <option value="mini-app-interattive">Mini App Interattive</option>
+                    <option value="attivita-stampabili">Attività Stampabili</option>
+                    <option value="percorsi-educativi">Percorsi Educativi</option>
+                    <option value="storie-avventure">Storie & Avventure</option>
+                    <option value="kit-famiglia">Kit Famiglia</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block font-body font-medium text-gray-600 mb-2">
+                    Contesto d'uso
+                  </label>
+                  <select
+                    value={formData.usage_context}
+                    onChange={(e) => setFormData({ ...formData, usage_context: e.target.value })}
+                    className="input-field"
+                  >
+                    <option value="da-stampare">Pronto da stampare</option>
+                    <option value="interattivo">Interattivo</option>
+                    <option value="in-famiglia">Da fare insieme</option>
+                    <option value="educativo">Educativo</option>
+                    <option value="creativo">Creativo</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block font-body font-medium text-gray-600 mb-2">
+                    Livello prezzo
+                  </label>
+                  <select
+                    value={formData.price_tier}
+                    onChange={(e) => setFormData({ ...formData, price_tier: e.target.value })}
+                    className="input-field"
+                  >
+                    <option value="single">Un Caffè (1 attività)</option>
+                    <option value="double">Caffè & Cornetto (2 attività)</option>
+                    <option value="family">Colazione Completa (4 attività)</option>
+                    <option value="premium">La Merenda (tutte)</option>
+                  </select>
                 </div>
               </div>
 
@@ -583,10 +642,15 @@ export default function AdminProducts() {
                   ) : (
                     <span className="text-4xl">{product.type === 'app' ? '🎮' : '📚'}</span>
                   )}
-                  <div className="absolute top-3 left-3">
+                  <div className="absolute top-3 left-3 flex flex-col gap-1.5">
                     <span className={`badge text-xs ${product.type === 'app' ? 'badge-lavender' : 'badge-pink'}`}>
                       {product.type === 'app' ? '🎮 App' : '🔗 Link'}
                     </span>
+                    {product.category && (
+                      <span className="badge text-xs badge-mint">
+                        {product.category.replace(/-/g, ' ')}
+                      </span>
+                    )}
                   </div>
                   {product.cover_images?.length > 1 && (
                     <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2 py-1 rounded-full">

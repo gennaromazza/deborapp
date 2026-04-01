@@ -56,8 +56,8 @@ export default function Home() {
       el.setAttribute('content', content)
     }
 
-    setMeta('description', 'Debora di Bellucci crea storie incantevoli, attività creative e schede didattiche per bambini. Contenuti digitali per ispirare fantasia e apprendimento.')
-    setMeta('keywords', 'attività bambini, schede didattiche, libro matematica bambini, imparare matematica giocando, storie per bambini, contenuti digitali bambini, attività creative fai da te bambini')
+    setMeta('description', 'Debora di Bellucci crea storie incantevoli, attività creative e schede didattiche per bambini. Esperienze digitali per ispirare fantasia e tempo di qualità in famiglia.')
+    setMeta('keywords', 'attività bambini, schede didattiche, libro matematica bambini, imparare matematica giocando, storie per bambini, esperienze digitali bambini, attività creative famiglia, tempo qualità bambini')
     setMeta('og:title', 'Debora di Bellucci - Storie, Attività e Schede Didattiche per Bambini')
     setMeta('og:description', 'Debora di Bellucci crea storie incantevoli, attività creative e schede didattiche per bambini. Contenuti digitali per ispirare fantasia e apprendimento.', 'property')
     setMeta('og:type', 'website', 'property')
@@ -201,7 +201,7 @@ export default function Home() {
               transition={{ delay: 0.3 }}
             >
               <Sparkles className="w-4 h-4 text-pastel-pink-dark" />
-              <span className="font-body text-sm text-gray-600">Contenuti magici per bambini</span>
+              <span className="font-body text-sm text-gray-600">Attività creative per famiglie</span>
             </motion.div>
 
             <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-extrabold text-gray-800 mb-6 leading-tight">
@@ -214,8 +214,8 @@ export default function Home() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/portfolio" className="btn-primary inline-flex items-center justify-center gap-2 text-base">
-                Scopri i miei prodotti
+              <Link to="/attivita" className="btn-primary inline-flex items-center justify-center gap-2 text-base">
+                Scopri le attività
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <Link to="/accesso-pin" className="btn-secondary inline-flex items-center justify-center gap-2 text-base">
@@ -359,8 +359,8 @@ export default function Home() {
               {
                 icon: Lightbulb,
                 emoji: '✨',
-                title: 'Contenuti Digitali',
-                desc: 'Materiali scaricabili pronti all\'uso, pensati per genitori ed educatori',
+                title: 'Esperienze Digitali',
+                desc: 'Materiali pronti all\'uso, pensati per genitori ed educatori. Tempo di qualità, insieme.',
                 color: 'from-pastel-mint to-pastel-sky',
                 badge: 'badge-mint',
               },
@@ -450,10 +450,10 @@ export default function Home() {
               Come funziona
             </motion.span>
             <motion.h2 variants={itemVariants} className="section-title">
-              Come accedere ai contenuti
+              Come accedere alle attività
             </motion.h2>
             <motion.p variants={itemVariants} className="section-subtitle">
-              Un processo semplice e veloce per sbloccare i tuoi prodotti digitali
+              Un processo semplice e veloce per sbloccare le tue esperienze creative
             </motion.p>
           </motion.div>
 
@@ -467,20 +467,20 @@ export default function Home() {
             {[
               {
                 step: '01',
-                title: 'Acquista',
-                desc: 'Trova il prodotto perfetto su Gumroad, Etsy o altre piattaforme',
+                title: 'Scegli',
+                desc: 'Scegli il livello che fa per voi: da un\'attività a tutto il catalogo',
                 color: 'from-pastel-pink to-pastel-peach',
               },
               {
                 step: '02',
                 title: 'Ricevi il PIN',
-                desc: 'Ti arriverà un\'email con il tuo codice di accesso personale',
+                desc: 'Dopo il pagamento, ti arriverà un\'email con il tuo codice di accesso',
                 color: 'from-pastel-lavender to-pastel-sky',
               },
               {
                 step: '03',
-                title: 'Scarica',
-                desc: 'Inserisci il PIN sul sito e accedi subito al tuo prodotto',
+                title: 'Scoprite insieme',
+                desc: 'Inserisci il PIN e accedi subito alle attività. Pronti a divertirvi!',
                 color: 'from-pastel-mint to-pastel-sky',
               },
             ].map((step, i) => (

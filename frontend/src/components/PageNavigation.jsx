@@ -9,14 +9,18 @@ const pageNavigation = {
   },
   '/chi-sono': {
     prev: { path: '/', label: 'Home' },
-    next: { path: '/portfolio', label: 'Portfolio' },
+    next: { path: '/attivita', label: 'Attività' },
   },
   '/portfolio': {
+    prev: { path: '/chi-sono', label: 'Chi sono' },
+    next: { path: '/attivita', label: 'Attività' },
+  },
+  '/attivita': {
     prev: { path: '/chi-sono', label: 'Chi sono' },
     next: { path: '/contatti', label: 'Contatti' },
   },
   '/contatti': {
-    prev: { path: '/portfolio', label: 'Portfolio' },
+    prev: { path: '/attivita', label: 'Attività' },
     next: { path: '/accesso-pin', label: 'Accedi con PIN' },
   },
   '/accesso-pin': {

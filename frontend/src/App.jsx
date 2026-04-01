@@ -3,6 +3,8 @@ import Layout from './components/Layout'
 import Home from './pages/Home'
 import About from './pages/About'
 import Portfolio from './pages/Portfolio'
+import Activities from './pages/Activities'
+import ThankYou from './pages/ThankYou'
 import Contact from './pages/Contact'
 import AccessPin from './pages/AccessPin'
 import BlogList from './pages/Blog'
@@ -23,6 +25,8 @@ function App() {
         <Route index element={<Home />} />
         <Route path="chi-sono" element={<About />} />
         <Route path="portfolio" element={<Portfolio />} />
+        <Route path="attivita" element={<Activities />} />
+        <Route path="grazie" element={<ThankYou />} />
         <Route path="contatti" element={<Contact />} />
         <Route path="accesso-pin" element={<AccessPin />} />
         <Route path="blog" element={<BlogList />} />
