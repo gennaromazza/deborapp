@@ -19,6 +19,7 @@ export default function AdminProducts() {
     cover_image: '',
     cover_images: [],
     download_link: '',
+    stripe_payment_link: '',
     type: 'link',
     category: 'attivita-stampabili',
     price_tier: 'single',
@@ -42,7 +43,7 @@ export default function AdminProducts() {
   }
 
   const resetForm = () => {
-    setFormData({ title: '', description: '', cover_image: '', cover_images: [], download_link: '', type: 'link', category: 'attivita-stampabili', price_tier: 'single', usage_context: 'da-stampare' })
+    setFormData({ title: '', description: '', cover_image: '', cover_images: [], download_link: '', stripe_payment_link: '', type: 'link', category: 'attivita-stampabili', price_tier: 'single', usage_context: 'da-stampare' })
     setImageQueue([])
     setEditingId(null)
     setShowForm(false)
@@ -207,6 +208,7 @@ export default function AdminProducts() {
           cover_image: newCoverImages[0] || formData.cover_image || '',
           cover_images: newCoverImages,
           download_link: formData.download_link,
+          stripe_payment_link: formData.stripe_payment_link || null,
           type: formData.type,
           category: formData.category,
           price_tier: formData.price_tier,
@@ -250,6 +252,7 @@ export default function AdminProducts() {
       cover_image: product.cover_image || '',
       cover_images: product.cover_images || [],
       download_link: product.download_link,
+      stripe_payment_link: product.stripe_payment_link || '',
       type: product.type || 'link',
       category: product.category || 'attivita-stampabili',
       price_tier: product.price_tier || 'single',
@@ -570,6 +573,21 @@ export default function AdminProducts() {
                   required
                 />
               )}
+              <div>
+                <label className="block font-body font-medium text-gray-600 mb-2">
+                  Link di pagamento Stripe (opzionale)
+                </label>
+                <input
+                  type="url"
+                  placeholder="https://buy.stripe.com/..."
+                  value={formData.stripe_payment_link}
+                  onChange={(e) => setFormData({ ...formData, stripe_payment_link: e.target.value })}
+                  className="input-field"
+                />
+                <p className="font-body text-xs text-gray-400 mt-1">
+                  Se compilato, il pulsante "Sblocca" nel pricing tier porterà a questo link. Se vuoto, il prodotto sarÃ  nella sezione "Gratuiti".
+                </p>
+              </div>
               <div className="flex gap-3">
                 <button
                   type="submit"
@@ -649,6 +667,15 @@ export default function AdminProducts() {
                     {product.category && (
                       <span className="badge text-xs badge-mint">
                         {product.category.replace(/-/g, ' ')}
+                      </span>
+                    )}
+                    {product.stripe_payment_link ? (
+                      <span className="badge text-xs" style={{ background: '#E8F5E9', color: '#2E7D32' }}>
+                        💰 A pagamento
+                      </span>
+                    ) : (
+                      <span className="badge text-xs" style={{ background: '#FFF3E0', color: '#E65100' }}>
+                        🎁 Gratuito
                       </span>
                     )}
                   </div>

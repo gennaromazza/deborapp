@@ -1,5 +1,6 @@
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowUpRight, Printer, Monitor, Users, BookOpen, Palette } from 'lucide-react'
+import { ArrowUpRight, Printer, Monitor, Users, BookOpen, Palette, Gift } from 'lucide-react'
 
 const categoryConfig = {
   'mini-app-interattive': {
@@ -58,15 +59,10 @@ export default function ActivityCard({ activity, index }) {
       ? [activity.cover_image]
       : []
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ y: -8 }}
-      className="card group cursor-pointer"
-    >
+  const isFree = !activity.stripe_payment_link
+
+  const CardContent = (
+    <>
       <div className="aspect-[4/3] bg-gradient-to-br from-pastel-pink to-pastel-lavender relative overflow-hidden">
         {images.length > 0 ? (
           <img
@@ -88,6 +84,12 @@ export default function ActivityCard({ activity, index }) {
             <CatIcon className="w-3 h-3" />
             {catConfig.label}
           </span>
+          {isFree && (
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-body font-medium bg-green-100 text-green-700 shadow-sm">
+              <Gift className="w-3 h-3" />
+              Gratuito
+            </span>
+          )}
         </div>
 
         <div className="absolute bottom-3 left-3 flex items-center gap-1.5">
@@ -112,6 +114,21 @@ export default function ActivityCard({ activity, index }) {
           {activity.description}
         </p>
       </div>
+    </>
+  )
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-50px' }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      whileHover={{ y: -8 }}
+      className="card group cursor-pointer"
+    >
+      <Link to={`/prodotto/${activity.id}`} className="block">
+        {CardContent}
+      </Link>
     </motion.div>
   )
 }

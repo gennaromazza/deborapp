@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Sparkles, Heart, Coffee, ArrowRight, Star, Users } from 'lucide-react'
+import { Sparkles, Heart, Coffee, ArrowRight, Star, Users, Gift } from 'lucide-react'
 import { supabase } from '../utils/supabase'
 import ActivityCard from '../components/ActivityCard'
 import CategoryFilter from '../components/CategoryFilter'
@@ -11,6 +11,7 @@ import PageTransition from '../components/PageTransition'
 
 export default function Activities() {
   const [activities, setActivities] = useState([])
+  const [freeProducts, setFreeProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [activeCategory, setActiveCategory] = useState('all')
   const [categoryCounts, setCategoryCounts] = useState({})
@@ -24,6 +25,9 @@ export default function Activities() {
 
       if (!error && data) {
         setActivities(data)
+
+        const freeItems = data.filter(p => !p.stripe_payment_link && p.type !== 'app')
+        setFreeProducts(freeItems)
 
         const counts = { all: data.length }
         data.forEach((a) => {
@@ -192,6 +196,33 @@ export default function Activities() {
             </div>
             <PricingTiers />
           </motion.div>
+
+          {/* Sezione Gratuiti */}
+          {freeProducts.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-20"
+            >
+              <div className="text-center mb-10">
+                <span className="badge badge-mint mb-4 inline-flex">
+                  <Gift className="w-3.5 h-3.5" />
+                  Gratis per te
+                </span>
+                <h2 className="section-title">AttivitÃ  Gratuite</h2>
+                <p className="section-subtitle">
+                  Prova subito, senza impegno. PerchÃ© il tempo insieme non ha prezzo.
+                </p>
+              </div>
+
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {freeProducts.map((product, index) => (
+                  <ActivityCard key={product.id} activity={product} index={index} />
+                ))}
+              </div>
+            </motion.div>
+          )}
 
           {/* Activities Grid */}
           <motion.div
