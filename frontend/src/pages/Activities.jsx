@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Sparkles, Heart, Coffee, ArrowRight, Star, Users, Gift } from 'lucide-react'
+import { Sparkles, Heart, Coffee, ArrowRight, Star, Users, Gift, Clock } from 'lucide-react'
 import { supabase } from '../utils/supabase'
 import ActivityCard from '../components/ActivityCard'
 import CategoryFilter from '../components/CategoryFilter'
@@ -26,11 +26,17 @@ export default function Activities() {
       if (!error && data) {
         setActivities(data)
 
-        const freeItems = data.filter(p => !p.stripe_payment_link && p.type !== 'app')
+        const now = new Date().toISOString()
+        const freeItems = data.filter(p =>
+          p.is_free && (!p.free_until || p.free_until > now)
+        )
         setFreeProducts(freeItems)
 
-        const counts = { all: data.length }
-        data.forEach((a) => {
+        const paidItems = data.filter(p =>
+          !p.is_free || (p.free_until && p.free_until <= now)
+        )
+        const counts = { all: paidItems.length }
+        paidItems.forEach((a) => {
           const cat = a.category || 'attivita-stampabili'
           counts[cat] = (counts[cat] || 0) + 1
         })
@@ -98,9 +104,12 @@ export default function Activities() {
     }
   }, [])
 
-  const filtered = activeCategory === 'all'
-    ? activities
-    : activities.filter((a) => (a.category || 'attivita-stampabili') === activeCategory)
+  const paidActivities = activeCategory === 'all'
+    ? activities.filter(a => !a.is_free || (a.free_until && a.free_until <= new Date().toISOString()))
+    : activities.filter(a =>
+        (!a.is_free || (a.free_until && a.free_until <= new Date().toISOString())) &&
+        (a.category || 'attivita-stampabili') === activeCategory
+      )
 
   return (
     <PageTransition>
@@ -197,22 +206,65 @@ export default function Activities() {
             <PricingTiers />
           </motion.div>
 
+          {/* Banner Gratuiti */}
+          {freeProducts.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-16"
+            >
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-green-200 via-emerald-200 to-teal-200 rounded-5xl blur-2xl opacity-30 -z-10" />
+                <div className="bg-gradient-to-r from-green-50 via-emerald-50 to-teal-50 p-8 md:p-10 rounded-5xl border-2 border-green-200 shadow-lg">
+                  <div className="flex flex-col md:flex-row items-center gap-6">
+                    <motion.div
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className="flex-shrink-0"
+                    >
+                      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-lg">
+                        <Gift className="w-10 h-10 text-white" />
+                      </div>
+                    </motion.div>
+                    <div className="text-center md:text-left flex-1">
+                      <h2 className="font-display text-2xl md:text-3xl font-extrabold text-gray-800 mb-2">
+                        🎁 {freeProducts.length} attività {freeProducts.length === 1 ? 'gratuita' : 'gratuite'} per te!
+                      </h2>
+                      <p className="font-body text-gray-600 text-lg">
+                        Prova subito, senza impegno. Perché il tempo insieme non ha prezzo.
+                      </p>
+                    </div>
+                    <a
+                      href="#gratuiti"
+                      className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 text-white font-body font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-all"
+                    >
+                      Scopri ora
+                      <ArrowRight className="w-5 h-5" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
           {/* Sezione Gratuiti */}
           {freeProducts.length > 0 && (
             <motion.div
+              id="gratuiti"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="mb-20"
             >
               <div className="text-center mb-10">
-                <span className="badge badge-mint mb-4 inline-flex">
-                  <Gift className="w-3.5 h-3.5" />
-                  Gratis per te
+                <span className="inline-flex items-center gap-2 bg-gradient-to-r from-green-100 to-emerald-100 px-4 py-1.5 rounded-full mb-4">
+                  <Gift className="w-4 h-4 text-green-600" />
+                  <span className="font-body text-sm font-medium text-green-700">Gratis per te</span>
                 </span>
-                <h2 className="section-title">AttivitÃ  Gratuite</h2>
+                <h2 className="section-title">Attività Gratuite</h2>
                 <p className="section-subtitle">
-                  Prova subito, senza impegno. PerchÃ© il tempo insieme non ha prezzo.
+                  Accessibili subito, senza registrazione né PIN
                 </p>
               </div>
 
@@ -263,7 +315,7 @@ export default function Activities() {
                   </div>
                 ))}
               </div>
-            ) : filtered.length === 0 ? (
+            ) : paidActivities.length === 0 ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -281,7 +333,7 @@ export default function Activities() {
               </motion.div>
             ) : (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filtered.map((activity, index) => (
+                {paidActivities.map((activity, index) => (
                   <ActivityCard key={activity.id} activity={activity} index={index} />
                 ))}
               </div>

@@ -140,10 +140,10 @@ export default function ThankYou() {
               </div>
               <div>
                 <h3 className="font-display font-bold text-gray-800 mb-1">
-                  Entro 1 ora riceverai il PIN
+                  Completa il pagamento
                 </h3>
                 <p className="font-body text-sm text-gray-500">
-                  Il tuo codice di accesso arriverà via email. Controlla anche la cartella spam o promozioni.
+                  Se non hai ancora pagato, completa il pagamento per ricevere il tuo PIN.
                 </p>
               </div>
             </div>
@@ -154,10 +154,10 @@ export default function ThankYou() {
               </div>
               <div>
                 <h3 className="font-display font-bold text-gray-800 mb-1">
-                  L'email viene da noi
+                  Il PIN arriva via email
                 </h3>
                 <p className="font-body text-sm text-gray-500">
-                  Cerca un'email da <strong>Debora di Bellucci</strong>. Se non la vedi, controlla spam o posta indesiderata.
+                  Dopo il pagamento, il tuo codice di accesso arriverà via email entro 1 ora. Controlla anche spam.
                 </p>
               </div>
             </div>
@@ -171,7 +171,7 @@ export default function ThankYou() {
                   Inserisci il PIN
                 </h3>
                 <p className="font-body text-sm text-gray-500">
-                  Appena lo ricevi, vai nella sezione <strong>Ho già un PIN</strong> per accedere alle tue attività.
+                  Appena lo ricevi, vai nella sezione <strong>Accedi con PIN</strong> per accedere alle tue attività.
                 </p>
               </div>
             </div>

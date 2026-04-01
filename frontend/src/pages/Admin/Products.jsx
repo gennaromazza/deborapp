@@ -19,11 +19,12 @@ export default function AdminProducts() {
     cover_image: '',
     cover_images: [],
     download_link: '',
-    stripe_payment_link: '',
     type: 'link',
     category: 'attivita-stampabili',
     price_tier: 'single',
     usage_context: 'da-stampare',
+    is_free: false,
+    free_until: '',
   })
   const [submitting, setSubmitting] = useState(false)
   const [imageQueue, setImageQueue] = useState([])
@@ -43,7 +44,7 @@ export default function AdminProducts() {
   }
 
   const resetForm = () => {
-    setFormData({ title: '', description: '', cover_image: '', cover_images: [], download_link: '', stripe_payment_link: '', type: 'link', category: 'attivita-stampabili', price_tier: 'single', usage_context: 'da-stampare' })
+    setFormData({ title: '', description: '', cover_image: '', cover_images: [], download_link: '', type: 'link', category: 'attivita-stampabili', price_tier: 'single', usage_context: 'da-stampare', is_free: false, free_until: '' })
     setImageQueue([])
     setEditingId(null)
     setShowForm(false)
@@ -208,11 +209,12 @@ export default function AdminProducts() {
           cover_image: newCoverImages[0] || formData.cover_image || '',
           cover_images: newCoverImages,
           download_link: formData.download_link,
-          stripe_payment_link: formData.stripe_payment_link || null,
           type: formData.type,
           category: formData.category,
           price_tier: formData.price_tier,
           usage_context: formData.usage_context,
+          is_free: formData.is_free,
+          free_until: formData.free_until || null,
         }
 
         console.log('Dati da salvare:', dataToSave)
@@ -252,11 +254,12 @@ export default function AdminProducts() {
       cover_image: product.cover_image || '',
       cover_images: product.cover_images || [],
       download_link: product.download_link,
-      stripe_payment_link: product.stripe_payment_link || '',
       type: product.type || 'link',
       category: product.category || 'attivita-stampabili',
       price_tier: product.price_tier || 'single',
       usage_context: product.usage_context || 'da-stampare',
+      is_free: product.is_free || false,
+      free_until: product.free_until ? product.free_until.split('T')[0] : '',
     })
     setEditingId(product.id)
     setShowForm(true)
@@ -573,20 +576,48 @@ export default function AdminProducts() {
                   required
                 />
               )}
-              <div>
-                <label className="block font-body font-medium text-gray-600 mb-2">
-                  Link di pagamento Stripe (opzionale)
+
+              <div className="p-4 rounded-xl border-2 border-pastel-mint bg-pastel-mint/20">
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.is_free}
+                    onChange={(e) => setFormData({ ...formData, is_free: e.target.checked, free_until: e.target.checked ? formData.free_until : '' })}
+                    className="w-5 h-5 rounded accent-green-600"
+                  />
+                  <div>
+                    <span className="font-display font-semibold text-gray-800">Prodotto Gratuito</span>
+                    <p className="font-body text-xs text-gray-500">Se attivo, il prodotto sarÃ  accessibile a tutti senza PIN</p>
+                  </div>
                 </label>
-                <input
-                  type="url"
-                  placeholder="https://buy.stripe.com/..."
-                  value={formData.stripe_payment_link}
-                  onChange={(e) => setFormData({ ...formData, stripe_payment_link: e.target.value })}
-                  className="input-field"
-                />
-                <p className="font-body text-xs text-gray-400 mt-1">
-                  Se compilato, il pulsante "Sblocca" nel pricing tier porterà a questo link. Se vuoto, il prodotto sarÃ  nella sezione "Gratuiti".
-                </p>
+
+                {formData.is_free && (
+                  <div className="mt-4 space-y-3 pl-8">
+                    <label className="flex items-center gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={!formData.free_until}
+                        onChange={(e) => setFormData({ ...formData, free_until: e.target.checked ? '' : new Date().toISOString().split('T')[0] })}
+                        className="w-4 h-4 rounded accent-green-600"
+                      />
+                      <span className="font-body text-sm text-gray-600">Non scade mai</span>
+                    </label>
+                    {!formData.free_until || (
+                      <div>
+                        <label className="block font-body text-sm text-gray-600 mb-1">
+                          Scade il:
+                        </label>
+                        <input
+                          type="date"
+                          value={formData.free_until}
+                          min={new Date().toISOString().split('T')[0]}
+                          onChange={(e) => setFormData({ ...formData, free_until: e.target.value })}
+                          className="input-field max-w-xs"
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
               <div className="flex gap-3">
                 <button
@@ -669,13 +700,13 @@ export default function AdminProducts() {
                         {product.category.replace(/-/g, ' ')}
                       </span>
                     )}
-                    {product.stripe_payment_link ? (
+                    {product.is_free ? (
                       <span className="badge text-xs" style={{ background: '#E8F5E9', color: '#2E7D32' }}>
-                        💰 A pagamento
+                        🎁 Gratuito{product.free_until ? ` → ${new Date(product.free_until).toLocaleDateString('it-IT')}` : ''}
                       </span>
                     ) : (
                       <span className="badge text-xs" style={{ background: '#FFF3E0', color: '#E65100' }}>
-                        🎁 Gratuito
+                        💰 A pagamento
                       </span>
                     )}
                   </div>

@@ -12,6 +12,7 @@ export default function ProductRouter() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [ProductComponent, setProductComponent] = useState(null)
+  const [isFree, setIsFree] = useState(false)
 
   useEffect(() => {
     async function fetchAndRoute() {
@@ -30,6 +31,10 @@ export default function ProductRouter() {
         setLoading(false)
         return
       }
+
+      const now = new Date().toISOString()
+      const productIsFree = product.is_free && (!product.free_until || product.free_until > now)
+      setIsFree(productIsFree)
 
       const slug = product.slug || 'libro-matematica-volume-1'
       const Component = productComponents[slug]
@@ -68,5 +73,5 @@ export default function ProductRouter() {
     )
   }
 
-  return <ProductComponent productId={productId} chapterId={chapterId} />
+  return <ProductComponent productId={productId} chapterId={chapterId} isFree={isFree} />
 }
