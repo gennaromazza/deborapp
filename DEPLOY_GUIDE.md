@@ -7,22 +7,27 @@
 
 ## Progetto Vercel
 
-- **Nome**: `debdigital`
+- **Nome**: `deborapp`
+- **URL produzione**: https://deborapp.vercel.app
 - **Scope**: `gennaromazzacane-gmailcoms-projects`
 - **Framework Preset**: Vite
 - **Root Directory**: `frontend`
 - **Build Command**: `npm run build`
 - **Node.js Version**: 24.x
 
+⚠️ **ATTENZIONE — UNICO PROGETTO**: Esiste un solo progetto Vercel chiamato `deborapp`. Non creare progetti separati come `frontend`. Il progetto `frontend` è stato eliminato da Vercel — se vedi un progetto con quel nome, cancellalo.
+
 ## Comandi per il Deploy
 
-### Deploy da cartella root (sempre da qui)
+### Deploy da cartella root (SEMPRE da qui)
 ```bash
-# Dalla root del progetto (C:\Users\targa\Documents\DeborApp\deborapp)
+# Dalla root del progetto (H:\Debora di Bellucci)
 vercel --prod --yes
 ```
 
-⚠️ **IMPORTANTE**: Il deploy va SEMPRE fatto dalla root del progetto, NON dalla cartella `frontend`. Il progetto Vercel è configurato con Root Directory = `frontend`, quindi Vercel builda automaticamente dalla sottocartella corretta.
+🔴 **REGOLA FONDAMENTALE**: Il deploy va SEMPRE fatto dalla **root** del progetto (`H:\Debora di Bellucci`), MAI dalla cartella `frontend`. Il progetto Vercel è configurato con Root Directory = `frontend`, quindi Vercel builda automaticamente dalla sottocartella corretta.
+
+Se lanci `vercel --prod` da dentro `frontend/`, Vercel crea un progetto separato e sbagliato. Per evitarlo, controlla sempre che la directory di lavoro sia la root prima di deployare.
 
 ## Struttura del Progetto
 
@@ -86,7 +91,7 @@ Il file `frontend/vercel.json` gestisce:
 
 1. Installare Vercel CLI: `npm i -g vercel`
 2. Login: `vercel login`
-3. Link progetto: `vercel link --scope gennaromazzacane-gmailcoms-projects --project debdigital --yes`
+3. Link progetto: `vercel link --scope gennaromazzacane-gmailcoms-projects --project deborapp --yes` (dalla root, NON da frontend/)
 4. Deploy: `vercel --prod --yes` (dalla root)
 
 ## Troubleshooting
