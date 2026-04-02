@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 
 const DIFFICULTY_MAP = {
   '3-4': { maxMissionTypes: ['tap', 'drag'], maxSentences: 1, maxWords: 4 },
@@ -13,25 +13,35 @@ export function useMissionSelector(worldData, childAge = '4-5') {
   const [currentMissionIndex, setCurrentMissionIndex] = useState(0)
 
   const generateSession = useCallback(() => {
+    if (!worldData || !worldData.missions) {
+      console.warn('useMissionSelector: worldData non valido', worldData)
+      return []
+    }
+
     const difficulty = DIFFICULTY_MAP[childAge] || DIFFICULTY_MAP['4-5']
     const allMissions = worldData.missions || []
 
     const filtered = allMissions.filter(m => {
-      if (!difficulty.maxMissionTypes.includes(m.type)) return false
+      if (!m.type || !difficulty.maxMissionTypes.includes(m.type)) return false
       if (m.sentences && m.sentences.length > difficulty.maxSentences) return false
       if (m.targetWords && m.targetWords.length > difficulty.maxWords) return false
       return true
     })
 
     const shuffled = [...filtered].sort(() => Math.random() - 0.5)
-
     const sessionSize = Math.min(3 + Math.floor(Math.random() * 2), shuffled.length)
-    const session = shuffled.slice(0, sessionSize)
+    const session = shuffled.slice(0, Math.max(1, sessionSize))
 
     setSessionMissions(session)
     setCurrentMissionIndex(0)
     return session
   }, [worldData, childAge])
+
+  useEffect(() => {
+    if (sessionMissions.length === 0 && worldData?.missions?.length > 0) {
+      generateSession()
+    }
+  }, [worldData, sessionMissions.length, generateSession])
 
   const nextMission = useCallback(() => {
     if (currentMissionIndex < sessionMissions.length - 1) {
