@@ -38,6 +38,14 @@ export default function ProductRouter() {
       const productIsFree = product.is_free && (!product.free_until || product.free_until > now)
       setIsFree(productIsFree)
 
+      if (!productIsFree) {
+        const purchasedProducts = JSON.parse(sessionStorage.getItem('purchasedProducts') || '[]')
+        if (!purchasedProducts.includes(product.id)) {
+          navigate('/accesso-pin', { replace: true })
+          return
+        }
+      }
+
       const slug = product.slug || 'libro-matematica-volume-1'
       const Component = productComponents[slug]
 

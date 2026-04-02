@@ -71,6 +71,9 @@ export default function AccessPin() {
         toast.success('Benvenuto!')
         setCustomerName(data.customer_name || '')
         
+        const purchasedProductIds = data.products?.map(p => p.id) || []
+        sessionStorage.setItem('purchasedProducts', JSON.stringify(purchasedProductIds))
+        
         if (data.type === 'app' && data.products?.length === 1) {
           navigate(`/prodotto/${data.products[0].id}`)
         } else {
