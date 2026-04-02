@@ -54,6 +54,7 @@ export default function FruitParty({ onBack, onBackpackOpen, showReward, profile
     dragPos,
     isOverDropZone,
     handleStart: handleDragStart,
+    registerDropZone,
   } = useDragAndDrop({ onDrop: handleDrop })
 
   useEffect(() => {
@@ -141,6 +142,7 @@ export default function FruitParty({ onBack, onBackpackOpen, showReward, profile
           objects={FRUITS_WORLD.words}
           profile={profile}
           hasTarget={!!draggingObj && currentMission.targetWords.includes(draggingObj.id)}
+          registerDropZone={registerDropZone}
         />
       ) : (
         <BackpackDropZone
@@ -151,6 +153,7 @@ export default function FruitParty({ onBack, onBackpackOpen, showReward, profile
           objects={FRUITS_WORLD.words}
           profile={profile}
           hasTarget={false}
+          registerDropZone={registerDropZone}
         />
       )}
       <RewardPopup message={rewardMessage} visible={rewardVisible} />

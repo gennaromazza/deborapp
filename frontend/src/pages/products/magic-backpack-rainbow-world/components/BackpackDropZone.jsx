@@ -8,10 +8,12 @@ export default function BackpackDropZone({
   objects, 
   profile,
   onDrop,
-  hasTarget
+  hasTarget,
+  registerDropZone
 }) {
   const [dropAnim, setDropAnim] = useState(false)
   const [showItems, setShowItems] = useState(false)
+  const dropZoneRef = useRef(null)
 
   useEffect(() => {
     if (isOpen) {
@@ -20,6 +22,12 @@ export default function BackpackDropZone({
       setShowItems(false)
     }
   }, [isOpen])
+
+  useEffect(() => {
+    if (dropZoneRef.current && registerDropZone) {
+      registerDropZone(dropZoneRef.current)
+    }
+  }, [registerDropZone])
 
   const handleDrop = () => {
     if (onDrop && hasTarget) {
@@ -63,7 +71,7 @@ export default function BackpackDropZone({
         .float { animation: float 3s ease-in-out infinite; }
       `}</style>
 
-      <div className="flex flex-col items-center pb-4 pointer-events-auto">
+      <div ref={dropZoneRef} className="flex flex-col items-center pb-4 pointer-events-auto">
         <div
           onClick={onToggle}
           className={`relative transition-all duration-300 cursor-pointer ${

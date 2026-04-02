@@ -54,6 +54,7 @@ export default function IntoTheWild({ onBack, onBackpackOpen, showReward, profil
     dragPos,
     isOverDropZone,
     handleStart: handleDragStart,
+    registerDropZone,
   } = useDragAndDrop({ onDrop: handleDrop })
 
   useEffect(() => {
@@ -141,6 +142,7 @@ export default function IntoTheWild({ onBack, onBackpackOpen, showReward, profil
           objects={WILD_WORLD.words}
           profile={profile}
           hasTarget={!!draggingObj && currentMission.targetWords.includes(draggingObj.id)}
+          registerDropZone={registerDropZone}
         />
       ) : (
         <BackpackDropZone
@@ -151,6 +153,7 @@ export default function IntoTheWild({ onBack, onBackpackOpen, showReward, profil
           objects={WILD_WORLD.words}
           profile={profile}
           hasTarget={false}
+          registerDropZone={registerDropZone}
         />
       )}
       <RewardPopup message={rewardMessage} visible={rewardVisible} />

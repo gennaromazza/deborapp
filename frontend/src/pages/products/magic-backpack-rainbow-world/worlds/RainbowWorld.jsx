@@ -81,6 +81,7 @@ export default function RainbowWorld({ onBack, onBackpackOpen, showReward, profi
     dragPos,
     isOverDropZone,
     handleStart: handleDragStart,
+    registerDropZone,
   } = useDragAndDrop({ onDrop: handleDrop })
 
   const handleMissionComplete = () => {
@@ -265,6 +266,7 @@ export default function RainbowWorld({ onBack, onBackpackOpen, showReward, profi
           objects={RAINBOW_WORLD.words}
           profile={profile}
           hasTarget={!!draggingObj && currentMission.targetWords?.includes(draggingObj.id)}
+          registerDropZone={registerDropZone}
         />
       )}
 
@@ -277,6 +279,7 @@ export default function RainbowWorld({ onBack, onBackpackOpen, showReward, profi
           objects={RAINBOW_WORLD.words}
           profile={profile}
           hasTarget={false}
+          registerDropZone={registerDropZone}
         />
       )}
 
