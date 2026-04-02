@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import useAudio from '../hooks/useAudio'
 import { useDragAndDrop } from '../hooks/useDragAndDrop'
 import { loadProgress, addCollectedWord, completeMission, unlockWorld } from '../hooks/useProgress'
@@ -23,7 +23,6 @@ export default function FruitParty({ onBack, onBackpackOpen, showReward, profile
     currentMission,
     currentMissionIndex,
     totalMissions,
-    generateSession,
     nextMission,
     isComplete,
   } = useMissionSelector(FRUITS_WORLD, childAge)
@@ -34,50 +33,25 @@ export default function FruitParty({ onBack, onBackpackOpen, showReward, profile
   const [selectedMatch, setSelectedMatch] = useState(null)
   const [tapCompleted, setTapCompleted] = useState([])
   const [backpackOpen, setBackpackOpen] = useState(false)
+  const [isCompleting, setIsCompleting] = useState(false)
 
-  const handleDrop = useCallback((obj, pos) => {
-    if (!currentMission.targetWords.includes(obj.id)) {
-      audio.speakItalian('Riprova!')
-      return false
-    }
-    setCollected(prev => ({ ...prev, [obj.id]: true }))
-    addSparkle(pos.x, pos.y)
-    const praise = profile ? `Bravo ${profile.childName}!` : 'Bravo!'
-    audio.speakItalian(praise)
-    addCollectedWord(obj.id)
-    setTimeout(() => handleMissionComplete(), 1000)
-    return true
-  }, [currentMission, profile, audio])
-
-  const {
-    draggingObj,
-    dragPos,
-    isOverDropZone,
-    handleStart: handleDragStart,
-    registerDropZone,
-  } = useDragAndDrop({ onDrop: handleDrop })
-
-  useEffect(() => {
-    const difficulty = getDifficultyLabel(childAge)
-    const msg = profile ? `Ciao ${profile.childName}! Benvenuto alla festa della frutta!` : 'Benvenuto alla festa della frutta!'
-    audio.speakItalian(msg)
-    if (showZainetto) showZainetto(msg)
-  }, [])
-
-  const showLocalReward = (msg) => {
+  const showLocalReward = useCallback((msg) => {
     setRewardMessage(msg)
     setRewardVisible(true)
     setTimeout(() => setRewardVisible(false), 2000)
     if (showReward) showReward(msg)
-  }
+  }, [showReward])
 
-  const addSparkle = (x, y) => {
+  const addSparkle = useCallback((x, y) => {
     const id = Date.now()
     setSparkles(prev => [...prev, { id, x, y }])
     setTimeout(() => setSparkles(prev => prev.filter(s => s.id !== id)), 1000)
-  }
+  }, [])
 
-  const handleMissionComplete = () => {
+  const handleMissionComplete = useCallback(() => {
+    if (!currentMission || isCompleting) return
+    setIsCompleting(true)
+    
     completeMission(currentMission.id)
     const dialogType = profile?.familyMembers?.length > 0 && Math.random() > 0.5 
       ? (Math.random() > 0.5 ? 'success_with_parent' : 'success_with_friend')
@@ -88,22 +62,80 @@ export default function FruitParty({ onBack, onBackpackOpen, showReward, profile
     setCollected({})
     setTapCompleted([])
     setSelectedMatch(null)
-    if (isComplete) { unlockWorld('transport'); const completeMsg = getDialog('world_complete', profile, { world: 'festa della frutta' }); setTimeout(() => { showLocalReward(completeMsg); audio.speakItalian(completeMsg); setTimeout(() => onBack(), 3000) }, 1000) }
-    else { nextMission() }
-  }
-
-  const handleTap = (word) => {
-    audio.speakWord(word.word)
-    if (currentMission.type === 'tap' && !tapCompleted.includes(word.id)) {
-      setTapCompleted([...tapCompleted, word.id])
-      addCollectedWord(word.id)
-      if (tapCompleted.length + 1 >= FRUITS_WORLD.words.length) setTimeout(() => handleMissionComplete(), 1000)
+    if (isComplete) { 
+      unlockWorld('transport'); 
+      const completeMsg = getDialog('world_complete', profile, { world: 'festa della frutta' }); 
+      setTimeout(() => { 
+        showLocalReward(completeMsg); 
+        audio.speakItalian(completeMsg); 
+        setTimeout(() => onBack(), 3000) 
+      }, 1000) 
+    } else { 
+      nextMission() 
     }
-  }
+  }, [currentMission, isCompleting, profile, isComplete, audio, showLocalReward, onBack, nextMission])
 
-  const handleMatchSelect = (word) => { setSelectedMatch(word.id); if (currentMission.targetWords.includes(word.id)) { const praise = profile ? `Bravo ${profile.childName}!` : 'Bravo!'; audio.speakItalian(praise); addCollectedWord(word.id); setTimeout(() => handleMissionComplete(), 1500) } else { audio.speakItalian('Riprova!'); setTimeout(() => setSelectedMatch(null), 800) } }
+  const handleTap = useCallback((word) => {
+    audio.speakWord(word.word)
+    if (currentMission?.type === 'tap' && !tapCompleted.includes(word.id)) {
+      const newTapCompleted = [...tapCompleted, word.id]
+      setTapCompleted(newTapCompleted)
+      addCollectedWord(word.id)
+      if (newTapCompleted.length >= currentMission.targetWords?.length) {
+        setTimeout(() => handleMissionComplete(), 1000)
+      }
+    }
+  }, [currentMission, tapCompleted, audio, handleMissionComplete])
+
+  const handleMatchSelect = useCallback((word) => {
+    setSelectedMatch(word.id)
+    if (currentMission?.targetWords?.includes(word.id)) {
+      const praise = profile ? `Bravo ${profile.childName}!` : 'Bravo!'
+      audio.speakItalian(praise)
+      addCollectedWord(word.id)
+      setTimeout(() => handleMissionComplete(), 1500)
+    } else {
+      audio.speakItalian('Riprova!')
+      setTimeout(() => setSelectedMatch(null), 800)
+    }
+  }, [currentMission, profile, audio, handleMissionComplete])
+
+  const handleDrop = useCallback((obj, pos) => {
+    if (!currentMission?.targetWords?.includes(obj.id)) {
+      audio.speakItalian('Riprova!')
+      return false
+    }
+    setCollected(prev => ({ ...prev, [obj.id]: true }))
+    addSparkle(pos.x, pos.y)
+    const praise = profile ? `Bravo ${profile.childName}!` : 'Bravo!'
+    audio.speakItalian(praise)
+    addCollectedWord(obj.id)
+    setTimeout(() => handleMissionComplete(), 1000)
+    return true
+  }, [currentMission, profile, audio, handleMissionComplete, addSparkle])
+
+  const {
+    draggingObj,
+    dragPos,
+    isOverDropZone,
+    handleStart: handleDragStart,
+    registerDropZone,
+  } = useDragAndDrop({ onDrop: handleDrop })
+
+  useEffect(() => {
+    if (currentMission) {
+      setCollected({})
+      setTapCompleted([])
+      setSelectedMatch(null)
+      setIsCompleting(false)
+      const msg = profile ? `Ciao ${profile.childName}! Benvenuto alla festa della frutta!` : 'Benvenuto alla festa della frutta!'
+      audio.speakItalian(msg)
+      if (showZainetto) showZainetto(msg)
+    }
+  }, [currentMissionIndex])
 
   const renderExercise = () => {
+    if (!currentMission) return null
     switch (currentMission.type) {
       case 'tap': return (<div className="absolute inset-0 flex flex-col items-center justify-center pt-20"><p className="text-white text-xl font-bold mb-8 drop-shadow-lg">{currentMission.instruction} ({tapCompleted.length}/{FRUITS_WORLD.words.length})</p><div className="flex flex-wrap gap-6 justify-center px-4">{FRUITS_WORLD.words.map(word => (<WordObject key={word.id} obj={word} onTap={handleTap} isCollected={tapCompleted.includes(word.id)} isTarget={!tapCompleted.includes(word.id)} missionActive={true} audio={audio} />))}</div></div>)
       case 'drag': return (
@@ -124,7 +156,7 @@ export default function FruitParty({ onBack, onBackpackOpen, showReward, profile
     }
   }
 
-  const hasDragMission = currentMission.type === 'drag'
+  const hasDragMission = currentMission?.type === 'drag'
 
   return (
     <div className={`relative w-full h-screen overflow-hidden bg-gradient-to-br ${FRUITS_WORLD.background}`}>

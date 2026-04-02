@@ -25,7 +25,6 @@ export default function RainbowWorld({ onBack, onBackpackOpen, showReward, profi
     currentMission,
     currentMissionIndex,
     totalMissions,
-    generateSession,
     nextMission,
     isComplete,
   } = useMissionSelector(RAINBOW_WORLD, childAge)
@@ -37,17 +36,20 @@ export default function RainbowWorld({ onBack, onBackpackOpen, showReward, profi
   const [selectedMatch, setSelectedMatch] = useState(null)
   const [tapCompleted, setTapCompleted] = useState([])
   const [backpackOpen, setBackpackOpen] = useState(false)
-  const [sessionStarted, setSessionStarted] = useState(false)
+  const [isCompleting, setIsCompleting] = useState(false)
 
   useEffect(() => {
-    if (!sessionStarted && currentMission) {
-      setSessionStarted(true)
+    if (currentMission) {
+      setCollected({})
+      setTapCompleted([])
+      setSelectedMatch(null)
+      setIsCompleting(false)
       const welcomeMsg = profile
         ? `Ciao ${profile.childName}! ${getDifficultyLabel(childAge)} - Mondo dei colori!`
         : `Benvenuto nel mondo dei colori!`
       audio.speakItalian(welcomeMsg)
     }
-  }, [currentMission, sessionStarted, profile, childAge, audio])
+  }, [currentMissionIndex])
 
   const showLocalReward = (msg) => {
     setRewardMessage(msg)
@@ -74,7 +76,7 @@ export default function RainbowWorld({ onBack, onBackpackOpen, showReward, profi
     addCollectedWord(obj.id)
     setTimeout(() => handleMissionComplete(), 1000)
     return true
-  }, [currentMission, profile, audio])
+  }, [currentMission, profile, audio, handleMissionComplete])
 
   const {
     draggingObj,
@@ -84,8 +86,10 @@ export default function RainbowWorld({ onBack, onBackpackOpen, showReward, profi
     registerDropZone,
   } = useDragAndDrop({ onDrop: handleDrop })
 
-  const handleMissionComplete = () => {
-    if (!currentMission) return
+  const handleMissionComplete = useCallback(() => {
+    if (!currentMission || isCompleting) return
+    setIsCompleting(true)
+    
     completeMission(currentMission.id)
     const dialogType = profile?.familyMembers?.length > 0 && Math.random() > 0.5
       ? (Math.random() > 0.5 ? 'success_with_parent' : 'success_with_friend')
@@ -110,20 +114,21 @@ export default function RainbowWorld({ onBack, onBackpackOpen, showReward, profi
         setSelectedMatch(null)
       }
     }
-  }
+  }, [currentMission, isCompleting, profile, isComplete, audio, showLocalReward, onBack])
 
-  const handleTap = (word) => {
+  const handleTap = useCallback((word) => {
     audio.speakWord(word.word)
     if (currentMission?.type === 'tap' && !tapCompleted.includes(word.id)) {
-      setTapCompleted([...tapCompleted, word.id])
+      const newTapCompleted = [...tapCompleted, word.id]
+      setTapCompleted(newTapCompleted)
       addCollectedWord(word.id)
-      if (tapCompleted.length + 1 >= RAINBOW_WORLD.words.length) {
+      if (newTapCompleted.length >= currentMission.targetWords?.length) {
         setTimeout(() => handleMissionComplete(), 1000)
       }
     }
-  }
+  }, [currentMission, tapCompleted, audio, handleMissionComplete])
 
-  const handleMatchSelect = (word) => {
+  const handleMatchSelect = useCallback((word) => {
     setSelectedMatch(word.id)
     if (currentMission?.targetWords?.includes(word.id)) {
       audio.speak('Great!')
@@ -133,7 +138,7 @@ export default function RainbowWorld({ onBack, onBackpackOpen, showReward, profi
       audio.speak('Try again!')
       setTimeout(() => setSelectedMatch(null), 800)
     }
-  }
+  }, [currentMission, audio, handleMissionComplete])
 
   const renderExercise = () => {
     if (!currentMission) return null
