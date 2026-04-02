@@ -3,9 +3,5 @@
     { "source": "/googlebf58e6c1bbae420e.html", "destination": "/googlebf58e6c1bbae420e.html" },
     { "source": "/robots.txt", "destination": "/robots.txt" },
     { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "build": {
-    "command": "npm run build",
-    "output": "dist"
-  }
+  ]
 }
