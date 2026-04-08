@@ -3,10 +3,13 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { supabase } from '../../utils/supabase'
 import LibroMatematicaVolume1 from './libro-matematica-volume-1'
 import MagicBackpackRainbowWorld from './magic-backpack-rainbow-world'
+import KidLearningHub from './kid-learning-hub'
 
 const productComponents = {
   'libro-matematica-volume-1': LibroMatematicaVolume1,
   'magic-backpack-rainbow-world': MagicBackpackRainbowWorld,
+  'kid-learning-hub': KidLearningHub,
+  'mathmagic': KidLearningHub,
 }
 
 const TIMEOUT_MS = 10000
@@ -84,7 +87,14 @@ export default function ProductRouter() {
           }
         }
 
-        const slug = product.slug || 'libro-matematica-volume-1'
+        const fallbackSlug = (product.title || '')
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '')
+
+        const slug = product.slug || fallbackSlug || 'libro-matematica-volume-1'
         console.log('ProductRouter: slug', slug)
         const Component = productComponents[slug]
 
