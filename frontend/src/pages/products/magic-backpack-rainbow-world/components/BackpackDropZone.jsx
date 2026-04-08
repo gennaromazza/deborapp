@@ -1,19 +1,24 @@
-import { useState, useRef, useEffect } from 'react'
+﻿import { useState, useRef, useEffect, useMemo } from 'react'
 
-export default function BackpackDropZone({ 
-  isOpen, 
-  isDropTarget, 
-  collectedItems, 
-  onToggle, 
-  objects, 
+export default function BackpackDropZone({
+  isOpen,
+  isDropTarget,
+  collectedItems,
+  onToggle,
+  objects,
   profile,
   onDrop,
   hasTarget,
-  registerDropZone
+  registerDropZone,
 }) {
   const [dropAnim, setDropAnim] = useState(false)
   const [showItems, setShowItems] = useState(false)
   const dropZoneRef = useRef(null)
+
+  const visibleCollectedItems = useMemo(
+    () => objects.filter((object) => collectedItems[object.id]),
+    [objects, collectedItems]
+  )
 
   useEffect(() => {
     if (isOpen) {
@@ -102,21 +107,25 @@ export default function BackpackDropZone({
         </p>
 
         {isOpen && (
-          <div className="bg-white bg-opacity-95 rounded-2xl px-6 py-4 mt-2 shadow-2xl max-w-xs" style={{ animation: 'itemPopIn 0.4s ease-out' }}>
+          <div
+            className="bg-white bg-opacity-95 rounded-2xl px-6 py-4 mt-2 shadow-2xl max-w-xs"
+            style={{ animation: 'itemPopIn 0.4s ease-out' }}
+          >
             <p className="text-sm font-bold text-purple-700 mb-3 text-center">
               {profile ? `Raccolta di ${profile.childName}:` : 'La tua raccolta:'}
             </p>
             <div className="flex gap-3 justify-center flex-wrap">
-              {showItems && objects.filter(o => collectedItems[o.id]).map((o, i) => (
-                <div
-                  key={o.id}
-                  className="text-3xl"
-                  style={{ animation: `itemPopIn 0.3s ease-out ${i * 0.1}s both` }}
-                >
-                  {o.emoji}
-                </div>
-              ))}
-              {Object.keys(collectedItems).length === 0 && (
+              {showItems &&
+                visibleCollectedItems.map((object, index) => (
+                  <div
+                    key={object.id}
+                    className="text-3xl"
+                    style={{ animation: `itemPopIn 0.3s ease-out ${index * 0.1}s both` }}
+                  >
+                    {object.emoji}
+                  </div>
+                ))}
+              {visibleCollectedItems.length === 0 && (
                 <span className="text-gray-400 text-sm">Lo zaino è vuoto...</span>
               )}
             </div>

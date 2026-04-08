@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react'
-import useAudio from '../hooks/useAudio'
+import { useState, useEffect, useRef } from 'react'
 
 const STORAGE_KEY = 'magic-backpack-stickers'
 
@@ -109,7 +108,8 @@ export function StickerCorner({ audio, recentStickers = [] }) {
   const [floatingSticker, setFloatingSticker] = useState(null)
   const [showCollection, setShowCollection] = useState(false)
   const [displayedStickers, setDisplayedStickers] = useState([])
-  const [hasSpoken, setHasSpoken] = useState(false)
+  const [lastAnnouncedStickerId, setLastAnnouncedStickerId] = useState(null)
+  const floatingTimeoutRef = useRef(null)
 
   const loadAndSetStickers = () => {
     const stickers = loadStickers()
@@ -118,43 +118,51 @@ export function StickerCorner({ audio, recentStickers = [] }) {
     setDisplayedStickers(unlocked.slice(0, 4))
   }
 
+  const showFloatingSticker = (sticker) => {
+    if (!sticker) return
+    setFloatingSticker(sticker)
+    if (floatingTimeoutRef.current) clearTimeout(floatingTimeoutRef.current)
+    floatingTimeoutRef.current = setTimeout(() => {
+      setFloatingSticker(null)
+      loadAndSetStickers()
+    }, 2500)
+  }
+
   useEffect(() => {
     loadAndSetStickers()
   }, [])
 
   useEffect(() => {
-    if (recentStickers.length > 0 && !hasSpoken) {
-      const newSticker = recentStickers[recentStickers.length - 1]
-      loadAndSetStickers()
-      setFloatingSticker(newSticker)
-      setHasSpoken(true)
-      
-      if (audio) {
-        const synth = window.speechSynthesis
-        synth.cancel()
-        const utterance = new SpeechSynthesisUtterance(`Nuovo adesivo! ${newSticker.name}!`)
-        utterance.rate = 1.1
-        utterance.pitch = 1.1
-        synth.speak(utterance)
-      }
-
-      setTimeout(() => {
-        setFloatingSticker(null)
-        loadAndSetStickers()
-      }, 2500)
+    return () => {
+      if (floatingTimeoutRef.current) clearTimeout(floatingTimeoutRef.current)
     }
-  }, [recentStickers])
+  }, [])
+
+  useEffect(() => {
+    if (recentStickers.length === 0) return
+    const newSticker = recentStickers[recentStickers.length - 1]
+    if (!newSticker || newSticker.id === lastAnnouncedStickerId) return
+
+    loadAndSetStickers()
+    showFloatingSticker(newSticker)
+    setLastAnnouncedStickerId(newSticker.id)
+
+    if (audio) {
+      const synth = window.speechSynthesis
+      synth.cancel()
+      const utterance = new SpeechSynthesisUtterance(`Nuovo adesivo! ${newSticker.name}!`)
+      utterance.rate = 1.1
+      utterance.pitch = 1.1
+      synth.speak(utterance)
+    }
+  }, [recentStickers, lastAnnouncedStickerId, audio])
 
   useEffect(() => {
     if (unlockedStickers.length > displayedStickers.length && recentStickers.length === 0) {
       const newSticker = unlockedStickers[unlockedStickers.length - 1]
-      setFloatingSticker(newSticker)
-      setTimeout(() => {
-        setFloatingSticker(null)
-        loadAndSetStickers()
-      }, 2500)
+      showFloatingSticker(newSticker)
     }
-  }, [unlockedStickers.length])
+  }, [unlockedStickers.length, displayedStickers.length, recentStickers.length])
 
   if (unlockedStickers.length === 0) return null
 

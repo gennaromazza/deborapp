@@ -19,7 +19,7 @@ const Sparkle = ({ x, y }) => (
 
 export default function RainbowWorld({ onBack, onBackpackOpen, showReward, profile }) {
   const audio = useAudio()
-  const progress = loadProgress()
+  const [progress, setProgress] = useState(() => loadProgress())
   const childAge = profile?.childAge || '4-5'
   const {
     currentMission,
@@ -37,6 +37,23 @@ export default function RainbowWorld({ onBack, onBackpackOpen, showReward, profi
   const [tapCompleted, setTapCompleted] = useState([])
   const [backpackOpen, setBackpackOpen] = useState(false)
   const [isCompleting, setIsCompleting] = useState(false)
+
+  useEffect(() => {
+    const syncProgress = () => setProgress(loadProgress())
+    const handleStorage = (event) => {
+      if (!event || event.key === 'magic-backpack-progress') {
+        syncProgress()
+      }
+    }
+
+    window.addEventListener('progress-updated', syncProgress)
+    window.addEventListener('storage', handleStorage)
+
+    return () => {
+      window.removeEventListener('progress-updated', syncProgress)
+      window.removeEventListener('storage', handleStorage)
+    }
+  }, [])
 
   useEffect(() => {
     if (currentMission) {

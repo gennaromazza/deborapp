@@ -17,7 +17,7 @@ const Sparkle = ({ x, y }) => (<div className="absolute pointer-events-none" sty
 
 export default function IntoTheWild({ onBack, onBackpackOpen, showReward, profile, showZainetto }) {
   const audio = useAudio()
-  const progress = loadProgress()
+  const [progress, setProgress] = useState(() => loadProgress())
   const childAge = profile?.childAge || '4-5'
   const {
     currentMission,
@@ -34,6 +34,23 @@ export default function IntoTheWild({ onBack, onBackpackOpen, showReward, profil
   const [tapCompleted, setTapCompleted] = useState([])
   const [backpackOpen, setBackpackOpen] = useState(false)
   const [isCompleting, setIsCompleting] = useState(false)
+
+  useEffect(() => {
+    const syncProgress = () => setProgress(loadProgress())
+    const handleStorage = (event) => {
+      if (!event || event.key === 'magic-backpack-progress') {
+        syncProgress()
+      }
+    }
+
+    window.addEventListener('progress-updated', syncProgress)
+    window.addEventListener('storage', handleStorage)
+
+    return () => {
+      window.removeEventListener('progress-updated', syncProgress)
+      window.removeEventListener('storage', handleStorage)
+    }
+  }, [])
 
   const showLocalReward = useCallback((msg) => {
     setRewardMessage(msg)
