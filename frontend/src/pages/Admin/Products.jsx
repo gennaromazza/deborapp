@@ -5,27 +5,28 @@ import { ArrowLeft, Plus, Loader2, Trash2, Edit2, Sparkles, BookOpen, Globe, Gam
 import toast from 'react-hot-toast'
 import { supabase, supabaseUrl } from '../../utils/supabase'
 import { processImage, formatFileSize } from '../../utils/imageProcessor'
+import { DEFAULT_PRODUCT_CATEGORY, PRODUCT_CATEGORIES, getProductCategory } from '../../constants/productCategories'
 
 const MAX_IMAGES = 10;
-
+const DEFAULT_FORM_DATA = {
+  title: '',
+  description: '',
+  cover_image: '',
+  cover_images: [],
+  download_link: '',
+  type: 'link',
+  category: DEFAULT_PRODUCT_CATEGORY,
+  price_tier: 'single',
+  usage_context: 'da-stampare',
+  is_free: false,
+  free_until: '',
+}
 export default function AdminProducts() {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [editingId, setEditingId] = useState(null)
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    cover_image: '',
-    cover_images: [],
-    download_link: '',
-    type: 'link',
-    category: 'attivita-stampabili',
-    price_tier: 'single',
-    usage_context: 'da-stampare',
-    is_free: false,
-    free_until: '',
-  })
+  const [formData, setFormData] = useState(() => ({ ...DEFAULT_FORM_DATA }))
   const [submitting, setSubmitting] = useState(false)
   const [imageQueue, setImageQueue] = useState([])
   const fileInputRef = useRef(null)
@@ -44,7 +45,7 @@ export default function AdminProducts() {
   }
 
   const resetForm = () => {
-    setFormData({ title: '', description: '', cover_image: '', cover_images: [], download_link: '', type: 'link', category: 'attivita-stampabili', price_tier: 'single', usage_context: 'da-stampare', is_free: false, free_until: '' })
+    setFormData({ ...DEFAULT_FORM_DATA })
     setImageQueue([])
     setEditingId(null)
     setShowForm(false)
@@ -255,7 +256,7 @@ export default function AdminProducts() {
       cover_images: product.cover_images || [],
       download_link: product.download_link,
       type: product.type || 'link',
-      category: product.category || 'attivita-stampabili',
+      category: product.category || DEFAULT_PRODUCT_CATEGORY,
       price_tier: product.price_tier || 'single',
       usage_context: product.usage_context || 'da-stampare',
       is_free: product.is_free || false,
@@ -356,11 +357,11 @@ export default function AdminProducts() {
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                     className="input-field"
                   >
-                    <option value="mini-app-interattive">Mini App Interattive</option>
-                    <option value="attivita-stampabili">Attività Stampabili</option>
-                    <option value="percorsi-educativi">Percorsi Educativi</option>
-                    <option value="storie-avventure">Storie & Avventure</option>
-                    <option value="kit-famiglia">Kit Famiglia</option>
+                    {PRODUCT_CATEGORIES.map((category) => (
+                      <option key={category.key} value={category.key}>
+                        {category.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div>
@@ -587,7 +588,7 @@ export default function AdminProducts() {
                   />
                   <div>
                     <span className="font-display font-semibold text-gray-800">Prodotto Gratuito</span>
-                    <p className="font-body text-xs text-gray-500">Se attivo, il prodotto sarÃ  accessibile a tutti senza PIN</p>
+                    <p className="font-body text-xs text-gray-500">Se attivo, il prodotto sarà accessibile a tutti senza PIN</p>
                   </div>
                 </label>
 
@@ -697,7 +698,7 @@ export default function AdminProducts() {
                     </span>
                     {product.category && (
                       <span className="badge text-xs badge-mint">
-                        {product.category.replace(/-/g, ' ')}
+                        {getProductCategory(product.category).label}
                       </span>
                     )}
                     {product.is_free ? (
@@ -776,3 +777,4 @@ export default function AdminProducts() {
     </div>
   )
 }
+

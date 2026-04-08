@@ -8,29 +8,49 @@ const DIFFICULTY_MAP = {
   '7-8': { maxMissionTypes: ['tap', 'drag', 'match', 'sentence', 'speaking', 'fillgap'], maxSentences: 4, maxWords: 8 },
 }
 
+export function getAvailableMissions(worldData, childAge = '4-5') {
+  if (!worldData || !Array.isArray(worldData.missions)) {
+    return []
+  }
+
+  const difficulty = DIFFICULTY_MAP[childAge] || DIFFICULTY_MAP['4-5']
+  const allMissions = worldData.missions
+
+  const filtered = allMissions.filter(m => {
+    if (!m?.type || !difficulty.maxMissionTypes.includes(m.type)) return false
+    if (m.sentences && m.sentences.length > difficulty.maxSentences) return false
+
+    // Tap missioni coprono l'intero vocabolario del mondo: non vanno scartate per lunghezza.
+    if (m.type !== 'tap' && m.targetWords && m.targetWords.length > difficulty.maxWords) return false
+
+    return true
+  })
+
+  if (filtered.length > 0) {
+    return filtered
+  }
+
+  console.warn('useMissionSelector: nessuna missione filtrata, uso fallback completo', {
+    worldId: worldData.id,
+    childAge,
+  })
+  return allMissions
+}
+
 export function useMissionSelector(worldData, childAge = '4-5') {
   const [sessionMissions, setSessionMissions] = useState([])
   const [currentMissionIndex, setCurrentMissionIndex] = useState(0)
 
   const generateSession = useCallback(() => {
-    if (!worldData || !worldData.missions) {
+    if (!worldData || !Array.isArray(worldData.missions)) {
       console.warn('useMissionSelector: worldData non valido', worldData)
       return []
     }
 
-    const difficulty = DIFFICULTY_MAP[childAge] || DIFFICULTY_MAP['4-5']
-    const allMissions = worldData.missions || []
-
-    const filtered = allMissions.filter(m => {
-      if (!m.type || !difficulty.maxMissionTypes.includes(m.type)) return false
-      if (m.sentences && m.sentences.length > difficulty.maxSentences) return false
-      if (m.targetWords && m.targetWords.length > difficulty.maxWords) return false
-      return true
-    })
-
-    const shuffled = [...filtered].sort(() => Math.random() - 0.5)
-    const sessionSize = Math.min(3 + Math.floor(Math.random() * 2), shuffled.length)
-    const session = shuffled.slice(0, Math.max(1, sessionSize))
+    const availableMissions = getAvailableMissions(worldData, childAge)
+    const shuffled = [...availableMissions].sort(() => Math.random() - 0.5)
+    const sessionSize = Math.max(1, Math.min(3 + Math.floor(Math.random() * 2), shuffled.length))
+    const session = shuffled.slice(0, sessionSize)
 
     setSessionMissions(session)
     setCurrentMissionIndex(0)

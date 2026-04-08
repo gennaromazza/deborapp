@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import useAudio from '../hooks/useAudio'
 import { useDragAndDrop } from '../hooks/useDragAndDrop'
 import { useMissionSelector, getDifficultyLabel } from '../hooks/useMissionSelector'
@@ -64,28 +64,6 @@ export default function RainbowWorld({ onBack, onBackpackOpen, showReward, profi
     setTimeout(() => setSparkles(prev => prev.filter(s => s.id !== id)), 1000)
   }
 
-  const handleDrop = useCallback((obj, pos) => {
-    if (!currentMission?.targetWords?.includes(obj.id)) {
-      audio.speakItalian('Riprova!')
-      return false
-    }
-    setCollected(prev => ({ ...prev, [obj.id]: true }))
-    addSparkle(pos.x, pos.y)
-    const praise = profile ? `Bravo ${profile.childName}!` : 'Bravo!'
-    audio.speakItalian(praise)
-    addCollectedWord(obj.id)
-    setTimeout(() => handleMissionComplete(), 1000)
-    return true
-  }, [currentMission, profile, audio, handleMissionComplete])
-
-  const {
-    draggingObj,
-    dragPos,
-    isOverDropZone,
-    handleStart: handleDragStart,
-    registerDropZone,
-  } = useDragAndDrop({ onDrop: handleDrop })
-
   const handleMissionComplete = useCallback(() => {
     if (!currentMission || isCompleting) return
     setIsCompleting(true)
@@ -114,7 +92,29 @@ export default function RainbowWorld({ onBack, onBackpackOpen, showReward, profi
         setSelectedMatch(null)
       }
     }
-  }, [currentMission, isCompleting, profile, isComplete, audio, showLocalReward, onBack])
+  }, [currentMission, isCompleting, profile, isComplete, audio, showLocalReward, onBack, nextMission])
+
+  const handleDrop = useCallback((obj, pos) => {
+    if (!currentMission?.targetWords?.includes(obj.id)) {
+      audio.speakItalian('Riprova!')
+      return false
+    }
+    setCollected(prev => ({ ...prev, [obj.id]: true }))
+    addSparkle(pos.x, pos.y)
+    const praise = profile ? `Bravo ${profile.childName}!` : 'Bravo!'
+    audio.speakItalian(praise)
+    addCollectedWord(obj.id)
+    setTimeout(() => handleMissionComplete(), 1000)
+    return true
+  }, [currentMission, profile, audio, handleMissionComplete])
+
+  const {
+    draggingObj,
+    dragPos,
+    isOverDropZone,
+    handleStart: handleDragStart,
+    registerDropZone,
+  } = useDragAndDrop({ onDrop: handleDrop })
 
   const handleTap = useCallback((word) => {
     audio.speakWord(word.word)

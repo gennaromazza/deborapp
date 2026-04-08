@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { WORLDS } from '../data/worlds'
 import { loadProgress } from '../hooks/useProgress'
+import { getAvailableMissions } from '../hooks/useMissionSelector'
 import AvatarDisplay from './AvatarDisplay'
 
 const INTRO_KEY = 'magic-backpack-intro-seen'
 
-const WorldCard = ({ world, isUnlocked, progress, onClick }) => {
+const WorldCard = ({ world, isUnlocked, progress, onClick, missionIds = [] }) => {
   const [isHovered, setIsHovered] = useState(false)
   const [bounce, setBounce] = useState(false)
 
@@ -23,8 +24,8 @@ const WorldCard = ({ world, isUnlocked, progress, onClick }) => {
     }
   }
 
-  const completedMissions = progress?.completedMissions?.filter(m => m.startsWith(world.id)) || []
-  const missionCount = WORLDS.find(w => w.id === world.id)?.missions?.length || 6
+  const completedMissions = progress?.completedMissions?.filter(m => missionIds.includes(m)) || []
+  const missionCount = missionIds.length || 1
   const progressPercent = missionCount > 0 ? (completedMissions.length / missionCount) * 100 : 0
 
   return (
@@ -108,6 +109,7 @@ const WorldMap = ({ onWorldSelect, onBackpackOpen, profile, onShowStickers }) =>
   const [showIntro, setShowIntro] = useState(() => {
     return !localStorage.getItem(INTRO_KEY)
   })
+  const childAge = profile?.childAge || '4-5'
 
   const refreshProgress = useCallback(() => {
     setProgress(loadProgress())
@@ -162,8 +164,18 @@ const WorldMap = ({ onWorldSelect, onBackpackOpen, profile, onShowStickers }) =>
     })), []
   )
 
-  const totalMissions = WORLDS.reduce((acc, w) => acc + (w.missions?.length || 0), 0)
-  const completedMissions = progress?.completedMissions?.length || 0
+  const missionIdsByWorld = useMemo(() => (
+    Object.fromEntries(
+      WORLDS.map(world => [world.id, getAvailableMissions(world, childAge).map(mission => mission.id)])
+    )
+  ), [childAge])
+
+  const totalMissions = WORLDS.reduce((acc, w) => acc + (missionIdsByWorld[w.id]?.length || 0), 0)
+  const completedMissions = WORLDS.reduce((acc, w) => {
+    const availableMissionIds = missionIdsByWorld[w.id] || []
+    const completed = progress?.completedMissions?.filter(m => availableMissionIds.includes(m)).length || 0
+    return acc + completed
+  }, 0)
   const totalWords = WORLDS.reduce((acc, w) => acc + w.words.length, 0)
   const collectedWords = progress?.collectedWords?.length || 0
   const globalProgressPercent = totalMissions > 0 ? (completedMissions / totalMissions) * 100 : 0
@@ -256,6 +268,7 @@ const WorldMap = ({ onWorldSelect, onBackpackOpen, profile, onShowStickers }) =>
             isUnlocked={progress.unlockedWorlds.includes(world.id)}
             progress={progress}
             onClick={handleWorldClick}
+            missionIds={missionIdsByWorld[world.id] || []}
           />
         </div>
       ))}

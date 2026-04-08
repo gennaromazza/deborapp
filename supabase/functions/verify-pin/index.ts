@@ -52,7 +52,8 @@ serve(async (req) => {
           download_link,
           type,
           cover_image,
-          slug
+          slug,
+          category
         )
       `)
       .eq('customer_id', user.id)
@@ -64,7 +65,7 @@ serve(async (req) => {
     if (finalProducts.length === 0 && user.product_id) {
       const { data: legacyProduct } = await supabase
         .from('products')
-        .select('id, title, description, download_link, type, cover_image, slug')
+        .select('id, title, description, download_link, type, cover_image, slug, category')
         .eq('id', user.product_id)
         .single()
       

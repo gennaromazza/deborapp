@@ -1,6 +1,11 @@
-import { useState, useEffect, useRef } from 'react'
+﻿import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 
 export default function SpeakingPractice({ sentences, audio, profile, onComplete }) {
+  const safeSentences = useMemo(() => {
+    if (!Array.isArray(sentences)) return []
+    return sentences.filter(sentence => sentence?.english)
+  }, [sentences])
+
   const [currentIndex, setCurrentIndex] = useState(0)
   const [listenCount, setListenCount] = useState(0)
   const [isSpeaking, setIsSpeaking] = useState(false)
@@ -11,29 +16,101 @@ export default function SpeakingPractice({ sentences, audio, profile, onComplete
   const [micChecked, setMicChecked] = useState(false)
   const [showFallback, setShowFallback] = useState(false)
   const [selfRating, setSelfRating] = useState(null)
+
   const mediaRecorderRef = useRef(null)
   const chunksRef = useRef([])
   const streamRef = useRef(null)
+  const timeoutIds = useRef([])
+  const recordingUrlRef = useRef(null)
 
-  const currentSentence = sentences[currentIndex]
+  const currentSentence = safeSentences[currentIndex] || null
+
+  const clearQueuedTimeouts = useCallback(() => {
+    timeoutIds.current.forEach(id => clearTimeout(id))
+    timeoutIds.current = []
+  }, [])
+
+  const queueTimeout = useCallback((fn, delay) => {
+    const id = setTimeout(fn, delay)
+    timeoutIds.current.push(id)
+    return id
+  }, [])
+
+  const releaseStream = useCallback(() => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop())
+      streamRef.current = null
+    }
+  }, [])
+
+  const setRecordingPreview = useCallback((nextUrl) => {
+    if (recordingUrlRef.current && recordingUrlRef.current !== nextUrl) {
+      URL.revokeObjectURL(recordingUrlRef.current)
+    }
+    recordingUrlRef.current = nextUrl
+    setRecordingUrl(nextUrl)
+  }, [])
+
+  const hardResetRecorder = useCallback(() => {
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.ondataavailable = null
+      mediaRecorderRef.current.onstop = null
+      if (mediaRecorderRef.current.state !== 'inactive') {
+        try {
+          mediaRecorderRef.current.stop()
+        } catch {
+          // no-op
+        }
+      }
+      mediaRecorderRef.current = null
+    }
+
+    chunksRef.current = []
+    releaseStream()
+    setIsRecording(false)
+  }, [releaseStream])
 
   useEffect(() => {
+    return () => {
+      clearQueuedTimeouts()
+      hardResetRecorder()
+      setRecordingPreview(null)
+    }
+  }, [clearQueuedTimeouts, hardResetRecorder, setRecordingPreview])
+
+  useEffect(() => {
+    if (currentIndex >= safeSentences.length && safeSentences.length > 0) {
+      setCurrentIndex(0)
+    }
+  }, [currentIndex, safeSentences.length])
+
+  useEffect(() => {
+    clearQueuedTimeouts()
+    hardResetRecorder()
+
     if (currentSentence) {
       setListenCount(0)
       setCompleted(false)
-      setRecordingUrl(null)
+      setRecordingPreview(null)
       setSelfRating(null)
-      audio.speakSentence(currentSentence.english)
+      audio?.speakSentence?.(currentSentence.english)
     }
-  }, [currentIndex, currentSentence])
+  }, [currentIndex, currentSentence, audio, clearQueuedTimeouts, hardResetRecorder, setRecordingPreview])
 
   useEffect(() => {
     if (!micChecked) {
       checkMicrophone()
     }
-  }, [])
+  }, [micChecked])
 
   const checkMicrophone = async () => {
+    if (!navigator?.mediaDevices?.getUserMedia) {
+      setHasMic(false)
+      setShowFallback(true)
+      setMicChecked(true)
+      return
+    }
+
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
       setHasMic(true)
@@ -42,26 +119,42 @@ export default function SpeakingPractice({ sentences, audio, profile, onComplete
       setHasMic(false)
       setShowFallback(true)
     }
+
     setMicChecked(true)
   }
 
   const startRecording = async () => {
+    if (!currentSentence) return
+
+    if (!navigator?.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') {
+      setShowFallback(true)
+      setHasMic(false)
+      return
+    }
+
     try {
+      hardResetRecorder()
+      setRecordingPreview(null)
+
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
       streamRef.current = stream
+
       const mediaRecorder = new MediaRecorder(stream)
       mediaRecorderRef.current = mediaRecorder
       chunksRef.current = []
 
-      mediaRecorder.ondataavailable = (e) => {
-        if (e.data.size > 0) chunksRef.current.push(e.data)
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) chunksRef.current.push(event.data)
       }
 
       mediaRecorder.onstop = () => {
-        const blob = new Blob(chunksRef.current, { type: 'audio/webm' })
-        const url = URL.createObjectURL(blob)
-        setRecordingUrl(url)
-        stream.getTracks().forEach(track => track.stop())
+        if (chunksRef.current.length > 0) {
+          const blob = new Blob(chunksRef.current, { type: 'audio/webm' })
+          const url = URL.createObjectURL(blob)
+          setRecordingPreview(url)
+        }
+        chunksRef.current = []
+        releaseStream()
       }
 
       mediaRecorder.start()
@@ -69,6 +162,7 @@ export default function SpeakingPractice({ sentences, audio, profile, onComplete
     } catch {
       setShowFallback(true)
       setHasMic(false)
+      hardResetRecorder()
     }
   }
 
@@ -80,39 +174,51 @@ export default function SpeakingPractice({ sentences, audio, profile, onComplete
   }
 
   const handleListen = (mode = 'sentence') => {
+    if (!currentSentence) return
+
     setIsSpeaking(true)
     switch (mode) {
       case 'word':
-        audio.speakWord(currentSentence.english.split(' ')[0])
+        audio?.speakWord?.(currentSentence.english.split(' ')[0])
         break
       case 'slow':
-        audio.speak(currentSentence.english, { mode: 'slow' })
+        audio?.speak?.(currentSentence.english, { mode: 'slow' })
         break
       case 'sentence':
       default:
-        audio.speakSentence(currentSentence.english)
+        audio?.speakSentence?.(currentSentence.english)
         break
     }
-    setTimeout(() => setIsSpeaking(false), 2000)
+
+    queueTimeout(() => setIsSpeaking(false), 2000)
     setListenCount(prev => prev + 1)
   }
 
   const handleComplete = () => {
+    if (!currentSentence || completed) return
+
     setCompleted(true)
-    audio.speak(profile ? `Bravo ${profile.childName}!` : 'Great job!')
-    setTimeout(() => {
-      if (currentIndex < sentences.length - 1) {
-        setCurrentIndex(currentIndex + 1)
+    audio?.speak?.(profile ? `Bravo ${profile.childName}!` : 'Great job!')
+
+    queueTimeout(() => {
+      if (currentIndex < safeSentences.length - 1) {
+        setCurrentIndex(prev => prev + 1)
         setCompleted(false)
-        setRecordingUrl(null)
+        setRecordingPreview(null)
         setSelfRating(null)
-      } else {
+      } else if (typeof onComplete === 'function') {
         onComplete()
       }
     }, 2000)
   }
 
-  if (!currentSentence) return null
+  if (!currentSentence) {
+    return (
+      <div className="absolute inset-0 flex items-center justify-center">
+        <span className="text-white text-xl font-bold">Caricamento frase...</span>
+      </div>
+    )
+  }
 
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center pt-16 px-4">
@@ -226,7 +332,7 @@ export default function SpeakingPractice({ sentences, audio, profile, onComplete
                 onClick={() => setSelfRating(star)}
                 className="text-3xl hover:scale-125 transition-transform"
               >
-                {star <= selfRating ? '⭐' : '☆'}
+                {selfRating && star <= selfRating ? '⭐' : '☆'}
               </button>
             ))}
           </div>
@@ -240,6 +346,7 @@ export default function SpeakingPractice({ sentences, audio, profile, onComplete
             : 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:scale-105'
         }`}
         onClick={handleComplete}
+        disabled={completed}
       >
         {completed ? (
           <>✅ Bravo!</>
@@ -249,7 +356,7 @@ export default function SpeakingPractice({ sentences, audio, profile, onComplete
       </button>
 
       <p className="text-white text-sm mt-4 opacity-70 text-center">
-        Ascoltato {listenCount} volte • Frase {currentIndex + 1} di {sentences.length}
+        Ascoltato {listenCount} volte • Frase {currentIndex + 1} di {safeSentences.length}
         {hasMic && !isRecording && !recordingUrl && (
           <span className="block text-xs mt-1">Premi 🎙️ Registra per ascoltare la tua voce</span>
         )}

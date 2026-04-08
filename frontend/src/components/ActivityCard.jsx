@@ -1,56 +1,32 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowUpRight, Printer, Monitor, Users, BookOpen, Palette, Gift, Clock } from 'lucide-react'
+import { getProductCategory } from '../constants/productCategories'
 
-const categoryConfig = {
-  'mini-app-interattive': {
-    label: 'Mini App',
-    color: 'bg-pastel-lavender text-pastel-lavender-dark',
-    icon: Monitor,
-  },
-  'attivita-stampabili': {
-    label: 'Da Stampare',
-    color: 'bg-pastel-mint text-pastel-mint-dark',
-    icon: Printer,
-  },
-  'percorsi-educativi': {
-    label: 'Educativo',
-    color: 'bg-pastel-sky text-pastel-sky-dark',
-    icon: BookOpen,
-  },
-  'storie-avventure': {
-    label: 'Storie',
-    color: 'bg-pastel-pink text-pastel-pink-dark',
-    icon: BookOpen,
-  },
-  'kit-famiglia': {
-    label: 'In Famiglia',
-    color: 'bg-pastel-peach text-pastel-peach-dark',
-    icon: Users,
-  },
+const categoryIcons = {
+  monitor: Monitor,
+  printer: Printer,
+  users: Users,
+  book: BookOpen,
+  palette: Palette,
 }
 
 const contextConfig = {
   'da-stampare': { label: 'Pronto da stampare', icon: Printer },
   'interattivo': { label: 'Interattivo', icon: Monitor },
   'in-famiglia': { label: 'Da fare insieme', icon: Users },
-  'educativo': { label: 'Educativo', icon: BookOpen },
-  'creativo': { label: 'Creativo', icon: Palette },
+  educativo: { label: 'Educativo', icon: BookOpen },
+  creativo: { label: 'Creativo', icon: Palette },
 }
 
 export default function ActivityCard({ activity, index }) {
-  const catConfig = categoryConfig[activity.category] || {
-    label: 'Attività',
-    color: 'bg-pastel-lavender text-pastel-lavender-dark',
-    icon: Palette,
-  }
+  const category = getProductCategory(activity.category)
+  const CatIcon = categoryIcons[category.iconKey] || Palette
 
   const ctxConfig = contextConfig[activity.usage_context] || {
     label: 'Attività',
     icon: Palette,
   }
-
-  const CatIcon = catConfig.icon
   const CtxIcon = ctxConfig.icon
 
   const images = activity.cover_images && activity.cover_images.length > 0
@@ -91,9 +67,9 @@ export default function ActivityCard({ activity, index }) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
           <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
-            <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-body font-medium shadow-sm ${catConfig.color}`}>
+            <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-body font-medium shadow-sm ${category.badgeClass}`}>
               <CatIcon className="w-3 h-3" />
-              {catConfig.label}
+              {category.shortLabel}
             </span>
             {isFree && (
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-body font-medium bg-green-100 text-green-700 shadow-sm">

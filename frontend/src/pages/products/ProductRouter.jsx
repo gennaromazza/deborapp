@@ -77,7 +77,11 @@ export default function ProductRouter() {
         setIsFree(productIsFree)
         console.log('ProductRouter: isFree', productIsFree)
 
-        if (!productIsFree) {
+        const { data: authData } = await supabase.auth.getSession()
+        const hasAuthenticatedSession = !!authData?.session
+        console.log('ProductRouter: authenticated session', hasAuthenticatedSession)
+
+        if (!productIsFree && !hasAuthenticatedSession) {
           const purchasedProducts = JSON.parse(sessionStorage.getItem('purchasedProducts') || '[]')
           console.log('ProductRouter: purchasedProducts', purchasedProducts)
           if (!purchasedProducts.includes(product.id)) {

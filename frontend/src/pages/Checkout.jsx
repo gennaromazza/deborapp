@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import { Link, useSearchParams, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Check, ShoppingBag, Loader2, Sparkles, ArrowRight, BookOpen, Printer, Monitor, Info, AlertCircle, ExternalLink } from 'lucide-react'
+import { ArrowLeft, Check, ShoppingBag, Loader2, Sparkles, ArrowRight, BookOpen, Printer, Monitor, Users, Info, AlertCircle, ExternalLink } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { supabase } from '../utils/supabase'
 import PageTransition from '../components/PageTransition'
 import Breadcrumb from '../components/Breadcrumb'
+import { getProductCategory } from '../constants/productCategories'
 
 const tierInfo = {
   'un-caffe': { name: 'Un Caffè', maxProducts: 1, price: '3,90', emoji: '☕', stripeLink: 'https://buy.stripe.com/7sYbJ2fawcnhfQcatGgbm02' },
@@ -15,11 +16,10 @@ const tierInfo = {
 }
 
 const categoryIcons = {
-  'mini-app-interattive': Monitor,
-  'attivita-stampabili': Printer,
-  'percorsi-educativi': BookOpen,
-  'storie-avventure': BookOpen,
-  'kit-famiglia': BookOpen,
+  monitor: Monitor,
+  printer: Printer,
+  book: BookOpen,
+  users: Users,
 }
 
 export default function Checkout() {
@@ -188,7 +188,8 @@ export default function Checkout() {
                   <div className="grid sm:grid-cols-2 gap-4">
                     {products.map((product) => {
                       const isSelected = selectedIds.includes(product.id)
-                      const CatIcon = categoryIcons[product.category] || BookOpen
+                      const category = getProductCategory(product.category)
+                      const CatIcon = categoryIcons[category.iconKey] || BookOpen
                       const canSelect = selectedIds.length < maxProducts || isSelected || isAllProducts
 
                       return (
@@ -225,7 +226,7 @@ export default function Checkout() {
                             <div className="absolute bottom-3 left-3">
                               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-body font-medium bg-white/90 backdrop-blur text-gray-600">
                                 <CatIcon className="w-3 h-3" />
-                                {product.category?.replace('-', ' ') || 'Attività'}
+                                {category.label}
                               </span>
                             </div>
                           </div>

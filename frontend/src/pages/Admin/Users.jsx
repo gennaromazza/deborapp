@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, Plus, Loader2, Trash2, Copy, Check, Mail, Sparkles, Clock, Package, CheckCircle, X, ChevronDown, ChevronUp } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { supabase } from '../../utils/supabase'
+import { getProductCategory } from '../../constants/productCategories'
 
 export default function AdminUsers() {
   const [users, setUsers] = useState([])
@@ -31,7 +32,7 @@ export default function AdminUsers() {
         .from('users')
         .select('*')
         .order('created_at', { ascending: false }),
-      supabase.from('products').select('id, title').order('title'),
+      supabase.from('products').select('id, title, category').order('title'),
       supabase
         .from('orders')
         .select('*')
@@ -253,7 +254,12 @@ export default function AdminUsers() {
                               {selectedProducts.map((p) => (
                                 <div key={p.id} className="flex items-center gap-2 p-2 bg-pastel-lavender/20 rounded-lg">
                                   <Package className="w-4 h-4 text-pastel-lavender-dark flex-shrink-0" />
-                                  <span className="font-body text-sm text-gray-700 truncate">{p.title}</span>
+                                  <div className="min-w-0">
+                                    <span className="font-body text-sm text-gray-700 truncate block">{p.title}</span>
+                                    <span className="font-body text-xs text-gray-500">
+                                      {getProductCategory(p.category).label}
+                                    </span>
+                                  </div>
                                 </div>
                               ))}
                             </div>
@@ -357,7 +363,12 @@ export default function AdminUsers() {
                           onChange={() => toggleProduct(p.id)}
                           className="w-4 h-4 rounded accent-pastel-pink-dark"
                         />
-                        <span className="font-body text-gray-700 truncate">{p.title}</span>
+                        <div className="min-w-0">
+                          <span className="font-body text-gray-700 truncate block">{p.title}</span>
+                          <span className="font-body text-xs text-gray-500">
+                            {getProductCategory(p.category).label}
+                          </span>
+                        </div>
                       </label>
                     )
                   })}
@@ -445,7 +456,7 @@ export default function AdminUsers() {
                             {userProducts.length > 0 ? (
                               userProducts.map((p) => (
                                 <span key={p.id} className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-body bg-pastel-mint/50 text-pastel-mint-dark">
-                                  {p.title}
+                                  {p.title} - {getProductCategory(p.category).shortLabel}
                                 </span>
                               ))
                             ) : (

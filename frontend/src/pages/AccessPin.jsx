@@ -6,6 +6,7 @@ import toast from 'react-hot-toast'
 import { supabase } from '../utils/supabase'
 import Breadcrumb from '../components/Breadcrumb'
 import PageTransition from '../components/PageTransition'
+import { getProductCategory } from '../constants/productCategories'
 
 export default function AccessPin() {
   const [pin, setPin] = useState('')
@@ -115,50 +116,59 @@ export default function AccessPin() {
               </p>
 
               <div className="space-y-4">
-                {productData.map((product, index) => (
-                  <motion.div
-                    key={product.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.3 + index * 0.1 }}
-                    className="flex items-center gap-4 p-4 bg-white/60 rounded-2xl border border-pastel-lavender/30 hover:border-pastel-pink/50 transition-all"
-                  >
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                      product.type === 'app' 
-                        ? 'bg-gradient-to-br from-pastel-pink to-pastel-lavender' 
-                        : 'bg-gradient-to-br from-pastel-mint to-pastel-sky'
-                    }`}>
+                {productData.map((product, index) => {
+                  const category = getProductCategory(product.category)
+
+                  return (
+                    <motion.div
+                      key={product.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.3 + index * 0.1 }}
+                      className="flex items-center gap-4 p-4 bg-white/60 rounded-2xl border border-pastel-lavender/30 hover:border-pastel-pink/50 transition-all"
+                    >
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                        product.type === 'app'
+                          ? 'bg-gradient-to-br from-pastel-pink to-pastel-lavender'
+                          : 'bg-gradient-to-br from-pastel-mint to-pastel-sky'
+                      }`}>
+                        {product.type === 'app' ? (
+                          <Gamepad2 className="w-6 h-6 text-white" />
+                        ) : (
+                          <FileText className="w-6 h-6 text-white" />
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-display font-bold text-gray-800">{product.title}</h3>
+                        {product.description && (
+                          <p className="font-body text-sm text-gray-500 line-clamp-1">{product.description}</p>
+                        )}
+                        {product.category && (
+                          <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded-full text-xs font-body bg-pastel-lavender/40 text-pastel-lavender-dark">
+                            {category.label}
+                          </span>
+                        )}
+                      </div>
                       {product.type === 'app' ? (
-                        <Gamepad2 className="w-6 h-6 text-white" />
+                        <Link
+                          to={`/prodotto/${product.id}`}
+                          className="btn-primary py-2 px-4 text-sm"
+                        >
+                          Apri
+                        </Link>
                       ) : (
-                        <FileText className="w-6 h-6 text-white" />
+                        <a
+                          href={product.download_link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-secondary py-2 px-4 text-sm"
+                        >
+                          Scarica
+                        </a>
                       )}
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-display font-bold text-gray-800">{product.title}</h3>
-                      {product.description && (
-                        <p className="font-body text-sm text-gray-500 line-clamp-1">{product.description}</p>
-                      )}
-                    </div>
-                    {product.type === 'app' ? (
-                      <Link
-                        to={`/prodotto/${product.id}`}
-                        className="btn-primary py-2 px-4 text-sm"
-                      >
-                        Apri
-                      </Link>
-                    ) : (
-                      <a
-                        href={product.download_link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-secondary py-2 px-4 text-sm"
-                      >
-                        Scarica
-                      </a>
-                    )}
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  )
+                })}
               </div>
 
               <button

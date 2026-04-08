@@ -8,6 +8,7 @@ import PricingTiers from '../components/PricingTiers'
 import Breadcrumb from '../components/Breadcrumb'
 import PageNavigation from '../components/PageNavigation'
 import PageTransition from '../components/PageTransition'
+import { DEFAULT_PRODUCT_CATEGORY } from '../constants/productCategories'
 
 export default function Activities() {
   const [activities, setActivities] = useState([])
@@ -37,7 +38,7 @@ export default function Activities() {
         )
         const counts = { all: paidItems.length }
         paidItems.forEach((a) => {
-          const cat = a.category || 'attivita-stampabili'
+          const cat = a.category || DEFAULT_PRODUCT_CATEGORY
           counts[cat] = (counts[cat] || 0) + 1
         })
         setCategoryCounts(counts)
@@ -108,7 +109,7 @@ export default function Activities() {
     ? activities.filter(a => !a.is_free || (a.free_until && a.free_until <= new Date().toISOString()))
     : activities.filter(a =>
         (!a.is_free || (a.free_until && a.free_until <= new Date().toISOString())) &&
-        (a.category || 'attivita-stampabili') === activeCategory
+        (a.category || DEFAULT_PRODUCT_CATEGORY) === activeCategory
       )
 
   return (

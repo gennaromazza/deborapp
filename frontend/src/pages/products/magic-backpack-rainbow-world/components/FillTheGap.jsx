@@ -1,51 +1,108 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
+
+const shuffleOptions = (options) => [...options].sort(() => Math.random() - 0.5)
+const normalize = (value) => String(value || '').trim().toLowerCase()
 
 export default function FillTheGap({ sentences, audio, profile, onComplete }) {
+  const safeSentences = useMemo(() => {
+    if (!Array.isArray(sentences)) return []
+    return sentences.filter(sentence => sentence?.english && sentence?.gap)
+  }, [sentences])
+
   const [currentIndex, setCurrentIndex] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState(null)
   const [isCorrect, setIsCorrect] = useState(null)
   const [shuffledOptions, setShuffledOptions] = useState([])
+  const [isEvaluating, setIsEvaluating] = useState(false)
+  const timeoutIds = useRef([])
 
-  const currentSentence = sentences[currentIndex]
+  const currentSentence = safeSentences[currentIndex] || null
+
+  const clearQueuedTimeouts = useCallback(() => {
+    timeoutIds.current.forEach(id => clearTimeout(id))
+    timeoutIds.current = []
+  }, [])
+
+  const queueTimeout = useCallback((fn, delay) => {
+    const id = setTimeout(fn, delay)
+    timeoutIds.current.push(id)
+    return id
+  }, [])
 
   useEffect(() => {
-    if (currentSentence) {
-      setSelectedAnswer(null)
-      setIsCorrect(null)
-      setShuffledOptions([...currentSentence.gapOptions].sort(() => Math.random() - 0.5))
-      audio.speakSentence(currentSentence.english)
+    return () => {
+      clearQueuedTimeouts()
     }
-  }, [currentIndex, currentSentence])
+  }, [clearQueuedTimeouts])
+
+  useEffect(() => {
+    if (currentIndex >= safeSentences.length && safeSentences.length > 0) {
+      setCurrentIndex(0)
+    }
+  }, [currentIndex, safeSentences.length])
+
+  useEffect(() => {
+    clearQueuedTimeouts()
+    setSelectedAnswer(null)
+    setIsCorrect(null)
+    setIsEvaluating(false)
+
+    if (!currentSentence) {
+      setShuffledOptions([])
+      return
+    }
+
+    const fallbackOptions = Array.isArray(currentSentence.gapOptions) && currentSentence.gapOptions.length > 0
+      ? currentSentence.gapOptions
+      : [currentSentence.gap]
+
+    setShuffledOptions(shuffleOptions(fallbackOptions))
+    audio?.speakSentence?.(currentSentence.english)
+  }, [currentIndex, currentSentence, audio, clearQueuedTimeouts])
 
   const handleSelect = (word) => {
-    if (isCorrect) return
-    setSelectedAnswer(word)
+    if (!currentSentence || isEvaluating || isCorrect === true) return
 
-    if (word === currentSentence.gap) {
+    setSelectedAnswer(word)
+    const answerIsCorrect = normalize(word) === normalize(currentSentence.gap)
+
+    if (answerIsCorrect) {
       setIsCorrect(true)
-      audio.speak(`Great! ${currentSentence.english}`)
-      setTimeout(() => {
-        if (currentIndex < sentences.length - 1) {
-          setCurrentIndex(currentIndex + 1)
+      setIsEvaluating(true)
+      audio?.speak?.(`Great! ${currentSentence.english}`)
+      queueTimeout(() => {
+        if (currentIndex < safeSentences.length - 1) {
+          setCurrentIndex(prev => prev + 1)
           setIsCorrect(null)
-        } else {
+          setIsEvaluating(false)
+        } else if (typeof onComplete === 'function') {
           onComplete()
         }
       }, 2000)
-    } else {
-      setIsCorrect(false)
-      audio.speak('Riprova!')
-      setTimeout(() => {
-        setSelectedAnswer(null)
-        setIsCorrect(null)
-      }, 1000)
+      return
     }
+
+    setIsCorrect(false)
+    setIsEvaluating(true)
+    audio?.speak?.('Riprova!')
+    queueTimeout(() => {
+      setSelectedAnswer(null)
+      setIsCorrect(null)
+      setIsEvaluating(false)
+    }, 1000)
   }
 
-  if (!currentSentence) return null
+  if (!currentSentence) {
+    return (
+      <div className="absolute inset-0 flex items-center justify-center">
+        <span className="text-white text-xl font-bold">Caricamento frase...</span>
+      </div>
+    )
+  }
 
-  const sentenceParts = currentSentence.english.split(' ')
-  const gapIndex = sentenceParts.findIndex(w => w.toLowerCase() === currentSentence.gap.toLowerCase())
+  const sentenceParts = String(currentSentence.english || '').split(' ')
+  const rawGapIndex = sentenceParts.findIndex(w => normalize(w) === normalize(currentSentence.gap))
+  const gapIndex = rawGapIndex >= 0 ? rawGapIndex : Math.max(0, sentenceParts.length - 1)
 
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center pt-16 px-4">
@@ -81,7 +138,7 @@ export default function FillTheGap({ sentences, audio, profile, onComplete }) {
               <span
                 key={i}
                 className={`inline-block px-4 py-2 rounded-xl border-4 text-lg font-bold transition-all ${
-                  selectedAnswer === word
+                  selectedAnswer && normalize(selectedAnswer) === normalize(word)
                     ? isCorrect === true
                       ? 'border-green-400 bg-green-100 text-green-700 glow'
                       : isCorrect === false
@@ -89,15 +146,15 @@ export default function FillTheGap({ sentences, audio, profile, onComplete }) {
                       : 'border-purple-400 bg-purple-100 text-purple-700'
                     : 'border-dashed border-gray-300 bg-gray-100 text-gray-400'
                 }`}
-                onClick={() => selectedAnswer && audio.speakWord(selectedAnswer)}
+                onClick={() => selectedAnswer && audio?.speakWord?.(selectedAnswer)}
               >
-                {selectedAnswer === word ? (
+                {selectedAnswer && normalize(selectedAnswer) === normalize(word) ? (
                   <span className="flex items-center gap-2">
                     {selectedAnswer}
-                    <button 
+                    <button
                       onClick={(e) => {
                         e.stopPropagation()
-                        audio.speakWord(selectedAnswer)
+                        audio?.speakWord?.(selectedAnswer)
                       }}
                       className="text-purple-600 hover:text-purple-800"
                     >
@@ -131,8 +188,9 @@ export default function FillTheGap({ sentences, audio, profile, onComplete }) {
             style={{ animationDelay: `${i * 0.1}s` }}
             onClick={() => {
               handleSelect(word)
-              audio.speakWord(word)
+              audio?.speakWord?.(word)
             }}
+            disabled={isEvaluating}
           >
             {word}
           </button>
@@ -141,13 +199,13 @@ export default function FillTheGap({ sentences, audio, profile, onComplete }) {
 
       <button
         className="px-6 py-3 bg-white bg-opacity-80 rounded-full font-bold text-purple-700 hover:bg-opacity-100 transition-all flex items-center gap-2"
-        onClick={() => audio.speakSentence(currentSentence.english)}
+        onClick={() => audio?.speakSentence?.(currentSentence.english)}
       >
         🔊 Ascolta la frase
       </button>
 
       <p className="text-white text-sm mt-6 opacity-70">
-        Frase {currentIndex + 1} di {sentences.length}
+        Frase {currentIndex + 1} di {safeSentences.length}
       </p>
 
       {isCorrect === true && (

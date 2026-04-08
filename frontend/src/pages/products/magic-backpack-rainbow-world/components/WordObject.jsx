@@ -5,6 +5,7 @@ const WordObject = ({ obj, onTap, onDragStart, isCollected, isTarget, missionAct
   const [glow, setGlow] = useState(false)
   const [hasHeard, setHasHeard] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
+  const canDrag = typeof onDragStart === 'function' && !isCollected
 
   const handleTap = () => {
     if (!hasHeard) {
@@ -32,7 +33,7 @@ const WordObject = ({ obj, onTap, onDragStart, isCollected, isTarget, missionAct
   }
 
   const handleDragStart = (e) => {
-    if (isCollected) return
+    if (!canDrag) return
     onDragStart(e, obj)
   }
 
@@ -42,11 +43,11 @@ const WordObject = ({ obj, onTap, onDragStart, isCollected, isTarget, missionAct
       style={{
         fontSize: '5rem',
         filter: glow ? `drop-shadow(0 0 15px ${obj.color})` : 'none',
-        touchAction: 'none',
+        touchAction: canDrag ? 'none' : 'manipulation',
       }}
       onClick={handleTap}
-      onMouseDown={handleDragStart}
-      onTouchStart={handleDragStart}
+      onMouseDown={canDrag ? handleDragStart : undefined}
+      onTouchStart={canDrag ? handleDragStart : undefined}
       draggable={false}
     >
       <div className="text-center">

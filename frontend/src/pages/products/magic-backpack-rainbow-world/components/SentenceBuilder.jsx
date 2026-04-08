@@ -1,49 +1,102 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
+
+const shuffleWords = (words) => [...words].sort(() => Math.random() - 0.5)
 
 export default function SentenceBuilder({ sentences, audio, profile, onComplete }) {
+  const safeSentences = useMemo(() => {
+    if (!Array.isArray(sentences)) return []
+    return sentences.filter(sentence => Array.isArray(sentence?.words) && sentence.words.length > 0)
+  }, [sentences])
+
   const [currentIndex, setCurrentIndex] = useState(0)
   const [placedWords, setPlacedWords] = useState([])
   const [availableWords, setAvailableWords] = useState([])
   const [isCorrect, setIsCorrect] = useState(null)
   const [shakeSlot, setShakeSlot] = useState(null)
+  const timeoutIds = useRef([])
 
-  const currentSentence = sentences[currentIndex]
+  const currentSentence = safeSentences[currentIndex] || null
+
+  const clearQueuedTimeouts = useCallback(() => {
+    timeoutIds.current.forEach(id => clearTimeout(id))
+    timeoutIds.current = []
+  }, [])
+
+  const queueTimeout = useCallback((fn, delay) => {
+    const id = setTimeout(fn, delay)
+    timeoutIds.current.push(id)
+    return id
+  }, [])
 
   useEffect(() => {
-    if (currentSentence) {
-      setPlacedWords(new Array(currentSentence.words.length).fill(null))
-      setAvailableWords([...currentSentence.words].sort(() => Math.random() - 0.5))
-      setIsCorrect(null)
-      audio.speakSentence(currentSentence.english)
+    return () => {
+      clearQueuedTimeouts()
     }
-  }, [currentIndex, currentSentence])
+  }, [clearQueuedTimeouts])
 
-  const handleWordClick = (word, fromSlot = false) => {
-    if (isCorrect) return
+  useEffect(() => {
+    if (currentIndex >= safeSentences.length && safeSentences.length > 0) {
+      setCurrentIndex(0)
+    }
+  }, [currentIndex, safeSentences.length])
 
-    if (fromSlot) {
-      const slotIndex = placedWords.indexOf(word)
-      const newPlaced = [...placedWords]
-      newPlaced[slotIndex] = null
-      setPlacedWords(newPlaced)
-      setAvailableWords([...availableWords, word])
+  useEffect(() => {
+    clearQueuedTimeouts()
+    setShakeSlot(null)
+    setIsCorrect(null)
+
+    if (!currentSentence) {
+      setPlacedWords([])
+      setAvailableWords([])
+      return
+    }
+
+    setPlacedWords(new Array(currentSentence.words.length).fill(null))
+    setAvailableWords(shuffleWords(currentSentence.words))
+    audio?.speakSentence?.(currentSentence.english)
+  }, [currentIndex, currentSentence, audio, clearQueuedTimeouts])
+
+  const handlePlaceWord = (word, sourceIndex) => {
+    if (!currentSentence || isCorrect !== null) return
+
+    const emptySlotIndex = placedWords.indexOf(null)
+    if (emptySlotIndex === -1) return
+
+    const newPlaced = [...placedWords]
+    newPlaced[emptySlotIndex] = word
+    setPlacedWords(newPlaced)
+
+    const newAvailable = [...availableWords]
+    if (sourceIndex >= 0 && sourceIndex < newAvailable.length) {
+      newAvailable.splice(sourceIndex, 1)
     } else {
-      const emptySlotIndex = placedWords.indexOf(null)
-      if (emptySlotIndex === -1) return
-
-      const newPlaced = [...placedWords]
-      newPlaced[emptySlotIndex] = word
-      setPlacedWords(newPlaced)
-      setAvailableWords(availableWords.filter(w => w !== word))
-      audio.speak(word)
+      const fallbackIndex = newAvailable.indexOf(word)
+      if (fallbackIndex !== -1) newAvailable.splice(fallbackIndex, 1)
     }
+    setAvailableWords(newAvailable)
+
+    audio?.speak?.(word)
+  }
+
+  const handleRemoveWord = (slotIndex) => {
+    if (!currentSentence || isCorrect !== null) return
+
+    const word = placedWords[slotIndex]
+    if (!word) return
+
+    const newPlaced = [...placedWords]
+    newPlaced[slotIndex] = null
+    setPlacedWords(newPlaced)
+    setAvailableWords(prev => [...prev, word])
   }
 
   const checkAnswer = () => {
+    if (!currentSentence || isCorrect !== null) return
+
     if (placedWords.includes(null)) {
       setShakeSlot(placedWords.indexOf(null))
-      setTimeout(() => setShakeSlot(null), 500)
-      audio.speak('Completa la frase!')
+      queueTimeout(() => setShakeSlot(null), 500)
+      audio?.speak?.('Completa la frase!')
       return
     }
 
@@ -51,26 +104,33 @@ export default function SentenceBuilder({ sentences, audio, profile, onComplete 
     setIsCorrect(isAnswerCorrect)
 
     if (isAnswerCorrect) {
-      audio.speak(`Great! ${currentSentence.english}`)
-      setTimeout(() => {
-        if (currentIndex < sentences.length - 1) {
-          setCurrentIndex(currentIndex + 1)
+      audio?.speak?.(`Great! ${currentSentence.english}`)
+      queueTimeout(() => {
+        if (currentIndex < safeSentences.length - 1) {
+          setCurrentIndex(prev => prev + 1)
           setIsCorrect(null)
-        } else {
+        } else if (typeof onComplete === 'function') {
           onComplete()
         }
       }, 2000)
-    } else {
-      audio.speak('Riprova!')
-      setTimeout(() => {
-        setPlacedWords(new Array(currentSentence.words.length).fill(null))
-        setAvailableWords([...currentSentence.words].sort(() => Math.random() - 0.5))
-        setIsCorrect(null)
-      }, 1500)
+      return
     }
+
+    audio?.speak?.('Riprova!')
+    queueTimeout(() => {
+      setPlacedWords(new Array(currentSentence.words.length).fill(null))
+      setAvailableWords(shuffleWords(currentSentence.words))
+      setIsCorrect(null)
+    }, 1500)
   }
 
-  if (!currentSentence) return null
+  if (!currentSentence) {
+    return (
+      <div className="absolute inset-0 flex items-center justify-center">
+        <span className="text-white text-xl font-bold">Caricamento frase...</span>
+      </div>
+    )
+  }
 
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center pt-16 px-4">
@@ -117,11 +177,11 @@ export default function SentenceBuilder({ sentences, audio, profile, onComplete 
           >
             {word && (
               <>
-                <span 
+                <span
                   className="font-bold text-sm cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation()
-                    handleWordClick(word, true)
+                    handleRemoveWord(i)
                   }}
                 >
                   {word}
@@ -129,7 +189,7 @@ export default function SentenceBuilder({ sentences, audio, profile, onComplete 
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
-                    audio.speakWord(word)
+                    audio?.speakWord?.(word)
                   }}
                   className="text-purple-600 hover:text-purple-800 hover:scale-110 transition-transform"
                 >
@@ -147,10 +207,8 @@ export default function SentenceBuilder({ sentences, audio, profile, onComplete 
             key={`${word}-${i}`}
             className="px-5 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-xl shadow-lg hover:scale-105 transition-transform pop-in"
             style={{ animationDelay: `${i * 0.1}s` }}
-            onClick={() => {
-              handleWordClick(word)
-              audio.speakWord(word)
-            }}
+            onClick={() => handlePlaceWord(word, i)}
+            disabled={isCorrect !== null}
           >
             {word}
           </button>
@@ -160,25 +218,25 @@ export default function SentenceBuilder({ sentences, audio, profile, onComplete 
       <div className="flex gap-4">
         <button
           className="px-6 py-3 bg-white bg-opacity-80 rounded-full font-bold text-purple-700 hover:bg-opacity-100 transition-all flex items-center gap-2"
-          onClick={() => audio.speakSentence(currentSentence.english)}
+          onClick={() => audio?.speakSentence?.(currentSentence.english)}
         >
           🔊 Ascolta
         </button>
         <button
           className={`px-8 py-3 rounded-full font-bold transition-all flex items-center gap-2 ${
-            placedWords.includes(null)
+            placedWords.includes(null) || isCorrect !== null
               ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
               : 'bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:scale-105'
           }`}
           onClick={checkAnswer}
-          disabled={placedWords.includes(null)}
+          disabled={placedWords.includes(null) || isCorrect !== null}
         >
           ✅ Verifica
         </button>
       </div>
 
       <p className="text-white text-sm mt-4 opacity-70">
-        Frase {currentIndex + 1} di {sentences.length}
+        Frase {currentIndex + 1} di {safeSentences.length}
       </p>
 
       {isCorrect === true && (
