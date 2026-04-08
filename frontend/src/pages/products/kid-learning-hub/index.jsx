@@ -4,8 +4,8 @@ const APP_BASE_PATH = '/kid-learning-hub/'
 
 export default function KidLearningHub() {
   return (
-    <div className="min-h-screen bg-pastel-cream flex flex-col">
-      <header className="bg-white/90 backdrop-blur sticky top-0 z-40 border-b border-pastel-lavender/30">
+    <div className="h-[100dvh] bg-pastel-cream flex flex-col overflow-hidden">
+      <header className="bg-white/90 backdrop-blur z-40 border-b border-pastel-lavender/30 shrink-0">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
           <a href="/" className="btn-secondary py-2 px-4 inline-flex items-center gap-2 text-sm">
             <Home className="w-4 h-4" />
@@ -24,12 +24,12 @@ export default function KidLearningHub() {
         </div>
       </header>
 
-      <div className="flex-1 min-h-0 p-2 sm:p-4">
-        <div className="w-full h-full min-h-[calc(100vh-96px)] rounded-3xl overflow-hidden shadow-soft-lg border border-pastel-lavender/40 bg-white">
+      <div className="flex-1 min-h-0 p-0 sm:p-2">
+        <div className="w-full h-full rounded-none sm:rounded-3xl overflow-hidden shadow-soft-lg border-0 sm:border border-pastel-lavender/40 bg-white">
           <iframe
             title="Kid Learning Hub"
             src={APP_BASE_PATH}
-            className="w-full h-full border-0"
+            className="w-full h-full border-0 block"
             loading="eager"
           />
         </div>
