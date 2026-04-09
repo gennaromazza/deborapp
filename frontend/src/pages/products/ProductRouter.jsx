@@ -4,12 +4,14 @@ import { supabase } from '../../utils/supabase'
 import LibroMatematicaVolume1 from './libro-matematica-volume-1'
 import MagicBackpackRainbowWorld from './magic-backpack-rainbow-world'
 import KidLearningHub from './kid-learning-hub'
+import ImparandoLeDivisioniVol1 from './imparando-le-divisioni-vol-1'
 
 const productComponents = {
   'libro-matematica-volume-1': LibroMatematicaVolume1,
   'magic-backpack-rainbow-world': MagicBackpackRainbowWorld,
   'kid-learning-hub': KidLearningHub,
   'mathmagic': KidLearningHub,
+  'imparando-le-divisioni-vol-1': ImparandoLeDivisioniVol1,
 }
 
 const TIMEOUT_MS = 10000
